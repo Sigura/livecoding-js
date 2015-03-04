@@ -1,4 +1,4 @@
 'use strict';
 
 /* jshint devel:true */
-console.log('Hello word! :)');
+console.log('Hello word!! :)');

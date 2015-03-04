@@ -8,7 +8,7 @@ var nodemon = require('gulp-nodemon');
 var reload = browserSync.reload;
 var port = 5000;
 var proxy = 3000;
- 
+
 gulp.task('styles', function () {
   return gulp.src('webapp/styles/main.css')
     .pipe($.sourcemaps.init())
