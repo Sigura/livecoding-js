@@ -1,4 +1,5 @@
 #node,bower,git
+which wget || apt-get install wget
 which nave || (
 
     echo "***********************"
@@ -16,10 +17,13 @@ echo "***********************"
 echo "*   usemain 0.10.35   *"
 echo "***********************"
 node -v | grep 0.10.35 || nave usemain 0.10.35
-sudo npm install -g npm
+#npm install -g npm
 which gulp || npm install -g gulp
 which bower || npm install -g bower
-which git || sudo apt-get -y install git-core
+which knex || npm install -g knex
+which forever || npm install -g forever
+which react-tools || npm install -g react-tools
+which git || apt-get -y install git-core
 
 #postgres
 if [ ! -f /usr/lib/postgresql/9.3/bin/postgres ]; then
@@ -42,8 +46,9 @@ service postgresql restart
 fi
 
 sudo -u postgres createuser vagrant -s || echo 'user exists'
-sudo -u postgres bash -l -c 'psql -l | grep timezone || createdb timezone encoding=UTF8'
-sudo -u postgres bash -l -c 'psql -l | grep timezone_test || createdb timezone_test encoding=UTF8'
+sudo -u postgres bash -l -c 'psql -l | grep expenses || createdb expenses encoding=UTF8'
+sudo -u postgres bash -l -c 'psql -l | grep expenses_test || createdb expenses_test encoding=UTF8'
 
-
-
+chmod +x /home/vagrant/project/nodeapp/db/knex-migrate-latest.sh
+chmod +x /home/vagrant/project/build.sh
+chmod +x /home/vagrant/project/install.sh

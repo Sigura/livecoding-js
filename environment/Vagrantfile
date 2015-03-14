@@ -27,6 +27,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.network "forwarded_port", guest: 3001, host: 3001
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 80, host: 80
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -43,7 +45,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # argument is a set of non-required options.
   config.vm.synced_folder "../project", "/home/vagrant/project", type: "rsync",
     rsync__exclude: [".git/", "node_modules", ".tmp/", "test/node_modules"],
-    rsync__args: ["--verbose", "--archive", "--delete", "-z"]
+    rsync__args: ["--verbose", "--archive", "--delete", "-z"],
+    rsync__auto: true
     
   # config.sync.host_folder = "../project"  #relative to the folder your Vagrantfile is in
   # config.sync.guest_folder = "/home/vagrant/project" #relative to the vagrant home folder -> /home/vagrant

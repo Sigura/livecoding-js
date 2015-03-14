@@ -3,22 +3,31 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "scripts": {
+    "test": "gulp test",
+    "start": "node nodeapp/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.toptal.com/Artur-Dudnik/artur-dudnik"
+  },
   "devDependencies": {
     "autoprefixer-core": "^4.0.2",
     "browser-sync": "^1.8.2",
     "del": "^1.1.1",
-    "forever": "^0.14.1",
     "gulp": "^3.6.0",
+    "gulp-browserify": "^0.5.1",
     "gulp-cache": "^0.2.2",
     "gulp-cli": "^0.1.5",
     "gulp-csso": "^0.2.6",
     "gulp-if": "^1.2.1",
     "gulp-imagemin": "^2.0.0",
-    "gulp-jshint": "^1.5.3",
+    "gulp-jshint": "^1.9.2",
     "gulp-load-plugins": "^0.8.0",
     "gulp-minify-html": "^0.1.6",
     "gulp-nodemon": "^1.0.5",
     "gulp-postcss": "^3.0.0",
+    "gulp-react": "^3.0.0",
     "gulp-size": "^1.1.0",
     "gulp-sourcemaps": "^1.3.0",
     "gulp-uglify": "^1.0.1",
@@ -26,6 +35,7 @@
     "jshint-stylish": "^1.0.0",
     "main-bower-files": "^2.5.0",
     "opn": "^1.0.0",
+    "reactify": "^1.0.0",
     "wiredep": "^2.0.0"
   },
   "dependencies": {
@@ -33,11 +43,23 @@
     "compression": "^1.4.1",
     "cookie-parser": "^1.3.4",
     "cookie-session": "^1.1.0",
+    "crypto": "0.0.3",
     "express": "^4.12.0",
+    "express-react-views": "^0.7.1",
     "express-validator": "^2.8.0",
+    "flux": "^2.0.1",
     "jade": "^1.9.2",
+    "knex": "^0.7.4",
+    "moment": "^2.9.0",
+    "moment-range": "^1.0.7",
     "morgan": "^1.5.1",
+    "node-uuid": "^1.4.3",
+    "passport": "^0.2.1",
+    "pg": "^4.3.0",
+    "react": "^0.12.2",
+    "react-paginator-box": "^1.0.3",
     "serve-favicon": "^2.2.0",
-    "serve-static": "^1.9.1"
+    "serve-static": "^1.9.1",
+    "twix": "^0.6.2"
   }
 }

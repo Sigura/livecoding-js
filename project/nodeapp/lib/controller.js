@@ -1,37 +1,39 @@
-'use strict';
-
 +(function(module, require){
+'use strict';
 
 var express = require('express');
 
-var baseRequest = function(route){
+var controller = function(route){
+
     this.route = route;
+
+    this.init();
 };
 
-baseRequest.prototype = {
+controller.prototype = {
     init: function(){
-        this.router = express.Router();        
+        this.router = this.router || express.Router(this.route);
+        
+        return this.router;
     },
     use: function(main){
-
-        this.init();
 
         this.register(main);
         
         return this.router;
     },
     register: function(main){
-        this.router.get(this.route, this.request.bind({
+
+        this.route && this.request && this.router.get(this.route, this.request.bind({
             router: this.router,
             main: main
             
         }));
-    },
-    request: function(req, res, next) {
-        throw new error('not implemented');
-    },
+        
+        return this.router;
+    }
 };
 
-module.exports = baseRequest;
+module.exports = controller;
 
 })(module, require)

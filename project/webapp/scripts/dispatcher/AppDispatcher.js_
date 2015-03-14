@@ -1,0 +1,9 @@
+(function(module, require) {
+'use strict';
+    
+var flux = require('flux');
+var Dispatcher = flux.Dispatcher;
+
+module.exports = new Dispatcher();
+
+})(module, require);

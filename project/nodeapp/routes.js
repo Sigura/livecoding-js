@@ -4,8 +4,8 @@
 
 module.exports = {
     routeTable: [
-        {name: '/help', path: './api/help'},
-        {name: '/500',  path: './api/500'},
+        {path: './api/users'},
+        {path: './api/expenses'}
     ],
     register: function(main){
         
