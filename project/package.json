@@ -10,7 +10,11 @@
   },
   "scripts": {
     "test": "cd nodeapp && NODE_ENV=test ../node_modules/.bin/mocha",
-    "start": "node nodeapp/server.js"
+    "start": "node nodeapp/server.js",
+    "install": "npm install && cd webapp && bower install && cd test && bower install",
+    "dev": "gulp serve",
+    "build": "gulp",
+    "db": "cd nodeapp && knex migrate:latest"
   },
   "repository": {
     "type": "git",
