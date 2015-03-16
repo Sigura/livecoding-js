@@ -23,11 +23,11 @@ Application.prototype = {
 
         this.distFolder = (this.isDebug ? 'webapp' : 'dist');
         this.staticDir = this.path.join(baseDir, '..', this.distFolder);
-        this.bowerComponentsDir = this.path.join(baseDir, '..', 'bower_components');
+        //this.bowerComponentsDir = this.path.join(baseDir, '..', 'bower_components');
         this.renderComponentsDir = this.path.join(baseDir, '..', '.tmp');
 
         console.log('static dir: ', this.staticDir);
-        console.log('bower  dir: ', this.bowerComponentsDir);
+        //console.log('bower  dir: ', this.bowerComponentsDir);
         console.log('render dir: ', this.renderComponentsDir);
     },
     require: function(){
@@ -83,35 +83,23 @@ Application.prototype = {
           etag: true,
           index: ['index.html', 'index.htm'],
           lastModified: true,
-          //maxAge: '1d',
-          redirect: true//,
-          // setHeaders: function (res, path, stat) {
-            // res.set('x-timestamp', Date.now())
-          // }
+          redirect: true
         }));
-        this.express.use('/bower_components', this.Express.static(this.bowerComponentsDir, {
-          dotfiles: 'ignore',
-          extensions: [],
-          etag: true,
-          index: [],
-          lastModified: true,
-          //maxAge: '1d',
-          redirect: false//,
-          // setHeaders: function (res, path, stat) {
-            // res.set('x-timestamp', Date.now())
-          // }
-        }));
+        // this.express.use('/bower_components', this.Express.static(this.bowerComponentsDir, {
+          // dotfiles: 'ignore',
+          // extensions: [],
+          // etag: true,
+          // index: [],
+          // lastModified: true,
+          // redirect: false
+        // }));
         this.express.use('/jsx', this.Express.static(this.renderComponentsDir, {
           dotfiles: 'ignore',
           extensions: [],
           etag: true,
           index: [],
           lastModified: true,
-          //maxAge: '1d',
-          redirect: false//,
-          // setHeaders: function (res, path, stat) {
-            // res.set('x-timestamp', Date.now())
-          // }
+          redirect: false
         }));
         this.routes.register(this);
 

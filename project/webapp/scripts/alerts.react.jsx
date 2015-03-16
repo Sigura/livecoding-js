@@ -86,7 +86,7 @@
                 var cx = React.addons.classSet;
                 var state = this.state;
 
-                return (<div className={cx({'float-right': true, 'hidden-print':true, 'list-group':true, 'col-sm-6':true, 'hide-element': !state.alerts.length})}>
+                return (<div className={cx({'col-sm-4': true, 'float-right': true, 'hidden-print':true, 'list-group':true, 'col-sm-6':true, 'hide-element': !state.alerts.length})}>
                     {state.alerts.map(function(item, i){
                       return <div key={'alert-item-' + i} className={cx({'list-group-item':true, 'list-group-item-success':!item.error, 'list-group-item-danger':item.error})} role="alert">{item.text}</div>;
                     })}

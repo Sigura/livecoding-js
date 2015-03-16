@@ -1,7 +1,7 @@
 npm install 
-#cd ./webapp/
-bower install 
-cd ../nodeapp/
+cd ./nodeapp/
 ./knex-migrate-latest.sh 
-cd ../webapp/test/
+cd ../webapp/
+bower install 
+cd ./test/
 bower install 

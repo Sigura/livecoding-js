@@ -61,7 +61,8 @@ gulp.task('images', function () {
 
 gulp.task('fonts', function () {
   return gulp.src(require('main-bower-files')({
-    filter: '**/*.{eot,svg,ttf,woff,woff2}'
+    filter: '**/*.{eot,svg,ttf,woff,woff2}',
+    paths: 'webapp'
   }).concat('webapp/fonts/**/*'))
     .pipe(gulp.dest('.tmp/fonts'))
     .pipe(gulp.dest('dist/fonts'));
@@ -81,7 +82,7 @@ gulp.task('nodemon', function (cb) {
 	return nodemon({
 	  script: 'nodeapp/server.js',
       verbose: true,
-      ignore: ['webapp', 'test', 'dist', '.tmp', '.git', 'bower_components', 'webapp/bower_components'],
+      ignore: ['webapp', 'test', 'dist', '.tmp', '.git', 'bower_components'],
       env: {
           'serve': 'gulp',
           'port': port
@@ -98,14 +99,8 @@ gulp.task('serve', ['styles', 'templates', 'fonts', 'nodemon'], function () {
   browserSync({
     notify: false,
     proxy: 'http://localhost:' + port,
-    files: ['.tmp/**/*.*', 'webapp/**/*.*', 'webapp/bower_components/**/*.*'],
-    port: proxy//,
-    // server: {
-      // baseDir: ['.tmp', 'webapp', 'dist'],
-      // routes: {
-        // '/bower_components': 'bower_components'
-      // }
-    // }
+    files: ['.tmp/**/*.*', 'webapp/**/*.*', 'bower_components/**/*.*'],
+    port: proxy
   });
 
   // watch for changes
@@ -119,7 +114,7 @@ gulp.task('serve', ['styles', 'templates', 'fonts', 'nodemon'], function () {
   gulp.watch('webapp/fonts/**/*', ['fonts']);
   //gulp.watch('webapp/scripts/**/*.js', ['templates', reload]);
   gulp.watch('webapp/scripts/**/*.jsx', ['templates', reload]);
-  //gulp.watch('bower.json', ['wiredep', 'fonts']);
+  //gulp.watch('webapp/bower.json', ['wiredep', 'fonts']);
 });
 
 gulp.task('templates', function () {
@@ -137,15 +132,15 @@ gulp.task('templates', function () {
 });
 
 // inject bower components
-gulp.task('wiredep', function () {
-  var wiredep = require('wiredep').stream;
+// gulp.task('wiredep', function () {
+  // var wiredep = require('wiredep').stream;
 
-  gulp.src('webapp/*.html')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)*\.\./
-    }))
-    .pipe(gulp.dest('webapp'));
-});
+  // gulp.src('webapp/*.html')
+    // .pipe(wiredep({
+      // ignorePath: /^(\.\.\/)*\.\./
+    // }))
+    // .pipe(gulp.dest('webapp'));
+// });
 
 gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));

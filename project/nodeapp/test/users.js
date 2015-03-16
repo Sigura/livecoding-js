@@ -5,7 +5,7 @@
     describe('register & login', function () {
         var result;
         cleanDb();
-        before(function() {
+        before(function(done) {
             return request()
                 .put('/api/users')
                 .send({
@@ -13,6 +13,9 @@
                     password: 'test'
                 }).then(function(res) {
                     result = res;
+                })
+                .then(function() {
+                    done();
                 });
         });
         it('register returns 200', function() {
@@ -35,7 +38,7 @@
     describe('register exists user', function () {
         var result;
         cleanDb();
-        before(function() {
+        before(function(done) {
             return request()
                 .put('/api/users')
                 .send({
@@ -44,6 +47,9 @@
                 })
                 .then(function(res) {
                     result = res;
+                })
+                .then(function() {
+                    done();
                 });
         });
         it('register returns 200', function() {
@@ -59,6 +65,14 @@
                 .expect(500)
                 .then(function(res) {
                     expect(res.body).to.have.property('error');
+                });
+        });
+        it('delete agdudnik@gmail.com', function() {
+            return request()
+                .delete('/api/users?token=' + result.body.token)
+                .expect(200)
+                .then(function(res) {
+                    expect(res.body).to.have.property('success');
                 });
         });
     });
@@ -97,7 +111,7 @@
     describe('login with wrong login', function () {
         var result;
         cleanDb();
-        before(function() {
+        before(function(done) {
             return request()
                 .put('/api/users')
                 .send({
@@ -106,6 +120,9 @@
                 })
                 .then(function(res) {
                     result = res;
+                })
+                .then(function() {
+                    done();
                 });
         });
         it('register returns 200', function() {
@@ -123,11 +140,19 @@
                     expect(res.body).to.have.property('error');
                 });
         });
+        it('delete agdudnik@gmail.com', function() {
+            return request()
+                .delete('/api/users?token=' + result.body.token)
+                .expect(200)
+                .then(function(res) {
+                    expect(res.body).to.have.property('success');
+                });
+        });
     });
     describe('login with wrong password', function () {
         var result;
         cleanDb();
-        before(function() {
+        before(function(done) {
             return request()
                 .put('/api/users')
                 .send({
@@ -136,6 +161,9 @@
                 })
                 .then(function(res) {
                     result = res;
+                })
+                .then(function() {
+                    done();
                 });
         });
         it('register returns 200', function() {
@@ -151,6 +179,14 @@
                 .expect(403)
                 .then(function(res) {
                     expect(res.body).to.have.property('error');
+                });
+        });
+        it('delete agdudnik@gmail.com', function() {
+            return request()
+                .delete('/api/users?token=' + result.body.token)
+                .expect(200)
+                .then(function(res) {
+                    expect(res.body).to.have.property('success');
                 });
         });
     });

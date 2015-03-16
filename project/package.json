@@ -45,6 +45,7 @@
     "main-bower-files": "^2.5.0",
     "mocha": "^2.2.1",
     "opn": "^1.0.0",
+    "query-string": "^1.0.0",
     "reactify": "^1.0.0",
     "supertest": "^0.15.0",
     "supertest-as-promised": "^1.0.0",

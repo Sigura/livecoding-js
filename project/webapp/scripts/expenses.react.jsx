@@ -220,7 +220,7 @@ var Expenses = React.createClass({
         </div>
         <div className={cx({'panel-body':true, 'hide-element': state.loading})}>
           <Alerts />
-          <div className="col-sm-6">
+          <div className="col-sm-8">
               <GroupBy groupBy={state.groupBy} onGroupChanged={_.changeGroupHandler} />
               <Filter onFilterChanged={_.filterChanged} />
           </div>

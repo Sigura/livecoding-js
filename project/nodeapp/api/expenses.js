@@ -42,7 +42,7 @@ var helpers = {
 
 expenseController.router.get(path, authentication(), validate(function(req){
 
-    console.log('request', req.query);
+    //console.log('request', req.query);
 
         req.query.dateFrom   && req.checkQuery('dateFrom', 'date format is YYYY-MM-DD').isLength(10).isDate();
         req.query.dateTo     && req.checkQuery('dateTo', 'date format is YYYY-MM-DD').isLength(10).isDate();
@@ -63,7 +63,7 @@ expenseController.router.get(path, authentication(), validate(function(req){
     if(req.query.amountTo)
         query = query.where('amount', '<=', req.query.amountTo);
     
-    console.log('query', query);
+    //console.log('query', query);
     
     query
         .orderBy('date')

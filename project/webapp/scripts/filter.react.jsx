@@ -67,7 +67,7 @@ var Filter = module.exports = React.createClass({
 
         return (<div className={cx({'hidden-print': !(state.dateFrom || state.dateTo || state.amountFrom || state.amountTo)})}>
         <div className="panel panel-default">
-            <div className="panel-heading"><button className="btn btn-default btn-sm pull-right" onClick={_.clear}>Clear</button><span>Filter by</span></div>
+            <div className="panel-heading hidden-print"><button className="btn btn-default btn-sm pull-right" onClick={_.clear}>Clear</button><span>Filter by</span></div>
             <div className="panel-body">
             <div className="row">
                 <div className={cx({'hidden-print': !state.dateFrom, 'form-group': true, 'date-from': true, 'col-md-5': true})}>

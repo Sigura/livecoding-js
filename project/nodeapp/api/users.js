@@ -28,8 +28,7 @@ userController.router.get(path, function(req, res, next){
 });
 
 userController.router.delete(path, authentication(), function(req, res, next) {
-    var expense = helpers.expense(req);
-    
+   
     db('users')
         .where({id: req.user.id})
         .del()
@@ -38,7 +37,7 @@ userController.router.delete(path, authentication(), function(req, res, next) {
                 throw 'failed to delete user ' + req.user.id;
             }
 
-            res.json(expense);
+            res.json({success: true});
         })
         .catch(function(ex) {
             error(res, ex, 500);

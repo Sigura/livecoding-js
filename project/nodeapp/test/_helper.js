@@ -5,6 +5,7 @@ var knex = require('../db/connection');
 var chai = require("chai");
 var Promise = require('bluebird');
 var request = require('supertest-as-promised');
+var queryString = require('query-string');
 var App = require('../main');
 
 chai.should();
@@ -14,11 +15,10 @@ global.expect = chai.expect;
 global.lodash = require('lodash');
 global.app = (new App()).express;
 global.Promise = Promise;
-
+global.queryString = queryString;
 global.request = function() {
     return request(app);
 };
-
 global.cleanDb = function () {
     before(function(done) {
         return Promise.all([
@@ -32,11 +32,13 @@ global.cleanDb = function () {
 
 before(function(done) {
 
+    console.info('rebuild test db');
     knex.raw('drop schema public cascade; create schema public;')
         .then(function() {
-            knex.migrate.latest().then(function() {
-                done();
-            });
+            return knex.migrate.latest();
+        })
+        .then(function() {
+            done();
         });
 
 });

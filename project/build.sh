@@ -1,6 +1,8 @@
 npm install
-#cd ./webapp/
+cd ./webapp/
 bower install
-#cd ..
+cd ./test/
+bower install
+cd ../..
 gulp
 npm test

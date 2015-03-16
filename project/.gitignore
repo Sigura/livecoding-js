@@ -4,6 +4,7 @@ dist
 .sass-cache
 bower_components
 webapp/bower_components
+webapp/test/bower_components
 nodeapp/node_modules
 test/bower_components
 *.log
