@@ -25,28 +25,42 @@ process.env.port or in server.js
 
 ### db
 project\nodeapp\knexfile.js
+> cd project
 > npm run db
 
 ### setup
 NODE_ENV to development or production
 
+> cd project
+> gulp
+
+then
 > forever nodeapp/server.js
 
 or
 > npm start
 
 ## dev
-environment watch Vagrantfile
-buld system gulp watch gulpfile.js
+environment watch environment\Vagrantfile
+buld system gulp watch project\gulpfile.js
 
 for setup dev environment just
-> vagrant up
+> cd environment
+> .\environment\vagrant up
 
 then ssh to localhost:2222 and start gulp serve or npm start or npm test
-you can change or get private key here:
-> environment\.vagrant\machines\default\virtualbox
+you can change or get private key after vagrant up there:
+> environment\.vagrant\machines\default\virtualbox\
+
+## web app
+by default:
+> http://localhost:3000/
+
+ui test accessed in gulp serve:
+> http://localhost:3000/test/
 
 ## install
+> cd project
 > npm run install
 
 ### Window$
@@ -63,15 +77,15 @@ npm config set msvs_version 2015 --global
 (with vagrant)
 7. install [vagrant](https://www.vagrantup.com/downloads.html)
 8. install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-9. ./environment/vagrant up
-9. ./environment/vagrant rsync-auto
+9. cd environment && vagrant up
+9. vagrant rsync-auto
 
 ### *nix
 
 1. install [vagrant](https://www.vagrantup.com/downloads.html)
 2. install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 3. install rsync (sudo apt-get rsync)
-4. ./environment/vagrant up
+4. cd environment && vagrant up
 5. then ssh to localhost 2222
 6. and etc.
 
