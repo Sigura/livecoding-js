@@ -1,4 +1,4 @@
-+(function(module, require, ReactIntl){
++(function(module, require, ReactIntl, $, localStorage, undefined){
 'use strict';
 
 var Login = require('./login.react');
@@ -11,16 +11,53 @@ var ExpensesApp = React.createClass({
     mixins: [IntlMixin],
 
     getInitialState: function() {
-        return {user: false};//{user: {id: 1, token: 'edede25a-7573-4be2-b471-c2fa5b8bfa44', name: 'adudnik@gmail.com'}};
+        return {user: false};
     },
 
     componentDidMount: function() {
+        var _ = this;
+
+        _.registerEvents();
+        _.loadStoredData();
+    },
+    
+    registerEvents: function () {
+        var _ = this;
+
+        AppDispatcher.register(function(action) {
+
+          switch(action.actionType)
+          {
+            case actions.logOut:
+              _.logOut(action.data);
+            break;
+          }
+        });        
     },
 
+    loadStoredData: function () {
+        
+        var user, _ = this;
+        try{
+            user = localStorage.user && JSON.parse(localStorage.user);
+        }catch(e){}
+        
+        if(user && user.token) {
+            AppDispatcher.dispatch({actionType: actions.signIn, data: user});
+
+            _.setState({user: user});
+        }
+    },
+    logOut: function () {
+        delete localStorage.user;
+        
+        location.reload(true);
+    },
     componentWillUnmount: function() {
     },
-    loginHandler: function(user){
-      
+    loginHandler: function(user) {
+        localStorage.user = JSON.stringify(user);
+
         this.setState({user: user});
     },
     render: function() {
@@ -41,4 +78,4 @@ var ExpensesApp = React.createClass({
 
 module.exports = ExpensesApp;
 
-})(module, require, ReactIntl);
+})(module, require, ReactIntl, jQuery, localStorage, undefined);

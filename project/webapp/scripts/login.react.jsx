@@ -8,7 +8,7 @@ var api = require('./api.react');
 var L = ReactIntl.FormattedMessage;
 
 var Login = React.createClass({
-  mixins: [IntlMixin],
+  mixins: [React.addons.LinkedStateMixin, IntlMixin],
   
   getInitialState: function() {
     this.state = this.state || {};
@@ -42,7 +42,6 @@ var Login = React.createClass({
   },
 
   componentWillUnmount: function() {
-    //expensesStore.removeChangeListener(this._onChange);
   },
 
   stopPropagation: function(event) {
@@ -54,14 +53,6 @@ var Login = React.createClass({
     event.cancelBubble = true
 
     //return false;
-  },
-  getValues: function() {
-    var state = this.state;
-
-    state.email = this.refs.email.getDOMNode().value.trim();
-    state.password = this.refs.password.getDOMNode().value.trim();
-
-    this.setState(this.state);
   },
   updateState: function(res) {
     var _ = this;
@@ -99,7 +90,6 @@ var Login = React.createClass({
     var _ = this;
 
     _.clearState();
-    _.getValues();
 
     api.user.signIn(_.state);    
   },
@@ -138,9 +128,8 @@ var Login = React.createClass({
     var _ = this;
 
     _.clearState();
-    _.getValues();
 
-    api.register(_.state);
+    api.user.register(_.state);
   },
   handleChange: function(event){
     this.state[event.target.name] = event.target.value.trim();
@@ -167,25 +156,18 @@ var Login = React.createClass({
     return (
       <form className="form-signin" onSubmit={_.stopPropagation}>
         <h2 className="form-signin-heading"><L message={_.l10n('LoginFormTitle')}/></h2>
-        <div className={cx({'form-group':true, 'has-success':state.errors && !state.errors.name, 'has-error': state.errors && state.errors.name})}>
-          <label htmlFor="email" className="sr-only">Email address</label>
-          <input type="text" name="email" value={state.email} className="form-control" placeholder="Name or email address" required autofocus ref="email" onChange={_.handleChange} />
-        </div>
+        <div className={cx({'form-group':true, 'has-success':state.errors && !state.errors.name, 'has-error': state.errors && state.errors.name})}><label htmlFor="email" className="sr-only">Email address</label>
+          <input type="text" name="email" className="form-control" placeholder="Name or email address" required autofocus valueLink={_.linkState('name')} /></div>
         <div className={cx({'form-group':true, 'has-success':state.errors && !state.errors.password, 'has-error': state.errors && state.errors.password})}>
           <label htmlFor="password" className="sr-only">Password</label>
-          <input type="password"  name="password" value={state.password} className="form-control" placeholder="Password" required ref="password" onChange={_.handleChange} />
+          <input type="password" className="form-control" placeholder="Password" required valueLink={_.linkState('password')} />
         </div>
         <div className="error-list">{error}{errorName}{errorPassword}</div>
         <button className="btn btn-lg btn-primary btn-block" onClick={_.signInHandler} type="submit" data-loading-text="Wait response..." ref="signInButton">Sign in</button>
         <button className="btn btn-lg btn-block" type="submit" onClick={_.registerHandler} data-loading-text="Wait response..." ref="registerButton">Register</button>
       </form>
     );
-  },
-
-  _onChange: function() {
-    this.setState(this.state);
   }
-
 });
 
 module.exports = Login;

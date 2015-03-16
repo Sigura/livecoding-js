@@ -2,10 +2,12 @@
 which wget || apt-get install wget
 which nave || (
 
+    echo 
     echo "***********************"
     echo "*    install nave     *"
     echo "*   node environment  *"
     echo "***********************"
+    echo 
 
     curl -L https://raw.github.com/isaacs/nave/master/nave.sh > /usr/bin/nave
     chmod +x /usr/bin/nave
@@ -13,11 +15,13 @@ which nave || (
     chown -R vagrant:vagrant /home/vagrant/.npm
     chown -R vagrant:vagrant /home/vagrant/project
 )
+echo 
 echo "***********************"
 echo "*   usemain 0.10.35   *"
 echo "***********************"
+echo 
 node -v | grep 0.10.35 || nave usemain 0.10.35
-#npm install -g npm
+npm -g install npm@next
 which gulp || npm install -g gulp
 which bower || npm install -g bower
 which knex || npm install -g knex
@@ -27,9 +31,11 @@ which git || apt-get -y install git-core
 
 #postgres
 if [ ! -f /usr/lib/postgresql/9.3/bin/postgres ]; then
+echo 
 echo "************************"
 echo "*install postgresql-9.3*"
 echo "************************"
+echo 
 apt-get update
 apt-get -y install \
     postgresql-9.3 \
@@ -49,6 +55,6 @@ sudo -u postgres createuser vagrant -s || echo 'user exists'
 sudo -u postgres bash -l -c 'psql -l | grep expenses || createdb expenses encoding=UTF8'
 sudo -u postgres bash -l -c 'psql -l | grep expenses_test || createdb expenses_test encoding=UTF8'
 
-chmod +x /home/vagrant/project/nodeapp/db/knex-migrate-latest.sh
+chmod +x /home/vagrant/project/nodeapp/knex-migrate-latest.sh
 chmod +x /home/vagrant/project/build.sh
 chmod +x /home/vagrant/project/install.sh

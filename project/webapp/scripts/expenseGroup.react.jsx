@@ -42,7 +42,7 @@ var ExpenseGroup = React.createClass({
     var maxDate = len && expenses[0].date;
     var minDate = len && expenses[len - 1].date;
     var duration = (len && moment(maxDate).twix(minDate)) || (len && 1) || 0;
-    var days = (duration && duration.length('days')) || (len && 1) || 0;
+    var days = (duration && duration.count('days')) || (len && 1) || 0;
     var dayAvg = days && sum/days || 0;    
     var expenseList = expenses.map(function(expense) {
       return <Expense key={'expense-' + expense.id} expense={expense} />;

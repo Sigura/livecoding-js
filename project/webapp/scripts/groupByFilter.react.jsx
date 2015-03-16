@@ -28,14 +28,18 @@ var GroupByFilter = React.createClass({
     var _ = this;
     var cx = React.addons.classSet;
     
-    return (<div className="col-sm-6">
-      <p className="hidden-print">Group by</p>
-      <div className="btn-group" role="group">
-        <button type="button" onClick={_.groupByWeek} className={cx({active: _.props.groupBy === groupBy.Week, btn:true, 'btn-default': true})}>by Week</button>
-        <button type="button" onClick={_.groupByMonth} className={cx({active: _.props.groupBy === groupBy.Month, btn:true, 'btn-default': true})}>by Month</button>
-        <button type="button" onClick={_.groupByYear} className={cx({active: _.props.groupBy === groupBy.Year, btn:true, 'btn-default': true})}>by Year</button>
-        <button type="button" onClick={_.withoutGroup} className={cx({active: _.props.groupBy === groupBy.All, btn:true, 'btn-default': true})}>Ungroup</button>
-      </div>
+    return (<div>
+        <div className="panel panel-default hidden-print">
+            <div className="panel-heading">Group by</div>
+            <div className="panel-body">
+              <div className="btn-group" role="group">
+                <button type="button" onClick={_.groupByWeek} className={cx({active: _.props.groupBy === groupBy.Week, btn:true, 'btn-default': true})}>by Week</button>
+                <button type="button" onClick={_.groupByMonth} className={cx({active: _.props.groupBy === groupBy.Month, btn:true, 'btn-default': true})}>by Month</button>
+                <button type="button" onClick={_.groupByYear} className={cx({active: _.props.groupBy === groupBy.Year, btn:true, 'btn-default': true})}>by Year</button>
+                <button type="button" onClick={_.withoutGroup} className={cx({active: _.props.groupBy === groupBy.All, btn:true, 'btn-default': true})}>Ungroup</button>
+              </div>
+            </div>
+        </div>
     </div>);
   }
 });

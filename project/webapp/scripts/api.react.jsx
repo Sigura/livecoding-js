@@ -11,10 +11,7 @@ var api = {
           dataType: 'json',
           contentType: 'application/json',
           method: 'POST',
-          data: JSON.stringify({
-              name: user.email,
-              password: user.password
-          })
+          data: JSON.stringify(user)
         })
         .fail(function(res){
             AppDispatcher.dispatch({actionType: actions.loginFailed, data: res.responseJSON});
@@ -23,15 +20,12 @@ var api = {
             AppDispatcher.dispatch({actionType: actions.signIn, data: data});
         });
     },
-    register: function(){
+    register: function(user){
       return $.ajax('/api/users', {
           dataType: 'json',
           contentType: 'application/json',
           method: 'PUT',
-          data: JSON.stringify({
-              name: _.state.email,
-              password: _.state.password
-          }),
+          data: JSON.stringify(user),
         })
         .fail(function(res){
             AppDispatcher.dispatch({actionType: actions.registerFailed, data: res.responseJSON});        
@@ -42,11 +36,14 @@ var api = {
     },
   },
   expenses: {
-    get: function() {
-      return $.ajax('/api/expenses?token=' + api.user.current.token, {
+    get: function(filter) {
+      filter = filter || {};
+      filter.token = api.user.current.token;
+      return $.ajax('/api/expenses', {
           dataType: 'json',
           contentType: 'application/json',
-          method: 'GET'
+          method: 'GET',
+          data: filter,
         })
         .fail(function(res){
             AppDispatcher.dispatch({actionType: actions.expensesLoadError, data: res.responseJSON});        

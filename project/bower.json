@@ -10,6 +10,8 @@
     "eonasdan-bootstrap-datetimepicker": "~4.7.14",
     "twix": "~0.6.2",
     "react-intl": "~1.1.0",
-    "flux": "~2.0.2"
+    "flux": "~2.0.2",
+    "lodash": "~3.5.0",
+    "localforage": "~1.2.2"
   }
 }

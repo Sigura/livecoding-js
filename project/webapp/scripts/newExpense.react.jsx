@@ -38,10 +38,13 @@ var NewExpense = React.createClass({
     _.buildComponents();
   },
   componentDidUpdate: function(prevProps, prevState){
-    this.buildComponents();
+    //this.buildComponents();
   },
   fill: function(expense){
-    this.setState(expense);
+    var _ = this;
+    _.setState(expense);
+    $(_.refs.Time.getDOMNode()).timepicker('setTime', expense.time);
+    $(_.refs.Date.getDOMNode()).data('DateTimePicker').date(new Date(expense.date));
   },
   buildComponents: function(){
     var _ = this;

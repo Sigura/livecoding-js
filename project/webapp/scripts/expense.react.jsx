@@ -112,13 +112,6 @@ var Expense = React.createClass({
         <td>{state.edit && <input type="text" className="form-control hidden-print" placeholder="Comment" valueLink={_.linkState('count')} />}<span className={cx({'visible-print-inline': state.edit,'amount-value': true})}>{state.comment}</span></td>
       </tr>
     );
-  },
-  onChange: function(e) {
-    var update = {};
-
-    update[e.target.name] = e.target.value;
-    
-    this.setState(update);
   }
 })
 

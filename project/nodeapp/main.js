@@ -1,12 +1,14 @@
-+(function(require, process, baseDir, console, undefined){
++(function(module, require, process, baseDir, console, undefined){
 'use strict';
 
-var Application = function(){
+var Application = function(port){
+    
+    this.port = port || 3000;
+    
     this.init();
 };
 // 
 Application.prototype = {
-    port: process.env.port || 3000,
     init: function(){
         this.require();
         this.vars();
@@ -14,19 +16,22 @@ Application.prototype = {
         this.sets();
         this.usages();
         this.initRoutes();
-        this.start();
+        //this.start();
     },
     vars: function(){
         this.isDebug = process.env.serve === 'gulp';
+
         this.distFolder = (this.isDebug ? 'webapp' : 'dist');
         this.staticDir = this.path.join(baseDir, '..', this.distFolder);
         this.bowerComponentsDir = this.path.join(baseDir, '..', 'bower_components');
         this.renderComponentsDir = this.path.join(baseDir, '..', '.tmp');
 
-        //console.log('static dir: ', this.staticDir);
+        console.log('static dir: ', this.staticDir);
+        console.log('bower  dir: ', this.bowerComponentsDir);
+        console.log('render dir: ', this.renderComponentsDir);
     },
     require: function(){
-        this.express = require('express');
+        this.Express = require('express');
         this.compression = require('compression');
         this.cookieSession = require('cookie-session');
         this.bodyParser = require('body-parser');
@@ -40,23 +45,23 @@ Application.prototype = {
         this.routes = require('./routes');
     },
     initExpress: function(){
-        this.app = this.express();
+        this.express = this.Express();
         
     },
     sets: function(){        
-        this.app.set('views', this.path.join(baseDir, 'views'));
-        this.app.set('view engine', 'jsx');
-        this.app.engine('jsx', require('express-react-views').createEngine({ jsx: { harmony: true } }));
+        this.express.set('views', this.path.join(baseDir, 'views'));
+        this.express.set('view engine', 'jsx');
+        this.express.engine('jsx', require('express-react-views').createEngine({ jsx: { harmony: true } }));
     },
     usages: function(){
         
         var me = this;
         
-        this.app.use(this.favicon(this.staticDir + '/favicon.ico'));
-        this.app.use(this.logger(this.isDebug ? 'dev' : 'short'));
-        //this.app.use(this.cookieParser());
+        this.express.use(this.favicon(this.staticDir + '/favicon.ico'));
+        this.express.use(this.logger(this.isDebug ? 'dev' : 'short'));
+        //this.express.use(this.cookieParser());
 
-        this.app.use(this.compression({filter: function shouldCompress(req, res) {
+        this.express.use(this.compression({filter: function shouldCompress(req, res) {
           if (req.headers['x-no-compression']) {
             // don't compress responses with this request header
             return false;
@@ -66,13 +71,13 @@ Application.prototype = {
           return me.compression.filter(req, res)
         }}));
 
-        //this.app.use(this.cookieSession({ keys: ['8D62B6C1-56BF-472F-840D-5D61CF16928C', 'F0582C8F-D3F1-48C1-8628-1C707525476A'] }));
-        this.app.use(this.bodyParser.json());
-        this.app.use(this.bodyParser.urlencoded({ extended: true }));
-        this.app.use(this.validator()); 
+        //this.express.use(this.cookieSession({ keys: ['8D62B6C1-56BF-472F-840D-5D61CF16928C', 'F0582C8F-D3F1-48C1-8628-1C707525476A'] }));
+        this.express.use(this.bodyParser.json());
+        this.express.use(this.bodyParser.urlencoded({ extended: true }));
+        this.express.use(this.validator()); 
     },
     initRoutes: function(){
-        this.app.use('/', this.express.static(this.staticDir, {
+        this.express.use('/', this.Express.static(this.staticDir, {
           dotfiles: 'ignore',
           extensions: ['html', 'htm'],
           etag: true,
@@ -84,7 +89,7 @@ Application.prototype = {
             // res.set('x-timestamp', Date.now())
           // }
         }));
-        this.app.use('/bower_components', this.express.static(this.bowerComponentsDir, {
+        this.express.use('/bower_components', this.Express.static(this.bowerComponentsDir, {
           dotfiles: 'ignore',
           extensions: [],
           etag: true,
@@ -96,7 +101,7 @@ Application.prototype = {
             // res.set('x-timestamp', Date.now())
           // }
         }));
-        this.app.use('/jsx', this.express.static(this.renderComponentsDir, {
+        this.express.use('/jsx', this.Express.static(this.renderComponentsDir, {
           dotfiles: 'ignore',
           extensions: [],
           etag: true,
@@ -114,7 +119,7 @@ Application.prototype = {
     start: function(){
         var me = this;
         console.log('start server http://%s:%s', 'localhost', this.port);
-        this.server = this.app.listen(this.port, function () {
+        this.server = this.express.listen(this.port, function () {
 
             var address = me.server.address();
             var host = address.address;
@@ -126,6 +131,6 @@ Application.prototype = {
     }
 };
 
-new Application();
+module.exports = Application;
     
-})(require, process, __dirname, console, undefined);
+})(module, require, process, __dirname, console, undefined);

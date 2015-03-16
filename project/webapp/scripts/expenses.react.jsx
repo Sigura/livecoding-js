@@ -7,7 +7,8 @@ var L = ReactIntl.FormattedMessage;
 var groupBy = require('./groupBy.react');
 var actions = require('./actions.react');
 var Alerts = require('./alerts.react');
-var GroupByFilter = require('./groupByFilter.react');
+var GroupBy = require('./groupByFilter.react');
+var Filter = require('./filter.react');
 var ExpenseGroup = require('./expenseGroup.react');
 var NewExpense = require('./newExpense.react');
 var api = require('./api.react');
@@ -134,6 +135,10 @@ var Expenses = React.createClass({
 
     _.update(state.expenses);
   },
+  filterChanged: function (filter) {
+      //console.log('filter', filter);
+      api.expenses.get(filter);
+  },
   changeGroupHandler: function(groupBy){
     this.setState({groupBy: groupBy});
     
@@ -174,6 +179,9 @@ var Expenses = React.createClass({
   l10n: function(messageName){
     return this.getIntlMessage(messageName);
   },
+  logOut: function(){
+      AppDispatcher.dispatch({actionType:actions.logOut});
+  },
   render: function() {
     var _ = this;
     var cx = React.addons.classSet;
@@ -185,30 +193,37 @@ var Expenses = React.createClass({
       return previousValue + (Number(array[index].amount) || 0);
     }, 0);
     var duration = (len && moment(maxDate).twix(minDate)) || (len && 1) || 0;
-    var days = (duration && duration.length('days')) || (len && 1) || 0;
-    var dayAvg = days && sum/days || 0;
+    var days = (duration && duration.count('days')) || (len && 1) || 0;
+    var avg = (len && sum/len) || 0;
+    var dayAvg = (days && sum/days) || 0;
     var weeks = (duration && duration.length('weeks')) || (len && 1) || 0;
     var weekAvg = weeks && sum/weeks || dayAvg;
     var months = (duration && duration.length('months')) || (len && 1) || 0;
-    var monthAvg = months && sum/months || weekAvg || dayAvg;
-    var years = duration && duration.length('years') || 0;
-    var yearAvg = months && sum/years || yearAvg || monthAvg || dayAvg;
+    var monthAvg = (months && sum/months) || weekAvg || dayAvg;
+    var years = (duration && duration.length('years')) || (len && 1) || 0;
+    var yearAvg = (years && sum/years) || monthAvg || weekAvg || dayAvg;
     var groups  = state.groups;
     var items  = state.items;
     var width100P = {width: '100%'};
 
     return (
       <div className="expenses-list panel panel-default">
-        <div className="panel-heading"><h2><L message={_.l10n('Expenses')}/></h2></div>
+        <div className="panel-heading">
+          <div className="btn-toolbar pull-right hidden-print"><a className="btn btn-default logout" href="javascript:void(0);" onClick={_.logOut}>Logout</a></div>
+          <h2><L message={_.l10n('Expenses')}/></h2>
+        </div>
         <div className={cx({'panel-body':true, 'hidden-print':true, 'hide-element': !state.loading})}>
           <div className="progress">
             <div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={width100P}>
             </div>
           </div>
         </div>
-        <div className={cx({'panel-body':true, 'hidden-print':true, 'hide-element': state.loading})}>
-          <GroupByFilter groupBy={state.groupBy} onGroupChanged={_.changeGroupHandler} />
+        <div className={cx({'panel-body':true, 'hide-element': state.loading})}>
           <Alerts />
+          <div className="col-sm-6">
+              <GroupBy groupBy={state.groupBy} onGroupChanged={_.changeGroupHandler} />
+              <Filter onFilterChanged={_.filterChanged} />
+          </div>
         </div>
         <table className={cx({'table':true, 'table-hover':true, 'table-condensed': true, 'hide-element': state.loading})}>
           <thead>
@@ -219,7 +234,7 @@ var Expenses = React.createClass({
           <tfoot>
           <tr className="info total">
             <td>Total:</td>
-            <td colSpan="5"><L message={_.l10n('Total')} length={len} sum={sum} dayAvg={dayAvg} weekAvg={weekAvg} monthAvg={monthAvg} yearAvg={yearAvg} /></td>
+            <td colSpan="5"><L message={_.l10n('Total')} avg={avg} length={len} sum={sum} dayAvg={dayAvg} days={days} weekAvg={weekAvg} weeks={weeks} monthAvg={monthAvg} months={months} yearAvg={yearAvg} years={years} /></td>
           </tr>
           </tfoot>
           <NewExpense />

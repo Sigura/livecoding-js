@@ -1,4 +1,4 @@
-+(function (require, module, $, JSON, React, ReactIntl) {
++(function (require, module, $, JSON, React, ReactIntl, lodash) {
     'use strict';
 
     var Login = require('./login.react'),
@@ -12,6 +12,14 @@
 
             getInitialState: function () {
                 return {alerts: []};
+            },
+
+            l10n: function(messageName) {
+                try{
+                    return this.getIntlMessage(messageName);
+                }catch(e){
+                    return;
+                }
             },
 
             componentDidMount: function () {
@@ -55,13 +63,7 @@
                 var _ = this;
                 data.error && _.addAlert(data.error.message, true);
 
-                data.error && data.error.errors
-                    .filter(function(item, index, array){
-                        var exists = array.filter(function(it, i){
-                            return (i != index && i > index) && it.param === item.param && it.msg === item.msg;
-                        });
-                        return !exists.length;
-                    })
+                data.error && lodash.uniq(data.error.errors||[], 'msg')
                     .forEach(function (item) {
                         _.addAlert(/*item.param + ':' + */item.msg, true);
                     });
@@ -70,7 +72,7 @@
             addAlert: function (text, isError) {
                 var _ = this,
                     alert = {
-                        text: text,
+                        text: _.l10n(text) || text ,
                         error: !!isError
                     };
                 _.state.alerts.push(alert);
@@ -84,7 +86,7 @@
                 var cx = React.addons.classSet;
                 var state = this.state;
 
-                return (<div className={cx({'list-group':true, 'col-sm-6':true, 'hide-element': !state.alerts.length})}>
+                return (<div className={cx({'float-right': true, 'hidden-print':true, 'list-group':true, 'col-sm-6':true, 'hide-element': !state.alerts.length})}>
                     {state.alerts.map(function(item, i){
                       return <div key={'alert-item-' + i} className={cx({'list-group-item':true, 'list-group-item-success':!item.error, 'list-group-item-danger':item.error})} role="alert">{item.text}</div>;
                     })}
@@ -95,4 +97,4 @@
 
     module.exports = Alerts;
 
-})(require, module, jQuery, JSON, React, ReactIntl);
+})(require, module, jQuery, JSON, React, ReactIntl, _);

@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder "../project", "/home/vagrant/project", type: "rsync",
-    rsync__exclude: [".git/", "node_modules", ".tmp/", "test/node_modules"],
+    rsync__exclude: [".git/", "nodeapp/node_modules", "node_modules", ".tmp/", "test/node_modules", "bower_components", "webapp/bower_components", "dist", "webapp/test/bower_components"],
     rsync__args: ["--verbose", "--archive", "--delete", "-z"],
     rsync__auto: true
     

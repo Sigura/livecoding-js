@@ -16,6 +16,8 @@ var actions = {
   expenseDeleted: 'expenseDeleted',
   expenseDeleteError: 'expenseDeleteError',
   copyToNewExpense: 'copyToNewExpense',
+  logOut: 'logOut',
+  expenseFiltered: 'expenseFiltered',
 };
 
 module.exports = actions;

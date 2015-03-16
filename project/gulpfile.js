@@ -79,9 +79,9 @@ gulp.task('extras', function () {
 gulp.task('nodemon', function (cb) {
     var called = false;
 	return nodemon({
-	  script: 'nodeapp/main.js',
+	  script: 'nodeapp/server.js',
       verbose: true,
-      ignore: ['webapp', 'test', 'dist', '.tmp', '.git', 'bower_components'],
+      ignore: ['webapp', 'test', 'dist', '.tmp', '.git', 'bower_components', 'webapp/bower_components'],
       env: {
           'serve': 'gulp',
           'port': port
@@ -98,7 +98,7 @@ gulp.task('serve', ['styles', 'templates', 'fonts', 'nodemon'], function () {
   browserSync({
     notify: false,
     proxy: 'http://localhost:' + port,
-    files: ['.tmp/**/*.*', 'webapp/**/*.*', 'bower_components/**/*.*'],
+    files: ['.tmp/**/*.*', 'webapp/**/*.*', 'webapp/bower_components/**/*.*'],
     port: proxy//,
     // server: {
       // baseDir: ['.tmp', 'webapp', 'dist'],

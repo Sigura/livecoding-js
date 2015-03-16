@@ -110,7 +110,7 @@ userController.router.post(path, validate(function(req) {
 // create new user
 userController.router.put(path, validate(function(req) {
 
-    req.checkBody('name', 'name length should be 1-25 chars').isLength(1, 25);
+    req.checkBody('name', 'name length should be 1-255 chars').isLength(1, 255);
     req.checkBody('password', 'password length should be 1-25 chars').isLength(1, 25);
 
 }), function(req, res, next) {
