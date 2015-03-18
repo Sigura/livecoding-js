@@ -21,6 +21,7 @@ echo "*   usemain 0.10.35   *"
 echo "***********************"
 echo 
 node -v | grep 0.10.35 || nave usemain 0.10.35
+which npm || apt-get install nodejs
 npm -g install npm@next
 which gulp || npm install -g gulp
 which bower || npm install -g bower

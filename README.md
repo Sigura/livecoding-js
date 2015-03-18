@@ -2,7 +2,7 @@
 
 Write a simple expenses tracker web application
 
-## features:
+## features
 * The user must be able to create an account and log in.
 * When logged in, user can see, edit and delete expenses he entered.
 * When entered, each expense has: date, time, description, amount, comment
@@ -16,8 +16,6 @@ Write a simple expenses tracker web application
 
 _NOTE: Please keep in mind that this is the project that will be used to evaluate your skills. The project will be evaluated as if you are delivering it to a customer. We expect you to make sure that the app is fully functional and doesn’t have any obvious missing pieces. The deadline for the project is 2 weeks from today._
 
-
-
 ## configs
 
 ### server port
@@ -28,7 +26,7 @@ project\nodeapp\knexfile.js
 > cd project
 > npm run db
 
-### setup
+## setup
 NODE_ENV to development or production
 
 > cd project
@@ -48,8 +46,15 @@ for setup dev environment just
 > cd environment
 > .\environment\vagrant up
 
-then ssh to localhost:2222 and start gulp serve or npm start or npm test
-you can change or get private key after vagrant up there:
+then ssh to localhost:2222 (vagrant@vagrant) and run
+> gulp serve
+or
+> npm start
+or
+> npm test
+and etc.
+
+you can change or import private key after vagrant up there:
 > environment\.vagrant\machines\default\virtualbox\
 
 ## web app
@@ -67,26 +72,30 @@ ui test accessed in gulp serve:
 
 1. install [cygwin64](https://cygwin.com/setup-x86.exe) with rsync
 (for work with vagrant move to step 7.)
-2. set current Visual Studio version/ In my case 2015
-npm config set msvs_version 2015 --global
-3. enable SeCreateSymbolicLinkPrivilege in secpol.msc
-4. install [gem](http://rubyinstaller.org/downloads/)
-5. install cert for [updates](https://gist.github.com/fnichol/867550)
+1. set current Visual Studio version/ In my case 2015
+   npm config set msvs_version 2015 --global
+1. enable SeCreateSymbolicLinkPrivilege in secpol.msc
+1. install [gem](http://rubyinstaller.org/downloads/)
+1. install cert for [updates](https://gist.github.com/fnichol/867550)
    ruby "gist\win_fetch_cacerts.rb"
-6. install [nodejs](http://nodejs.org/download/)
+1. install [nodejs](http://nodejs.org/download/)
 (with vagrant)
-7. install [vagrant](https://www.vagrantup.com/downloads.html)
-8. install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-9. cd environment && vagrant up
-9. vagrant rsync-auto
+1. install [vagrant](https://www.vagrantup.com/downloads.html)
+1. install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+1. cd environment && vagrant up
+1. vagrant rsync-auto
 
 ### *nix
 
-1. install [vagrant](https://www.vagrantup.com/downloads.html)
-2. install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-3. install rsync (sudo apt-get rsync)
-4. cd environment && vagrant up
-5. then ssh to localhost 2222
-6. and etc.
+1. install rsync (sudo apt-get rsync)
+1. install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+> sudo apt-get install virtualbox
 
+1. install from site [vagrant](https://www.vagrantup.com/downloads.html)
+1. cd environment && vagrant up
+1. then vagrant ssh
+1. cd project
+1. for dev: gulp serve
+1. for test: npm start
+1. for production: forever nodeapp/server.js or npm start
 
