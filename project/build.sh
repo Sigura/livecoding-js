@@ -1,8 +1,3 @@
-npm install
-cd ./webapp/
-bower install
-cd ./test/
-bower install
-cd ../..
+npm run install-all
 gulp
 npm test

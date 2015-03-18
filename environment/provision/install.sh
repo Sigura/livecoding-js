@@ -1,5 +1,6 @@
 #node,bower,git
 which wget || apt-get install wget
+#apt-get install build-essential g++
 which nave || (
 
     echo 
@@ -21,7 +22,10 @@ echo "*   usemain 0.10.35   *"
 echo "***********************"
 echo 
 node -v | grep 0.10.35 || nave usemain 0.10.35
-which npm || apt-get install nodejs
+which node || apt-add-repository ppa:chris-lea/node.js
+which node || apt-add update
+which node || apt-get -y install nodejs
+which npm || apt-get -y install npm
 npm -g install npm@next
 which gulp || npm install -g gulp
 which bower || npm install -g bower
