@@ -87,7 +87,7 @@ ui test accessed in gulp serve:
 
 ### *nix
 
-1. install rsync (sudo apt-get rsync)
+1. install rsync (sudo apt-get install rsync)
 1. install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 > sudo apt-get install virtualbox
 
