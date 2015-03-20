@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "cd nodeapp && NODE_ENV=test ../node_modules/.bin/mocha",
-    "start": "node nodeapp/server.js",
+    "start": "forever nodeapp/server.js",
     "installAll": "npm install && cd webapp && bower install && cd test && bower install",
     "dev": "gulp serve",
     "build": "gulp",

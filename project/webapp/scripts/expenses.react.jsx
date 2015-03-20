@@ -48,8 +48,11 @@ var Expenses = React.createClass({
         case actions.expenseInserted:
           _.addNewExpense(action.data);
         break;
-            case actions.expenseDeleted:
+        case actions.expenseDeleted:
           _.onDelete(action.data);
+        break;
+        case actions.expensesLoadError:
+          _.dateLoaded([]);
         break;
       }
     });

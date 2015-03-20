@@ -1,3 +1,3 @@
-npm run install-all
+npm run installAll
 gulp
 npm test

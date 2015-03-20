@@ -68,7 +68,7 @@ ui test accessed in gulp serve:
 > cd project
 > npm run install
 
-### Window$
+### Window$ Dev
 
 1. install [cygwin64](https://cygwin.com/setup-x86.exe) with rsync
 (for work with vagrant move to step 7.)
@@ -85,12 +85,10 @@ ui test accessed in gulp serve:
 1. cd environment && vagrant up
 1. vagrant rsync-auto
 
-### *nix
+### *nix Dev
 
 1. install rsync (sudo apt-get install rsync)
 1. install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-> sudo apt-get install virtualbox
-
 1. install from site [vagrant](https://www.vagrantup.com/downloads.html)
 1. cd environment && vagrant up
 1. then vagrant ssh
@@ -99,3 +97,18 @@ ui test accessed in gulp serve:
 1. for test: npm start
 1. for production: forever nodeapp/server.js or npm start
 
+### Deploy
+
+1. Server Ubuntu 14.04.2 64
+1. install nodejs 0.10.35
+1. install npm 2.7.4
+1. git apt-get -y install git-core
+1. npm install -g gulp
+1. npm install -g knex
+1. npm install -g forever
+1. npm install -g bower
+1. postgresql-9.3
+1. npm run installAll
+1. project/nodeapp/knex-migrate-latest.sh
+1. gulp
+1. npm strat or forever nodeapp/server.js

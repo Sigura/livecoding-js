@@ -67,7 +67,7 @@ var Login = React.createClass({
   error: function(res) {
 
     var _ = this;
-    var error = (res.responseJSON || {}).error;
+    var error = (res.responseJSON || res).error;
     var nameError = _.errorMessageByField(res, 'name');
     var passwordError = _.errorMessageByField(res, 'password');
     
@@ -102,11 +102,11 @@ var Login = React.createClass({
     });
   },
   errorMessageByField: function(res, name) {
-    var errors = res.responseJSON && res.responseJSON.error && res.responseJSON.error.errors;
+    var errors = res && res.error && res.error.errors;
     
     if(!errors || !errors.length){
-      console.info(res);
-      return null;
+      //console.info(res);
+      return;
     }
 
     var message = errors.filter(function(item){
