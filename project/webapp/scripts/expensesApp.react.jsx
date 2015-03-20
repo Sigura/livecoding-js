@@ -31,10 +31,22 @@ var ExpensesApp = React.createClass({
             case actions.logOut:
               _.logOut(action.data);
             break;
+            case actions.expenseDeleteError:
+            case actions.expenseUpdateError:
+            case actions.expensesLoadError:
+            case actions.expenseInsertError:
+               _.determinateActionOnError(action.data);
+            break;
           }
         });        
     },
 
+    determinateActionOnError: function (data) {
+        var _ = this;
+
+        data.error === 'invalid token' && _.logOut(data);        
+    },
+    
     loadStoredData: function () {
         
         var user, _ = this;

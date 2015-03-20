@@ -61,9 +61,9 @@
 
             addErrors: function (data) {
                 var _ = this;
-                data.error && _.addAlert(data.error.message, true);
+                data.error && _.addAlert(data.error.message || data.error, true);
 
-                data.error && lodash.uniq(data.error.errors||[], 'msg')
+                data.error && lodash.uniq(data.error.errors|| [], 'msg')
                     .forEach(function (item) {
                         _.addAlert(/*item.param + ':' + */item.msg, true);
                     });
