@@ -1,5 +1,7 @@
 +(function(module, require, process){
 
+    var moment = require('moment');
+    var twix = require('twix');
     var db = require('../db/connection');
     var error = function(res, text){
         res.status(403);
@@ -25,13 +27,26 @@
                 .then(function(row) {
                     req.user = row;
 
-                    //todo: check expiration
-
                     if (!row) {
                         error(res, 'invalid token');
                         
                         return false;
                     } else {
+                        
+                        var daysFromLastLogin = moment()
+                            .twix(row.last_accessed_at)
+                            .count('days')
+                        
+                        console.log(daysFromLastLogin, moment()
+                            .twix(row.last_accessed_at)
+                            .count('minutes'));
+                        
+                        if(daysFromLastLogin > 7) {
+                            error(res, 'token expired');
+                            
+                            return false;
+                        }
+                    
                         return db('users')
                             .where({token: token})
                             .update({last_accessed_at: new Date()});

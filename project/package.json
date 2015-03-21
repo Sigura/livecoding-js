@@ -53,7 +53,10 @@
     "reactify": "^1.0.0",
     "supertest": "^0.15.0",
     "supertest-as-promised": "^1.0.0",
-    "wiredep": "^2.0.0"
+    "wiredep": "^2.0.0",
+    "moment": "^2.9.0",
+    "moment-range": "^1.0.7",
+    "twix": "^0.6.2"
   },
   "dependencies": {
     "body-parser": "^1.12.0",
