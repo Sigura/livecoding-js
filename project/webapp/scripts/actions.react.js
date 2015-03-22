@@ -1,3 +1,4 @@
+/*jshint -W030 */
 +(function(module){
 'use strict';
 

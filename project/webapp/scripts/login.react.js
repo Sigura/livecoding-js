@@ -67,7 +67,7 @@ var Login = React.createClass({
   error: function(res) {
 
     var _ = this;
-    var error = (res.responseJSON || res).error;
+    var error = res && (res.responseJSON || res).error;
     var nameError = _.errorMessageByField(res, 'name');
     var passwordError = _.errorMessageByField(res, 'password');
     

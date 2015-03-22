@@ -44,8 +44,9 @@ var ExpensesApp = React.createClass({
     determinateActionOnError: function (data) {
         var _ = this;
 
-        data.error === 'invalid token' && _.logOut(data);
-        data.error === 'token expired' && _.logOut(data);
+        _.logOut(data);
+        //data && data.error === 'invalid token' && _.logOut(data);
+        //data && data.error === 'token expired' && _.logOut(data);
     },
     
     loadStoredData: function () {

@@ -102,7 +102,6 @@ var Expenses = React.createClass({
     expenses = _.sort(expenses);
     var grouped = _.groupDictionary(expenses, groupBy);
 
-    //AppDispatcher.dispatch({actionType: actions.expensesUpdated, data: {expenses: expenses, items: grouped.items, groups: grouped.groups}});
     _.setState(grouped);
     _.setState({loading: false});
   },

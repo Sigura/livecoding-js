@@ -1,14 +1,14 @@
 #node,bower,git
 which wget || apt-get -y install wget
-apt-get -y install build-essential g++
+# apt-get -y install build-essential g++
 which nave || (
 
-    echo ""
+    echo " "
     echo "***********************"
     echo "*    install nave     *"
     echo "*   node environment  *"
     echo "***********************"
-    echo ""
+    echo " "
 
     curl -L https://raw.github.com/isaacs/nave/master/nave.sh > /usr/bin/nave
     chmod +x /usr/bin/nave
@@ -16,11 +16,11 @@ which nave || (
     chown -R vagrant:vagrant /home/vagrant/.npm
     chown -R vagrant:vagrant /home/vagrant/project
 )
-echo 
+echo " "
 echo "***********************"
 echo "*   usemain 0.10.35   *"
 echo "***********************"
-echo 
+echo " "
 node -v | grep 0.10.35 || nave usemain 0.10.35
 which node || apt-add-repository ppa:chris-lea/node.js
 which node || apt-add update
@@ -37,11 +37,11 @@ which react-tools || npm install -g react-tools
 
 #postgres
 if [ ! -f /usr/lib/postgresql/9.3/bin/postgres ]; then
-echo ""
+echo  ""
 echo "************************"
 echo "*install postgresql-9.3*"
 echo "************************"
-echo ""
+echo " "
 apt-get update
 apt-get -y install \
     postgresql-9.3 \

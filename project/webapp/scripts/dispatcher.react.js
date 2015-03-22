@@ -1,3 +1,4 @@
+/*jshint -W030 */
 +(function(module, Flux){
 'use strict';
 

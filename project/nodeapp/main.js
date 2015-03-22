@@ -6,6 +6,8 @@ var Application = function(port){
     this.port = port || 3000;
     
     this.init();
+    
+    console.log('app ctor ended');
 };
 // 
 Application.prototype = {
@@ -21,24 +23,22 @@ Application.prototype = {
     vars: function(){
         this.isDebug = process.env.serve === 'gulp';
 
-        this.distFolder = (this.isDebug ? 'webapp' : 'dist');
-        this.staticDir = this.path.join(baseDir, '..', this.distFolder);
-        //this.bowerComponentsDir = this.path.join(baseDir, '..', 'bower_components');
-        this.renderComponentsDir = this.path.join(baseDir, '..', '.tmp');
+        this.distrDir = this.path.join(baseDir, '..', 'dist');
+        this.staticDir = this.path.join(baseDir, '..', 'webapp');
+        this.tmpDir = this.path.join(baseDir, '..', '.tmp');
 
-        console.log('static dir: ', this.staticDir);
-        //console.log('bower  dir: ', this.bowerComponentsDir);
-        console.log('render dir: ', this.renderComponentsDir);
+        this.isDebug && console.log('static dir: ', this.staticDir);
+        this.isDebug && console.log('render dir: ', this.distrDir);
     },
     require: function(){
         this.Express = require('express');
         this.compression = require('compression');
-        this.cookieSession = require('cookie-session');
+        //this.cookieSession = require('cookie-session');
         this.bodyParser = require('body-parser');
         this.serveStatic = require('serve-static')
         this.logger = require('morgan');
-        this.favicon = require('serve-favicon');
-        this.cookieParser = require('cookie-parser');
+        //this.favicon = require('serve-favicon');
+        //this.cookieParser = require('cookie-parser');
         this.path = require('path');
         this.validator = require('express-validator');
 
@@ -57,7 +57,7 @@ Application.prototype = {
         
         var me = this;
         
-        this.express.use(this.favicon(this.staticDir + '/favicon.ico'));
+        //this.express.use(this.favicon(this.staticDir + '/favicon.ico'));
         this.express.use(this.logger(this.isDebug ? 'dev' : 'short'));
         //this.express.use(this.cookieParser());
 
@@ -77,7 +77,13 @@ Application.prototype = {
         this.express.use(this.validator()); 
     },
     initRoutes: function(){
-        this.express.use('/', this.Express.static(this.staticDir, {
+        this.isDebug && this.express.use('/', this.Express.static(this.tmpDir, {
+          dotfiles: 'ignore',
+          etag: true,
+          lastModified: true,
+          redirect: true
+        }));
+        this.isDebug && this.express.use('/', this.Express.static(this.staticDir, {
           dotfiles: 'ignore',
           extensions: ['html', 'htm'],
           etag: true,
@@ -85,7 +91,15 @@ Application.prototype = {
           lastModified: true,
           redirect: true
         }));
-        // this.express.use('/bower_components', this.Express.static(this.bowerComponentsDir, {
+        this.express.use('/', this.Express.static(this.distrDir, {
+          dotfiles: 'ignore',
+          extensions: ['html', 'htm'],
+          etag: true,
+          index: ['index.html', 'index.htm'],
+          lastModified: true,
+          redirect: true
+        }));
+        // this.express.use('/jsx', this.Express.static(this.renderComponentsDir, {
           // dotfiles: 'ignore',
           // extensions: [],
           // etag: true,
@@ -93,14 +107,6 @@ Application.prototype = {
           // lastModified: true,
           // redirect: false
         // }));
-        this.express.use('/jsx', this.Express.static(this.renderComponentsDir, {
-          dotfiles: 'ignore',
-          extensions: [],
-          etag: true,
-          index: [],
-          lastModified: true,
-          redirect: false
-        }));
         this.routes.register(this);
 
     },
