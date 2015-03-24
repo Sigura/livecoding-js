@@ -100,8 +100,11 @@ expenseController.router.delete(path, authentication(), function(req, res, next)
 
 // update expense
 expenseController.router.post(path, authentication(), validate(helpers.validate), function(req, res, next) {
+
     var expense = helpers.expense(req);
+
     expense.user_id = req.user.id;
+    expense.time = expense.time || null;
 
     db('expenses')
         .where({id: expense.id, user_id: req.user.id})
@@ -124,6 +127,7 @@ expenseController.router.put(path, authentication(), validate(helpers.validate),
 
     var expense = helpers.expense(req);
 
+    expense.time = expense.time || null;
     expense.user_id = req.user.id;
 
     db('expenses')
