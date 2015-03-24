@@ -1,4 +1,4 @@
-+(function(module, require, moment, React, ReactIntl, $, undefined, window){
++(function(module, require, moment, React, ReactIntl, $, localStorage, undefined, window){
 'use strict';
 
 var IntlMixin       = ReactIntl.IntlMixin;
@@ -17,8 +17,15 @@ var AppDispatcher = require('./dispatcher.react');
 var Expenses = React.createClass({
   mixins: [IntlMixin],
   getInitialState: function() {
+      
+    var gb = groupBy.All;
+    try{
+        gb = localStorage.groupBy || groupBy.All;
+    }catch(e){}
+
+      
     return {
-      groupBy: groupBy.All,
+      groupBy: gb,
       newExpense: {},
       expenses: [],
       items: {'all': []},
@@ -121,6 +128,7 @@ var Expenses = React.createClass({
     var _ = this;
     expenses = _.sort(expenses);
     var grouped = _.groupDictionary(expenses, groupBy);
+    localStorage.groupBy = groupBy;
 
     _.setState(grouped);
     _.setState({loading: false});
@@ -271,4 +279,4 @@ var Expenses = React.createClass({
 
 module.exports = Expenses;
 
-})(module, require, moment, React, ReactIntl, jQuery, undefined, window);
+})(module, require, moment, React, ReactIntl, jQuery, localStorage, undefined, window);

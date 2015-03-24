@@ -1,4 +1,4 @@
-+(function(module, require, React, ReactIntl){
++(function(module, require, React, ReactIntl, localStorage){
 'use strict';
 
 var IntlMixin       = ReactIntl.IntlMixin;
@@ -46,4 +46,4 @@ var GroupByFilter = React.createClass({
 
 module.exports = GroupByFilter;
 
-})(module, require, React, ReactIntl);
+})(module, require, React, ReactIntl, localStorage);

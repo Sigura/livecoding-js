@@ -27,7 +27,7 @@ which node || apt-add update
 which node || apt-get -y install nodejs
 which node || sudo apt-get -y install nodejs-legacy
 which npm || apt-get -y install npm
-npm -g install npm@next
+# npm -g install npm@next
 which git || apt-get -y install git-core
 which gulp || npm install -g gulp
 which bower || npm install -g bower
