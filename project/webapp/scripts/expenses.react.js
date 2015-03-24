@@ -36,8 +36,8 @@ var Expenses = React.createClass({
 
       switch(action.actionType)
       {
-        case actions.expensesUpdated:
-          _.setState(action.data);
+        case actions.expenseUpdated:
+          _.onUpdate(action.data);
         break;
         case actions.groupChanged:
           _.setState(action.data);
@@ -59,15 +59,35 @@ var Expenses = React.createClass({
     
     api.expenses.get();
   },
+  onUpdate: function(expense) {
+    var _ = this;
+    var state = _.state;
+    
+    var index = _.findExpense(expense);
+    
+    if(index > -1 ) {
+      state.expenses.splice(index, 1, expense);
+      
+      _.update(state.expenses);
+    }
+  },
+  findExpense: function (expense) {
+    var _ = this;
+    var state = _.state;
+    
+    var o = state.expenses.filter(function(item){
+      return item.id === expense.id;
+    }).pop();
+    
+    var index = state.expenses.indexOf(o);
+      
+    return index;
+  },
   onDelete: function(expense) {
     var _ = this;
     var state = _.state;
     
-    var deleted = state.expenses.filter(function(item){
-      return item.id === expense.id;
-    }).pop();
-    
-    var index = state.expenses.indexOf(deleted);
+    var index = _.findExpense(expense);
     
     if(index > -1 ) {
       state.expenses.splice(index, 1);

@@ -61,6 +61,7 @@ var Expense = React.createClass({
     
     api.expenses.update(state)
       .done(function(){
+        _.props.expense = state;
         _.stopEdit();
       })
       .always(function(){

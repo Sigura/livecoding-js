@@ -155,16 +155,22 @@ var Login = React.createClass({
   
     return (
       <form className="form-signin" onSubmit={_.stopPropagation}>
-        <h2 className="form-signin-heading"><L message={_.l10n('LoginFormTitle')}/></h2>
-        <div className={cx({'form-group':true, 'has-success':state.errors && !state.errors.name, 'has-error': state.errors && state.errors.name})}><label htmlFor="email" className="sr-only">Email address</label>
-          <input type="text" name="email" className="form-control" placeholder="Name or email address" required autofocus valueLink={_.linkState('name')} /></div>
-        <div className={cx({'form-group':true, 'has-success':state.errors && !state.errors.password, 'has-error': state.errors && state.errors.password})}>
-          <label htmlFor="password" className="sr-only">Password</label>
-          <input type="password" className="form-control" placeholder="Password" required valueLink={_.linkState('password')} />
+        <div className="row"><h2 className="form-signin-heading col-md-12"><L message={_.l10n('LoginFormTitle')}/></h2></div>
+        <div className="row">
+            <div className={cx({'col-md-12': true, 'form-group':true, 'has-success':state.errors && !state.errors.name, 'has-error': state.errors && state.errors.name})}><label htmlFor="email" className="sr-only">Email address</label>
+            <input type="text" name="email" className="form-control" placeholder="Name or email address" required autofocus valueLink={_.linkState('name')} /></div>
         </div>
-        <div className="error-list">{error}{errorName}{errorPassword}</div>
-        <button className="btn btn-lg btn-primary btn-block" onClick={_.signInHandler} type="submit" data-loading-text="Wait response..." ref="signInButton">Sign in</button>
-        <button className="btn btn-lg btn-block" type="submit" onClick={_.registerHandler} data-loading-text="Wait response..." ref="registerButton">Register</button>
+        <div className="row"><div className={cx({'col-md-12': true, 'form-group':true, 'has-success':state.errors && !state.errors.password, 'has-error': state.errors && state.errors.password})}>
+            <label htmlFor="password" className="sr-only">Password</label>
+            <input type="password" className="form-control" placeholder="Password" required valueLink={_.linkState('password')} /></div></div>
+        <div className="row">
+          <div className="error-list col-md-5">{error}{errorName}{errorPassword}</div>
+          <div className="col-md-7" role="group">
+              <div className="pull-right btn-group">
+                <button className="btn btn-lg btn-primary" onClick={_.signInHandler} type="submit" data-loading-text="Wait response..." ref="signInButton">Sign in</button>
+                <button className="btn btn-lg pull-right" type="submit" onClick={_.registerHandler} data-loading-text="Wait response..." ref="registerButton">Register</button>
+              </div></div>
+        </div>
       </form>
     );
   }

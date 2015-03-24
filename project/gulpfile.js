@@ -33,20 +33,22 @@ gulp.task('jshint', function () {
 gulp.task('html', ['styles'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'webapp', 'dist']})
   var uglify = $.uglify();
-  var isJs = function(name){
-    return /.*\.js$/i.test(name) && !/.*\.react\.js$/i.test(name)
-};
+  var isJs = function(file){
+    var res = /.*\.js$/i.test(file.path) && !/.*\.react\.js$/i.test(file.path);
+    //console.log('isJS', file.path, res);
+    return res;
+  };
   assets.on('error', $.util.log);
   uglify.on('error', $.util.log);
   
   return gulp.src(['webapp/*.html'])
     .pipe(assets)
-    .pipe($.if(isJs, $.browserify({
-      insertGlobals : false,
-      debug: false,
-      extensions: ['.js']
-    })))
-    .pipe($.if(isJs, $.stripDebug()))
+    // .pipe($.if(isJs, $.browserify({
+      // insertGlobals : false,
+      // debug: false,
+      // extensions: ['.js']
+    // })))
+    //.pipe($.if(isJs, $.stripDebug()))
     .pipe($.if('*.js', uglify))
     .pipe($.if('*.css', $.csso()))
     .pipe($.useref.restore())
