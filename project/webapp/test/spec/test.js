@@ -125,7 +125,7 @@
         it('register', function (done) {
             return register()
                 .then(function(usr){
-                    expect($.ajax.lastCall.returnValue).to.have.property('status').to.equal(200)
+                    expect($.ajax.lastCall.returnValue).to.have.property('status').to.equal(200);
                     expect(usr).to.have.property('id');
                     expect(usr).to.have.property('token');
                     user = usr;

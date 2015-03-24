@@ -103,7 +103,7 @@
                     result = res.body;
                 })
         });
-        it('create with wrong values', function() {
+        it('create with wrong values, check date', function() {
             return request()
                 .put('/api/expenses?token=' + token)
                 .send({
@@ -124,12 +124,57 @@
                         .to.contain.an.item.with.property('msg', 'date format is YYYY-MM-DD');
                 });
         });
+        it('create with wrong values, check time', function() {
+            return request()
+                .put('/api/expenses?token=' + token)
+                .send({
+                    description: 'test expense',
+                    comment: 'comment',
+                    amount: 12,
+                    date: '2015-03-16',
+                    time: '10:1'
+                })
+                .expect(400)
+                .then(function(res) {
+                    console.log(res.body.error.errors);
+                    expect(res.body)
+                        .to.have.property('error')
+                        .to.have.property('message');
+                    expect(res.body.error).to.have.property('errors')
+                        .that.is.a('array')
+                        .to.contain.an.item.with.property('msg', 'time format is HH:mm or empty');
+                });
+        });
+        it('check empty time', function() {
+            return request()
+                .put('/api/expenses?token=' + token)
+                .send({
+                    description: 'test expense',
+                    comment: 'comment',
+                    amount: 12,
+                    date: '2015-03-16',
+                    time: ''
+                })
+                .expect(200);
+        });
+        it('check null time', function() {
+            return request()
+                .put('/api/expenses?token=' + token)
+                .send({
+                    description: 'test expense',
+                    comment: 'comment',
+                    amount: 12,
+                    date: '2015-03-16',
+                    time: null
+                })
+                .expect(200);
+        });
         it('get expenses', function() {
             return request()
                 .get('/api/expenses?token=' + token)
                 .expect(200)
                 .then(function(res) {
-                    expect(res.body).to.have.length(1);
+                    expect(res.body).to.have.length(3);
                     expect(res.body).to.contain.an.item.with.property('id', result.id);
                 });
         });
