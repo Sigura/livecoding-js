@@ -47,7 +47,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rsync__exclude: [".git/", "nodeapp/node_modules", "node_modules", ".tmp/", "test/node_modules", "bower_components", "webapp/bower_components", "dist", "webapp/test/bower_components"],
     rsync__args: ["--verbose", "--archive", "--delete", "-z"],
     rsync__auto: true
-    
+  config.vm.synced_folder "../project/dist", "/home/vagrant/project/dist"
+
+  
   # config.sync.host_folder = "../project"  #relative to the folder your Vagrantfile is in
   # config.sync.guest_folder = "/home/vagrant/project" #relative to the vagrant home folder -> /home/vagrant
   # config.sync.ignore = "Name {.git}"

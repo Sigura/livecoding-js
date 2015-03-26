@@ -103,7 +103,7 @@
                     result = res.body;
                 })
         });
-        it('create with wrong values, check date', function() {
+        it('create with wrong values, check empty date', function() {
             return request()
                 .put('/api/expenses?token=' + token)
                 .send({
@@ -115,7 +115,49 @@
                 })
                 .expect(400)
                 .then(function(res) {
-                    console.log(res.body.error.errors);
+                    //console.log(res.body.error.errors);
+                    expect(res.body)
+                        .to.have.property('error')
+                        .to.have.property('message');
+                    expect(res.body.error).to.have.property('errors')
+                        .that.is.a('array')
+                        .to.contain.an.item.with.property('msg', 'date format is YYYY-MM-DD');
+                });
+        });
+        it('create with wrong values, check null date', function() {
+            return request()
+                .put('/api/expenses?token=' + token)
+                .send({
+                    description: 'test expense',
+                    comment: 'comment',
+                    amount: 12,
+                    date: null,
+                    time: '10:10'
+                })
+                .expect(400)
+                .then(function(res) {
+
+                    expect(res.body)
+                        .to.have.property('error')
+                        .to.have.property('message');
+                    expect(res.body.error).to.have.property('errors')
+                        .that.is.a('array')
+                        .to.contain.an.item.with.property('msg', 'date format is YYYY-MM-DD');
+                });
+        });
+        it('create with wrong values, check date 2015-16-16', function() {
+            return request()
+                .put('/api/expenses?token=' + token)
+                .send({
+                    description: 'test expense',
+                    comment: 'comment',
+                    amount: 12,
+                    date: '2015-16-16',
+                    time: '10:10'
+                })
+                .expect(400)
+                .then(function(res) {
+
                     expect(res.body)
                         .to.have.property('error')
                         .to.have.property('message');
@@ -136,7 +178,7 @@
                 })
                 .expect(400)
                 .then(function(res) {
-                    console.log(res.body.error.errors);
+
                     expect(res.body)
                         .to.have.property('error')
                         .to.have.property('message');
@@ -211,7 +253,7 @@
         });
         
         it('update returns 200', function() {
-            console.log('id: ', result.id);
+
             var update = {
                 id: result.id,
                 description: 'test expense1',
@@ -273,7 +315,7 @@
         });
         
         it('delete unexistance', function() {
-            console.log('id: ', result.id);
+
             var update = {
                 id: 100
             };
@@ -284,7 +326,7 @@
         });
 
         it('delete returns 200', function() {
-            console.log('id: ', result.id);
+
             var update = {
                 id: result.id
             };

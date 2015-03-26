@@ -13,14 +13,14 @@ var path = '/api/expenses';
 
 var expenseController = new controller(path);
 var helpers = {
-    validate: function(req) {
+    validate: function (req) {
         req.checkBody('date', 'date format is YYYY-MM-DD').isLength(10).isDate();
         req.checkBody('time', 'time format is HH:mm or empty').matches(/^(((\d|)\d:\d\d)|)$/);
         req.checkBody('description', 'description length should be 1-255 chars').isLength(1, 255);
         req.checkBody('amount', 'amount should be number').isFloat();
         req.checkBody('comment', 'comment should be length should less then 1024 chars').isLength(0, 1024);
     },
-    expense: function(req){
+    expense: function (req) {
         var res = {
             date: req.body.date,
             time: req.body.time,
@@ -40,16 +40,16 @@ var helpers = {
 
 //expenseController.router.use(authentication());
 
-expenseController.router.get(path, authentication(), validate(function(req){
+expenseController.router.get(path, authentication(), validate(function (req) {
 
     //console.log('request', req.query);
 
-        req.query.dateFrom   && req.checkQuery('dateFrom', 'date format is YYYY-MM-DD').isLength(10).isDate();
-        req.query.dateTo     && req.checkQuery('dateTo', 'date format is YYYY-MM-DD').isLength(10).isDate();
-        req.query.amountFrom && req.checkQuery('amountFrom', 'amount should be number').isLength(0, 7).isFloat();
-        req.query.amountTo   && req.checkQuery('amountTo', 'amount should be number').isLength(0, 7).isFloat();
+    req.query.dateFrom   && req.checkQuery('dateFrom', 'date format is YYYY-MM-DD').isLength(10).isDate();
+    req.query.dateTo     && req.checkQuery('dateTo', 'date format is YYYY-MM-DD').isLength(10).isDate();
+    req.query.amountFrom && req.checkQuery('amountFrom', 'amount should be number').isLength(0, 7).isFloat();
+    req.query.amountTo   && req.checkQuery('amountTo', 'amount should be number').isLength(0, 7).isFloat();
     
-}), function(req, res, next){
+}), function (req, res, next) {
 
     var query = db('expenses')
         .where({user_id: req.user.id});
@@ -79,7 +79,7 @@ expenseController.router.get(path, authentication(), validate(function(req){
 });
 
 // delete expense
-expenseController.router.delete(path, authentication(), function(req, res, next) {
+expenseController.router.delete(path, authentication(), function (req, res, next) {
     var expense = helpers.expense(req);
     
     db('expenses')
@@ -99,7 +99,7 @@ expenseController.router.delete(path, authentication(), function(req, res, next)
 });
 
 // update expense
-expenseController.router.post(path, authentication(), validate(helpers.validate), function(req, res, next) {
+expenseController.router.post(path, authentication(), validate(helpers.validate), function (req, res, next) {
 
     var expense = helpers.expense(req);
 
@@ -123,7 +123,7 @@ expenseController.router.post(path, authentication(), validate(helpers.validate)
 });
 
 // create new expense
-expenseController.router.put(path, authentication(), validate(helpers.validate), function(req, res, next) {
+expenseController.router.put(path, authentication(), validate(helpers.validate), function (req, res, next) {
 
     var expense = helpers.expense(req);
 

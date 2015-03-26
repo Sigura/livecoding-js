@@ -66,7 +66,7 @@ ui test accessed in gulp serve:
 
 ## install
 > cd project
-> npm run install
+> npm run installAll
 
 ### Window$ Dev
 
@@ -102,7 +102,7 @@ ui test accessed in gulp serve:
 1. Server Ubuntu 14.04.2 64
 1. install nodejs 0.10.35
 1. install npm 2.7.4
-1. git apt-get -y install git-core
+1. rsync or git apt-get -y install git-core and clone repo
 1. npm install -g gulp
 1. npm install -g knex
 1. npm install -g forever
@@ -110,5 +110,5 @@ ui test accessed in gulp serve:
 1. postgresql-9.3
 1. npm run installAll
 1. project/nodeapp/knex-migrate-latest.sh
-1. gulp
-1. npm strat or forever nodeapp/server.js
+1. gulp or move dist folder
+1. npm start or forever nodeapp/server.js

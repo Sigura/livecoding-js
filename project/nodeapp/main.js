@@ -7,7 +7,7 @@ var Application = function(port){
     
     this.init();
     
-    console.log('app ctor ended');
+    //console.log('app ctor ended');
 };
 // 
 Application.prototype = {

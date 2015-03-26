@@ -37,9 +37,9 @@
                             .twix(row.last_accessed_at)
                             .count('days')
                         
-                        console.log(daysFromLastLogin, moment()
-                            .twix(row.last_accessed_at)
-                            .count('minutes'));
+                        //console.log(daysFromLastLogin, moment()
+                        //    .twix(row.last_accessed_at)
+                        //    .count('minutes'));
                         
                         if(daysFromLastLogin > 7) {
                             error(res, 'token expired');

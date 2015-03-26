@@ -91,7 +91,7 @@ gulp.task( 'server:restart', function() {
     });
 });
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+gulp.task('clean', require('del').bind(null, ['.tmp', 'dist/*']));
 
 gulp.task('serve', ['styles', 'templates', 'fonts'], function () {
 

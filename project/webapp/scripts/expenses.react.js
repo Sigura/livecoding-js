@@ -21,6 +21,10 @@ var Expenses = React.createClass({
     var gb = groupBy.All;
     try{
         gb = localStorage.groupBy || groupBy.All;
+
+        if(gb === 'undefined') {
+            gb = groupBy.All;
+        }
     }catch(e){}
 
       
