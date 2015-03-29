@@ -90,7 +90,8 @@
         
         it('create returns 200', function() {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -105,7 +106,8 @@
         });
         it('create with wrong values, check empty date', function() {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -126,7 +128,8 @@
         });
         it('create with wrong values, check null date', function() {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -147,7 +150,8 @@
         });
         it('create with wrong values, check date 2015-16-16', function() {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -168,7 +172,8 @@
         });
         it('create with wrong values, check time', function() {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -189,7 +194,8 @@
         });
         it('check empty time', function() {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -201,7 +207,8 @@
         });
         it('check null time', function() {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -213,7 +220,8 @@
         });
         it('get expenses', function() {
             return request()
-                .get('/api/expenses?token=' + token)
+                .get('/api/expenses')
+                .set('Authorization', token)
                 .expect(200)
                 .then(function(res) {
                     expect(res.body).to.have.length(3);
@@ -222,7 +230,8 @@
         });
         it('check rights', function() {
             return request()
-                .get('/api/expenses?token=' + token2)
+                .get('/api/expenses')
+                .set('Authorization', token2)
                 .expect(200)
                 .then(function(res) {
                     expect(res.body).to.have.length(0);
@@ -235,7 +244,8 @@
         registerTestUsers();
         before(function(done) {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -263,7 +273,8 @@
                 time: '10:10'
             };
             return request()
-                .post('/api/expenses?token=' + token)
+                .post('/api/expenses')
+                .set('Authorization', token)
                 .send(update)
                 .expect(200)
                 .then(function(res) {
@@ -273,7 +284,8 @@
         });
         it('get expenses after update', function() {
             return request()
-            .get('/api/expenses?token=' + token)
+            .get('/api/expenses')
+            .set('Authorization', token)
             .expect(200)
             .then(function(res) {
                 expect(res.body).to.have.length(1);
@@ -283,7 +295,8 @@
         });
         it('check rights after update', function() {
             return request()
-            .get('/api/expenses?token=' + token2)
+            .get('/api/expenses')
+            .set('Authorization', token2)
             .expect(200)
             .then(function(res) {
                 expect(res.body).to.have.length(0);
@@ -297,7 +310,8 @@
         registerTestUsers();
         before(function(done) {
             return request()
-                .put('/api/expenses?token=' + token)
+                .put('/api/expenses')
+                .set('Authorization', token)
                 .send({
                     description: 'test expense',
                     comment: 'comment',
@@ -320,7 +334,8 @@
                 id: 100
             };
             return request()
-                .delete('/api/expenses?token=' + token)
+                .delete('/api/expenses')
+                .set('Authorization', token)
                 .send(update)
                 .expect(404);
         });
@@ -331,13 +346,15 @@
                 id: result.id
             };
             return request()
-                .delete('/api/expenses?token=' + token)
+                .delete('/api/expenses')
+                .set('Authorization', token)
                 .send(update)
                 .expect(200);
         });
         it('check existance', function() {
             return request()
-            .get('/api/expenses?token=' + token)
+            .get('/api/expenses')
+            .set('Authorization', token)
             .expect(200)
             .then(function(res) {
                 expect(res.body).to.have.length(0);
@@ -345,7 +362,8 @@
         });
         it('check rights after delete', function() {
             return request()
-            .get('/api/expenses?token=' + token2)
+            .get('/api/expenses')
+            .set('Authorization', token2)
             .expect(200)
             .then(function(res) {
                 expect(res.body).to.have.length(0);
@@ -358,7 +376,13 @@
         cleanDb();
         it('get expenses without token', function() {
             return request()
-            .get('/api/expenses?token=undefined')
+            .get('/api/expenses')
+            .expect(403);
+        });
+        it('get expenses without token', function() {
+            return request()
+            .get('/api/expenses')
+            .set('Authorization', '')
             .expect(403);
         });
     });
@@ -372,7 +396,8 @@
         before(function(done) {
             Promise.map(expensesSet, function (expense) {
                 return request()
-                    .put('/api/expenses?token=' + token)
+                    .put('/api/expenses')
+                    .set('Authorization', token)
                     .send(expense)
                     .expect(200);
             })
@@ -383,7 +408,8 @@
 
         it('all accessed', function() {
             return request()
-            .get('/api/expenses?token=' + token)
+            .get('/api/expenses')
+            .set('Authorization', token)
             .expect(200)
             .then(function(res) {
                 expect(res.body).to.have.length(expensesSet.length);
@@ -391,7 +417,8 @@
         });
         it('check rights', function() {
             return request()
-            .get('/api/expenses?token=' + token2)
+            .get('/api/expenses')
+            .set('Authorization', token2)
             .expect(200)
             .then(function(res) {
                 expect(res.body).to.have.length(0);
@@ -439,9 +466,9 @@
         
         options.forEach(function (data) {
             it(data.title, function() {
-                data.query.token = token;
                 return request()
                     .get('/api/expenses?' + queryString.stringify(data.query))
+                    .set('Authorization', token)
                     .expect(200)
                     .then(function(res) {
                         expect(res.body).to.have.length(data.result);
@@ -479,9 +506,9 @@
         
         badOptions.forEach(function (data) {
             it(data.title, function() {
-                data.query.token = token;
                 return request()
                     .get('/api/expenses?' + queryString.stringify(data.query))
+                    .set('Authorization', token)
                     .expect(400);
             });
         });

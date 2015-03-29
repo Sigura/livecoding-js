@@ -12,7 +12,7 @@
     module.exports = function() {
         return function(req, res, next) {
 
-            var token = req.query.token;
+            var token = req.get('Authorization');
         
             if (!token) {
 

@@ -69,7 +69,8 @@
         });
         it('delete agdudnik@gmail.com', function() {
             return request()
-                .delete('/api/users?token=' + result.body.token)
+                .delete('/api/users')
+                .set('Authorization', result.body.token)
                 .expect(200)
                 .then(function(res) {
                     expect(res.body).to.have.property('success');
@@ -142,7 +143,8 @@
         });
         it('delete agdudnik@gmail.com', function() {
             return request()
-                .delete('/api/users?token=' + result.body.token)
+                .delete('/api/users')
+                .set('Authorization', result.body.token)
                 .expect(200)
                 .then(function(res) {
                     expect(res.body).to.have.property('success');
@@ -183,7 +185,8 @@
         });
         it('delete agdudnik@gmail.com', function() {
             return request()
-                .delete('/api/users?token=' + result.body.token)
+                .delete('/api/users')
+                .set('Authorization', result.body.token)
                 .expect(200)
                 .then(function(res) {
                     expect(res.body).to.have.property('success');

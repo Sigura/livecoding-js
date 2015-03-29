@@ -38,11 +38,13 @@ var api = {
   expenses: {
     get: function(filter) {
       filter = filter || {};
-      filter.token = api.user.current.token;
       return $.ajax('/api/expenses', {
           dataType: 'json',
           contentType: 'application/json',
           method: 'GET',
+          headers: {
+            Authorization: api.user.current.token
+          },
           data: filter,
         })
         .fail(function(res){
@@ -53,10 +55,13 @@ var api = {
         });
     },
     insert: function(expense){
-      return $.ajax('/api/expenses?token=' + api.user.current.token, {
+      return $.ajax('/api/expenses', {
           dataType: 'json',
           contentType: 'application/json',
           method: 'PUT',
+          headers: {
+            Authorization: api.user.current.token
+          },
           data: JSON.stringify(expense)
         })
         .fail(function(res){
@@ -67,10 +72,13 @@ var api = {
         });
     },
     update: function(expense){
-      return $.ajax('/api/expenses?token=' + api.user.current.token, {
+      return $.ajax('/api/expenses', {
         dataType: 'json',
         contentType: 'application/json',
         method: 'POST',
+        headers: {
+        Authorization: api.user.current.token
+        },
         data: JSON.stringify(expense)
       })
         .fail(function(res){
@@ -81,8 +89,11 @@ var api = {
         });
     },
     'delete': function(expense){
-      return $.ajax('/api/expenses?token=' + api.user.current.token, {
+      return $.ajax('/api/expenses', {
           dataType: 'json',
+          headers: {
+            Authorization: api.user.current.token
+          },
           contentType: 'application/json',
           method: 'DELETE',
           data: JSON.stringify(expense)

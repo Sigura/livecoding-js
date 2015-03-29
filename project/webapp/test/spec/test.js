@@ -21,10 +21,13 @@
         });
     };
     var unregister = function () {
-        return $.ajax('/api/users?token=' + user.token, {
+        return $.ajax('/api/users', {
             dataType: 'json',
             contentType: 'application/json',
             method: 'DELETE',
+            headers: {
+                Authorization: user.token
+            },
             data: JSON.stringify(user),
             error: function(res) {
                 throw JSON.stringify(res.responseJSON);
@@ -33,10 +36,13 @@
     };
   
     var login = function(){
-        return $.ajax('/api/users?token=' + user.token, {
+        return $.ajax('/api/users', {
             dataType: 'json',
             contentType: 'application/json',
             method: 'POST',
+            headers: {
+                Authorization: user.token
+            },
             data: JSON.stringify(user),
             error: function(res) {
                 throw JSON.stringify(res.responseJSON);
@@ -50,10 +56,13 @@
 
     var expenseInsert = function(expense){
         return function(){
-            return $.ajax('/api/expenses?token=' + user.token, {
+            return $.ajax('/api/expenses', {
                 dataType: 'json',
                 contentType: 'application/json',
                 method: 'PUT',
+                headers: {
+                    Authorization: user.token
+                },
                 data: JSON.stringify(expense),
                 error: function(res) {
                     throw JSON.stringify(res.responseJSON);
@@ -70,9 +79,12 @@
     var expenseUpdate = function(expense){
 
         return function(){
-            return $.ajax('/api/expenses?token=' + user.token, {
+            return $.ajax('/api/expenses', {
                 dataType: 'json',
                 contentType: 'application/json',
+                headers: {
+                    Authorization: user.token
+                },
                 method: 'POST',
                 data: JSON.stringify(expense),
                 error: function(res) {
@@ -91,10 +103,13 @@
     var expenseDelete = function(expense){
 
         return function(){
-            return $.ajax('/api/expenses?token=' + user.token, {
+            return $.ajax('/api/expenses', {
                 dataType: 'json',
                 contentType: 'application/json',
                 method: 'DELETE',
+                headers: {
+                    Authorization: user.token
+                },
                 data: JSON.stringify(expense),
                 error: function(res) {
                     throw JSON.stringify(res.responseJSON);
@@ -106,10 +121,12 @@
     var expenseGet = function(param){
         param = param || {};
         return function(){
-            param.token = user.token;
             
             return $.ajax('/api/expenses?' + queryString.stringify(param), {
                 dataType: 'json',
+                headers: {
+                    Authorization: user.token
+                },
                 contentType: 'application/json',
                 method: 'GET',
                 error: function(res) {
