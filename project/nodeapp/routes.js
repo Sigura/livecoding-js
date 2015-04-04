@@ -36,7 +36,7 @@ module.exports = {
         if (main.isDebug) {
             main.express.use(function(err, req, res, next) {
                 res.status(err.status || 500);
-                res.render('error', {
+                res.json({
                     title: 'Error 500: ' + err.message,
                     message: err.message,
                     error: err
@@ -49,7 +49,7 @@ module.exports = {
         main.express.use(function(err, req, res, next) {
             res.status(err.status || 500);
 
-            res.render('error', {
+            res.json({
                 title: 'Error 500',
                 message: err.message,
                 error: {}
