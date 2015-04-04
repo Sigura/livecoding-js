@@ -71,7 +71,13 @@ class NewExpense extends React.Component {
     }
 
     clearNewForm(){
-        this.replaceState({});
+        this.setState({
+            date: null,
+            time: null,
+            amount: null,
+            description: null,
+            ccomment: null,
+        });
     }
 
     add(){

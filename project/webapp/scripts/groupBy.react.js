@@ -1,7 +1,7 @@
 +(function(module){
 'use strict';
 
-var groupBy = {
+let groupBy = {
   All: 'all',
   Week: 'week',
   Month: 'month',

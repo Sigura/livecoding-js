@@ -20,6 +20,7 @@ class Expense extends React.Component {
         super(props, context);
 
         this.state = {edit: false};
+        this.props.expense = this.props.expense || {};
     }
 
     componentDidMount(){
@@ -60,7 +61,7 @@ class Expense extends React.Component {
 
     cancelEdit(){
         this.stopEdit();
-        this.setState(this.props.expense);
+        this.setState(this.props.expense || {});
     }
 
     save() {
@@ -71,8 +72,8 @@ class Expense extends React.Component {
         $save.prop('disabled', true);
         
         api.expenses.update(state)
-            .done(() => {
-                _.props.expense = state;
+            .done(data => {
+                _.props.expense = data;
                 _.stopEdit();
             })
             .always(() => $save.prop('disabled', false));
@@ -109,14 +110,14 @@ class Expense extends React.Component {
             <tr className={cx({'expense-row': true, 'expense-edit': state.edit})} onDoubleClick={_.startEdit.bind(this)}>
                 <td>
                 <div className="btn-group hidden-print" role="group">
-                    <button type="button" className="btn btn-default btn-xs" onClick={_.remove.bind(this)} data-loading-text="…" ref="remove"><span className="glyphicon glyphicon-remove"></span></button>
+                    <button type="button" className="btn btn-default btn-xs" onClick={_.remove.bind(_)} data-loading-text="…" ref="remove"><span className="glyphicon glyphicon-remove"></span></button>
                     {!state.edit
-                        ? <button type="button" className="btn btn-default btn-xs" onClick={_.startEdit.bind(this)}><span className="glyphicon glyphicon-pencil"></span></button>
-                        : <button type="button" className="btn btn-default btn-xs" onClick={_.cancelEdit.bind(this)}><span className="glyphicon glyphicon-floppy-remove"></span></button>
+                        ? <button type="button" className="btn btn-default btn-xs" onClick={_.startEdit.bind(_)}><span className="glyphicon glyphicon-pencil"></span></button>
+                        : <button type="button" className="btn btn-default btn-xs" onClick={_.cancelEdit.bind(_)}><span className="glyphicon glyphicon-floppy-remove"></span></button>
                     }
                     {!state.edit
-                        ? <button type="button" className="btn btn-default btn-xs" onClick={_.copyToNewExpense.bind(this)}><span className="glyphicon glyphicon-copy"></span></button>
-                        : <button type="button" className="btn btn-default btn-xs" onClick={_.save.bind(this)} data-loading-text="…" ref="save"><span className="glyphicon glyphicon-floppy-disk"></span></button>
+                        ? <button type="button" className="btn btn-default btn-xs" onClick={_.copyToNewExpense.bind(_)}><span className="glyphicon glyphicon-copy"></span></button>
+                        : <button type="button" className="btn btn-default btn-xs" onClick={_.save.bind(_)} data-loading-text="…" ref="save"><span className="glyphicon glyphicon-floppy-disk"></span></button>
                     }
                 </div>
                 </td>

@@ -94,6 +94,7 @@ class ExpensesApp extends React.Component {
 
 resourceContext.extend(Expenses);
 
+//export default ExpensesApp;
 module.exports = ExpensesApp;
 
 })(module, require, jQuery, localStorage, undefined);

@@ -39,8 +39,8 @@ class GroupByFilter extends React.Component {
     }
     
     render(){
-        var _ = this;
-        var cx = _.classSet;
+        let _ = this;
+        let cx = _.classSet;
         
         return (<div>
             <div className="panel panel-default hidden-print">

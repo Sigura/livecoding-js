@@ -2,8 +2,8 @@
 +(function($, JSON){
 'use strict';
 
-    var React = require('react');
-    var ExpensesApp = require('./expensesApp.react');
+    let React = require('react'),
+        ExpensesApp = require('./expensesApp.react');
 
     React.render(
         <ExpensesApp />,
