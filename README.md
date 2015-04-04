@@ -14,8 +14,6 @@ Write a simple expenses tracker web application
 * You need to be able to pass credentials to both the webpage and the API.
 * In any case you should be able to explain how a REST API works and demonstrate that by creating functional tests that use the REST Layer directly.
 
-_NOTE: Please keep in mind that this is the project that will be used to evaluate your skills. The project will be evaluated as if you are delivering it to a customer. We expect you to make sure that the app is fully functional and doesn’t have any obvious missing pieces. The deadline for the project is 2 weeks from today._
-
 ## configs
 
 ### server port
