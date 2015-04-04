@@ -107,6 +107,7 @@ ui test accessed in gulp serve:
 1. npm install -g knex
 1. npm install -g forever
 1. npm install -g bower
+1. npm install -g babel
 1. postgresql-9.3
 1. npm run installAll
 1. project/nodeapp/knex-migrate-latest.sh
