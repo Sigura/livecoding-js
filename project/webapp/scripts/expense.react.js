@@ -128,7 +128,7 @@ class Expense extends React.Component {
                          <span className="input-group-addon"><span className="glyphicon glyphicon-usd"></span></span>
                         <input type="number" className="form-control" placeholder="Amount" valueLink={_.valueLinkBuilder('amount')} />
                     </div>}<span className={cx({'visible-print-inline': state.edit,'amount-value': true})}><FormattedNumber value={state.amount || 0} format="USD" /></span></td>
-                <td>{state.edit && <input type="text" className="form-control hidden-print" placeholder="Comment" valueLink={_.valueLinkBuilder('count')} />}<span className={cx({'visible-print-inline': state.edit,'amount-value': true})}>{state.comment}</span></td>
+                <td>{state.edit && <input type="text" className="form-control hidden-print" placeholder="Comment" valueLink={_.valueLinkBuilder('comment')} />}<span className={cx({'visible-print-inline': state.edit,'amount-value': true})}>{state.comment}</span></td>
             </tr>
         );
     }
