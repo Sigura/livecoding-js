@@ -1,100 +1,106 @@
-+(function (require, module, $, JSON, React, ReactIntl, lodash) {
-    'use strict';
++(function (require, module, $, JSON, lodash) {
+'use strict';
 
-    var Login = require('./login.react'),
-        Expenses = require('./expenses.react'),
-        IntlMixin = ReactIntl.IntlMixin,
-        actions = require('./actions.react'),
-        AppDispatcher = require('./dispatcher.react'),
+let React           = require('react'),
+    resourceContext = require('./context.react'),
+    ReactIntl       = require('react-intl'),
+    resources       = require('./resources.react'),
+    extensions      = require('./extensions.react'),
+    objectAssign    = require('object-assign'),
+    Login           = require('./login.react'),
+    Expenses        = require('./expenses.react'),
+    IntlMixin       = ReactIntl.IntlMixin,
+    actions         = require('./actions.react'),
+    AppDispatcher   = require('./dispatcher.react');
 
-        Alerts = React.createClass({
-            mixins: [IntlMixin],
+class Alerts extends React.Component {
+    constructor(props, context){
 
-            getInitialState: function () {
-                return {alerts: []};
-            },
+        super(props, context);
 
-            l10n: function(messageName) {
-                try{
-                    return this.getIntlMessage(messageName);
-                }catch(e){
-                    return;
-                }
-            },
+        this.state = this.getInitState();
+    }
 
-            componentDidMount: function () {
-                var _ = this;
+    getInitState () {
+        return {alerts: []};
+    }
 
-                AppDispatcher.register(function (action) {
+    componentDidMount () {
+        
+        this.mounted = true;
+        
+        AppDispatcher.register((action) => {
 
-                    switch (action.actionType) {
-                        case actions.expensesLoadError:
-                        case actions.expenseInsertError:
-                        case actions.expenseUpdateError:
-                        case actions.expenseDeleteError:
-                            _.addErrors(action.data);
-                        break;
-                        case actions.expenseDeleted:
-                        case actions.expensesLoaded:
-                        case actions.expenseInserted:
-                            _.addAlert(action.actionType);
-                        break;
+            switch (action.actionType) {
+                case actions.expensesLoadError:
+                case actions.expenseInsertError:
+                case actions.expenseUpdateError:
+                case actions.expenseDeleteError:
+                    this.addErrors(action.data);
+                break;
+                case actions.expenseDeleted:
+                case actions.expensesLoaded:
+                case actions.expenseInserted:
+                    this.addAlert(action.actionType);
+                break;
 
-                    }
-                });
-            },
-
-            setupRemoveTimer: function (error) {
-                var _ = this;
-
-                setTimeout(function () {
-                    var index = _.state.alerts.indexOf(error);
-
-                    if (index === -1) {
-                        return;
-                    }
-
-                    _.state.alerts.splice(index, 1);
-                    _.setState({alerts: _.state.alerts});
-                }, 5000);
-            },
-
-            addErrors: function (data) {
-                var _ = this;
-                data && data.error && _.addAlert(data.error.message || data.error, true);
-
-                data && data.error && lodash.uniq(data.error.errors|| [], 'msg')
-                    .forEach(function (item) {
-                        _.addAlert(/*item.param + ':' + */item.msg, true);
-                    });
-            },
-
-            addAlert: function (text, isError) {
-                var _ = this,
-                    alert = {
-                        text: _.l10n(text) || text ,
-                        error: !!isError
-                    };
-                _.state.alerts.push(alert);
-                _.setState({alerts: _.state.alerts});
-                _.setupRemoveTimer(alert);
-            },
-            
-            render: function () {
-
-                var _ = this;
-                var cx = React.addons.classSet;
-                var state = this.state;
-
-                return (<div className={cx({'col-sm-4': true, 'float-right': true, 'hidden-print':true, 'list-group':true, 'col-sm-6':true, 'hide-element': !state.alerts.length})}>
-                    {state.alerts.map(function(item, i){
-                      return <div key={'alert-item-' + i} className={cx({'list-group-item':true, 'list-group-item-success':!item.error, 'list-group-item-danger':item.error})} role="alert">{item.text}</div>;
-                    })}
-                  </div>);
-            },
-
+            }
         });
+    }
 
-    module.exports = Alerts;
+    setupRemoveTimer (error) {
+        setTimeout(() => {
+            let index = this.state.alerts.indexOf(error);
 
-})(require, module, jQuery, JSON, React, ReactIntl, _);
+            if (index === -1) {
+                return;
+            }
+
+            this.state.alerts.splice(index, 1);
+            this.mounted && this.setState({alerts: this.state.alerts});
+        }, 5000);
+    }
+
+    addErrors (data) {
+        data && data.error && this.addAlert(data.error.message || data.error, true);
+
+        data && data.error && lodash.uniq(data.error.errors|| [], 'msg')
+            .forEach((item) => {
+                this.addAlert(/*item.param + ':' + */item.msg, true);
+            });
+    }
+
+    addAlert (text, isError) {
+        let alert = {
+                text:  this.l10n(text) || text,
+                error: !!isError
+            };
+        this.state.alerts.push(alert);
+        this.mounted && this.setState({alerts: this.state.alerts});
+        this.setupRemoveTimer(alert);
+    }
+    
+    render () {
+
+        let _ = this;
+        let cx = _.classSet;
+        let state = this.state;
+
+        return (<div className={cx({'col-sm-4': true, 'float-right': true, 'hidden-print':true, 'list-group':true, 'col-sm-6':true, 'hide-element': !state.alerts.length})}>
+            {state.alerts.map(function(item, i){
+              return <div key={'alert-item-' + i} className={cx({'list-group-item':true, 'list-group-item-success':!item.error, 'list-group-item-danger':item.error})} role="alert">{item.text}</div>;
+            })}
+          </div>);
+    }
+
+    l10n (messageName) {
+        return resources.messages[messageName];
+    }
+
+}
+
+objectAssign(Alerts.prototype, extensions);
+
+module.exports = Alerts;
+
+})(require, module, jQuery, JSON, _);

@@ -1,57 +1,58 @@
-+(function(module, require, ReactIntl, $, localStorage, undefined){
++((module, require, $, localStorage, undefined) => {
 'use strict';
 
-var Login = require('./login.react');
-var Expenses = require('./expenses.react');
-var IntlMixin = ReactIntl.IntlMixin;
-var actions = require('./actions.react');
-var AppDispatcher = require('./dispatcher.react');
+let resourceContext = require('./context.react'),
+    Login           = require('./login.react'),
+    Expenses        = require('./expenses.react'),
+    actions         = require('./actions.react'),
+    AppDispatcher   = require('./dispatcher.react'),
+    React           = require('react'),
+    ReactIntl       = require('react-intl'),
+    IntlMixin       = ReactIntl.IntlMixin;
 
-var ExpensesApp = React.createClass({
-    mixins: [IntlMixin],
+class ExpensesApp extends React.Component {
+    constructor(props, context){
+        //debugger;
+        super(props, context);
+        this.state = {user: false};
+    }
 
-    getInitialState: function() {
-        return {user: false};
-    },
+    getState() {
+        return this.state || {};
+    }
 
-    componentDidMount: function() {
-        var _ = this;
-
-        _.registerEvents();
-        _.loadStoredData();
-    },
+    componentDidMount () {
+        this.registerEvents();
+        this.loadStoredData();
+    }
     
-    registerEvents: function () {
-        var _ = this;
+    registerEvents () {
 
-        AppDispatcher.register(function(action) {
+        AppDispatcher.register((action) => {
 
-          switch(action.actionType)
-          {
-            case actions.logOut:
-              _.logOut(action.data);
-            break;
-            case actions.expenseDeleteError:
-            case actions.expenseUpdateError:
-            case actions.expensesLoadError:
-            case actions.expenseInsertError:
-               _.determinateActionOnError(action.data);
-            break;
-          }
+            switch(action.actionType)
+            {
+                case actions.logOut:
+                    this.logOut(action.data);
+                break;
+                case actions.expenseDeleteError:
+                case actions.expenseUpdateError:
+                case actions.expensesLoadError:
+                case actions.expenseInsertError:
+                    this.determinateActionOnError(action.data);
+                break;
+            }
         });        
-    },
+    }
 
-    determinateActionOnError: function (data) {
-        var _ = this;
-
-        //_.logOut(data);
-        data && data.error === 'invalid token' && _.logOut(data);
-        data && data.error === 'token expired' && _.logOut(data);
-    },
+    determinateActionOnError(data) {
+        data && data.error === 'invalid token' && this.logOut(data);
+        data && data.error === 'token expired' && this.logOut(data);
+    }
     
-    loadStoredData: function () {
+    loadStoredData () {
         
-        var user, _ = this;
+        let user;
         try{
             user = localStorage.user && JSON.parse(localStorage.user);
         }catch(e){}
@@ -59,37 +60,40 @@ var ExpensesApp = React.createClass({
         if(user && user.token) {
             AppDispatcher.dispatch({actionType: actions.signIn, data: user});
 
-            _.setState({user: user});
+            this.setState({user: user});
         }
-    },
-    logOut: function () {
+    }
+
+    logOut () {
         delete localStorage.user;
         
         location.reload(true);
-    },
-    componentWillUnmount: function() {
-    },
-    loginHandler: function(user) {
+    }
+
+    loginHandler (user) {
         localStorage.user = JSON.stringify(user);
 
         this.setState({user: user});
-    },
-    render: function() {
+    }
 
-        var state = this.state;
+    render () {
+
+        let state = this.getState();
     
         if(!state.user)
-           return (<Login onLogin={this.loginHandler} />);
+           return (<Login onLogin={this.loginHandler.bind(this)} />);
         
         return (<Expenses />);
-    },
+    }
 
-    _onChange: function() {
+    _onChange () {
         this.setState(this.state);
     }
 
-});
+}
+
+resourceContext.extend(Expenses);
 
 module.exports = ExpensesApp;
 
-})(module, require, ReactIntl, jQuery, localStorage, undefined);
+})(module, require, jQuery, localStorage, undefined);

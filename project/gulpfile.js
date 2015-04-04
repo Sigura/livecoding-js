@@ -8,6 +8,8 @@ var browserSync = require('browser-sync');
 var reactify = require('reactify');
 var server = require('gulp-develop-server');
 var source = require('vinyl-source-stream');
+var babel = require('gulp-babel');
+var babelify = require('babelify');
 var reload = browserSync.reload;
 var port = 5000;
 var proxy = 3000;
@@ -140,9 +142,13 @@ gulp.task('bundle', function () {
   return gulp.src('webapp/scripts/main.react.js')
     .pipe($.browserify({
       insertGlobals : false,
-      transform: ['reactify'],
+      transform: [
+        ['reactify', {es6: true}]
+        , ['babelify']
+      ],
       debug: false
-    }))
+    })
+    )
     .pipe($.stripDebug())
     .pipe(uglify)
     .pipe(gulp.dest('.tmp/scripts'))
@@ -151,14 +157,19 @@ gulp.task('bundle', function () {
 
 gulp.task('templates', function () {
     
-  return gulp.src('webapp/scripts/**/*.js')
-    .pipe($.if('*.react.js', $.browserify({
+  return gulp.src('webapp/scripts/main.react.js')
+    .pipe($.browserify({
       insertGlobals : false,
-      transform: ['reactify'],
+      transform: [
+        ['reactify', {es6: true}]
+        , ['babelify']
+      ],
       debug: true
-    })))
+    })
+    )
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe(gulp.dest('dist/scripts'));
+
 });
 
 gulp.task('build', ['bundle', 'html', 'images', 'fonts', 'extras'], function () {

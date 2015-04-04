@@ -1,5 +1,5 @@
 /*jshint -W030 */
-+(function(module){
++((module) => {
 'use strict';
 
 var actions = {

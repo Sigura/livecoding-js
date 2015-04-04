@@ -1,10 +1,13 @@
-+(function(module, require, ReactIntl){
++(function(module, require){
 'use strict';
 
-var defaultLang = 'en';
-var lang = defaultLang;//navigator.language || navigator.browserLanguage;
+let React = require('react');
+let ReactIntl = require('react-intl');
 
-var locales = [{
+const defaultLang = 'en';
+let lang = defaultLang;//navigator.language || navigator.browserLanguage;
+
+let locales = [{
     lang: 'en',
     locales: 'en-US',
     formats: {
@@ -47,23 +50,13 @@ var locales = [{
     }
 }];
 
-var isSupported = locales.filter(function(item){return item.lang === lang;}).length;
+let filter = item => item.lang === lang;
+let isSupported = locales.filter(filter).length;
 
 lang = isSupported ? lang : defaultLang;
-var messages = locales.filter(function(item){return item.lang === lang;}).shift();
-    
-module.exports = {
-    currentLocale: messages.locales,
-    supported: locales.map(function(item){return item.locales}),
-    messages: messages
-};
-/*
-var supported = [];
-for(var locale in messgaes) {
-  if(message.hasOwnProperty(locale)){
-    supported
-  }
-}
-*/
 
-})(module, require, ReactIntl);
+let data = locales.filter(filter).shift();
+    
+module.exports = data;
+
+})(module, require);

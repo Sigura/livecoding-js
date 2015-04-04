@@ -50,8 +50,8 @@ Application.prototype = {
     },
     sets: function(){        
         this.express.set('views', this.path.join(baseDir, 'views'));
-        this.express.set('view engine', 'jsx');
-        this.express.engine('jsx', require('express-react-views').createEngine({ jsx: { harmony: true } }));
+        //this.express.set('view engine', 'jsx');
+        //this.express.engine('jsx', require('express-react-views').createEngine({ jsx: { harmony: true } }));
     },
     usages: function(){
         

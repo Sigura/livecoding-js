@@ -1,17 +1,13 @@
 /** @jsx React.DOM */
-+(function($, JSON, React){
++(function($, JSON){
 'use strict';
 
-//$().ready(function(){
-
-    var resources = require('./resources.react');
+    var React = require('react');
     var ExpensesApp = require('./expensesApp.react');
 
     React.render(
-        <ExpensesApp locales={resources.locales} {...resources.messages} />,
+        <ExpensesApp />,
         document.getElementById('expense-app')
     );
 
-//});
-
-})(jQuery, JSON, React);
+})(jQuery, JSON);

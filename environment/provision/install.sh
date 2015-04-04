@@ -33,6 +33,7 @@ which gulp || npm install -g gulp
 which bower || npm install -g bower
 which knex || npm install -g knex
 which forever || npm install -g forever
+which babel || npm install -g babel
 which react-tools || npm install -g react-tools
 
 #postgres

@@ -1,5 +1,5 @@
 /*jshint -W030 */
-+(function(module, Flux){
++((module, Flux) => {
 'use strict';
 
 module.exports = new Flux.Dispatcher();

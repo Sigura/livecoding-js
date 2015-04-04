@@ -1,116 +1,122 @@
-+(function(module, require, React, ReactIntl, $, undefined, window){
++((module, require, $, undefined, window) => {
 'use strict';
 
-var IntlMixin       = ReactIntl.IntlMixin;
-var FormattedNumber = ReactIntl.FormattedNumber;
-var groupBy = require('./groupBy.react');
-var actions = require('./actions.react');
-var AppDispatcher = require('./dispatcher.react');
-var api = require('./api.react');
-var L = ReactIntl.FormattedMessage;
+let React           = require('react'),
+    resourceContext = require('./context.react'),
+    objectAssign    = require('object-assign'),
+    extensions      = require('./extensions.react'),
+    groupBy         = require('./groupBy.react'),
+    actions         = require('./actions.react'),
+    AppDispatcher   = require('./dispatcher.react'),
+    api             = require('./api.react');
 
-var NewExpense = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, IntlMixin],
-  onChange: function(e){
-    var update = {};
+class NewExpense extends React.Component {
 
-    update[e.target.name] = e.target.value;
+    constructor(props, context){
+
+        super(props, context);
+
+        this.refs = {};
+        this.state = this.props.expense || {};
+    }
+
+    componentDidMount() {
+        this.registerEvents();
+        this.buildComponents();
+    }
+
+    handleChange(e){
+        var update = {};
+
+        update[e.target.name] = e.target.value;
+        this.setState(update);
+    }
+
+    registerEvents() {
+
+        AppDispatcher.register((action) => {
+
+            switch(action.actionType)
+            {
+                case actions.copyToNewExpense:
+                    this.fill(action.data);
+                break;
+            }
+        });
+        
+    }
+
+    fill(expense){
+        var _ = this;
+        _.setState(expense);
+        $(_.refs.Time.getDOMNode()).timepicker('setTime', expense.time);
+        $(_.refs.Date.getDOMNode()).data('DateTimePicker').date(new Date(expense.date));
+    }
+
+    buildComponents(){
+        var _ = this;
+
+        if(this.refs.Time)
+        $(this.refs.Time.getDOMNode())
+            .timepicker({
+                minuteStep: 10,
+                appendWidgetTo: 'body',
+                showMeridian: false,
+                defaultTime: 'current'
+            }).on('changeTime.timepicker', e => this.setState({time: e.target.value}));
+        if(this.refs.Date)
+        $(this.refs.Date.getDOMNode())
+            .datetimepicker({format: 'YYYY-MM-DD'})
+            .on('dp.change', e => this.setState({date: e.target.value}));
+    }
+
+    clearNewForm(){
+        this.replaceState({});
+    }
+
+    add(){
+        var _ = this;
+        var $save = $(_.refs.add.getDOMNode());
+        var state = this.state;
+
+        state.id = undefined;
+        state.amount = Number(state.amount);
+        $save.button('loading');
+
+        api.expenses.insert(state)
+            .done(() => this.clearNewForm())
+            .always(() => $save.button('reset'));
+    }
     
-    this.setState(update);
-  },
-  getInitialState: function() {
-    return {};
-  },
-  componentDidMount: function() {
-    var _ = this;
+    render(){
+        var _ = this;
+        var state = this.state;
 
-    AppDispatcher.register(function(action){
+        return (<tbody>
+            <tr className="expense-add hidden-print">
+                <td className="col-xs-1"><div className="btn-group hidden-print" role="group">
+                    <button type="button" onClick={_.clearNewForm.bind(this)} className="btn btn-default btn-xs"><span className="glyphicon glyphicon-remove"></span></button>
+                    <button type="button" className="btn btn-default btn-xs" disabled><span className="glyphicon glyphicon-pencil"></span></button>
+                    <button type="button" onClick={_.add.bind(this)} ref="add" data-loading-text="…" className="btn btn-default btn-xs"><span className="glyphicon glyphicon-plus"></span></button>
+                </div></td>
+                <td className="col-xs-2 date-td"><input type="text" className="form-control" placeholder="Date" valueLink={_.valueLinkBuilder('date')} ref="Date" /></td>
+                <td className="col-xs-1 time-td"><input type="text" className="form-control" placeholder="Time" valueLink={_.valueLinkBuilder('time')} ref="Time" /></td>
+                <td className="col-xs-4"><input type="text" className="form-control" ref="Description" placeholder="Description" valueLink={_.valueLinkBuilder('description')} /></td>
+                <td className="col-xs-2"><div className="input-group">
+                     <span className="input-group-addon"><span className="glyphicon glyphicon-usd"></span></span>
+                    <input type="number" className="form-control" placeholder="Amount" valueLink={_.valueLinkBuilder('amount')} />
+                </div></td>
+                <td className="col-xs-4"><input type="text" className="form-control" placeholder="Comment" value={state.comment} name="comment" ref="Comment" onChange={_.handleChange.bind(this)}/></td>
+            </tr>
+        </tbody>);
+    }
 
-      switch(action.actionType)
-      {
-        case actions.copyToNewExpense:
-          _.fill(action.data);
-        break;
-      }
-    });
-    
-    _.setState(_.props.expense || {});
-    _.buildComponents();
-  },
-  componentDidUpdate: function(prevProps, prevState){
-    //this.buildComponents();
-  },
-  fill: function(expense){
-    var _ = this;
-    _.setState(expense);
-    $(_.refs.Time.getDOMNode()).timepicker('setTime', expense.time);
-    $(_.refs.Date.getDOMNode()).data('DateTimePicker').date(new Date(expense.date));
-  },
-  buildComponents: function(){
-    var _ = this;
+};
 
-    if(_.refs.Time)
-    $(_.refs.Time.getDOMNode())
-      .timepicker({
-        minuteStep: 10,
-        appendWidgetTo: 'body',
-        showMeridian: false,
-        defaultTime: 'current'
-      }).on('changeTime.timepicker', function(e){
-        _.setState({time: e.target.value});
-      });
-    if(_.refs.Date)
-    $(_.refs.Date.getDOMNode())
-      .datetimepicker({format: 'YYYY-MM-DD'})
-      .on('dp.change', function(e){
-        _.setState({date: e.target.value});
-      });
-  },
-  clearNewForm: function(){
-    this.replaceState({});
-  },
-  add: function(){
-    var _ = this;
-    var $save = $(_.refs.add.getDOMNode());
-    var state = this.state;
+resourceContext.extend(NewExpense);
 
-    state.id = undefined;
-    state.amount = Number(state.amount);
-    $save.button('loading');
-
-    api.expenses.insert(state)
-      .done(function(){
-          _.clearNewForm();
-      })
-      .always(function(){
-        $save.button('reset');
-      });
-  },
-  render: function(){
-    var _ = this;
-    var state = this.state;
-
-    return (<tbody>
-      <tr className="expense-add hidden-print">
-        <td className="col-xs-1"><div className="btn-group hidden-print" role="group">
-          <button type="button" onClick={_.clearNewForm} className="btn btn-default btn-xs"><span className="glyphicon glyphicon-remove"></span></button>
-          <button type="button" className="btn btn-default btn-xs" disabled><span className="glyphicon glyphicon-pencil"></span></button>
-          <button type="button" onClick={_.add} ref="add" data-loading-text="…" className="btn btn-default btn-xs"><span className="glyphicon glyphicon-plus"></span></button>
-        </div></td>
-        <td className="col-xs-2 date-td"><input type="text" className="form-control" placeholder="Date" valueLink={_.linkState('date')} ref="Date" /></td>
-        <td className="col-xs-1 time-td"><input type="text" className="form-control" placeholder="Time" valueLink={_.linkState('time')} ref="Time" /></td>
-        <td className="col-xs-4"><input type="text" className="form-control" ref="Description" placeholder="Description" valueLink={_.linkState('description')} /></td>
-        <td className="col-xs-2"><div className="input-group">
-           <span className="input-group-addon"><span className="glyphicon glyphicon-usd"></span></span>
-          <input type="number" className="form-control" placeholder="Amount" valueLink={_.linkState('amount')} />
-        </div></td>
-        <td className="col-xs-4"><input type="text" className="form-control" placeholder="Comment" value={state.comment} name="comment" ref="Comment" onChange={_.onChange}/></td>
-      </tr>
-    </tbody>);
-  }
-});
-
+objectAssign(NewExpense.prototype, extensions);
 
 module.exports = NewExpense;
 
-})(module, require, React, ReactIntl, jQuery, undefined, window);
+})(module, require, jQuery, undefined, window);
