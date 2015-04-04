@@ -1,4 +1,4 @@
-# toptal interview project
+# livecoding-js
 
 Write a simple expenses tracker web application
 

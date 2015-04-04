@@ -1,8 +1,8 @@
 {
-  "name": "toptal-interview-expenses",
+  "name": "livecoding-js",
   "author": "adudnik@gmail.com",
   "main": "nodeapp/main.js",
-  "description": "toptal interview expenses project",
+  "description": "simple project for research js t4s",
   "version": "0.0.1",
   "private": true,
   "engines": {
