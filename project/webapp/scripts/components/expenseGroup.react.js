@@ -1,18 +1,18 @@
-+((module, require, moment, Flux, $, undefined, window) => {
 'use strict';
 
-let React           = require('react'),
-    ReactIntl       = require('react-intl'),
-    objectAssign    = require('object-assign'),
-    resourceContext = require('./context.react'),
-    groupBy         = require('./groupBy.react'),
-    Expense         = require('./expense.react'),
-    IntlMixin       = ReactIntl.IntlMixin,
-    FormattedNumber = ReactIntl.FormattedNumber,
-    actions         = require('./actions.react'),
-    AppDispatcher   = new Flux.Dispatcher();
+import React           from 'react';
+import ReactIntl       from 'react-intl';
+import objectAssign    from 'object-assign';
+import Expense         from './expense.react';
+import AppDispatcher   from '../dispatcher/dispatcher.react';
+import resourceContext from '../utils/context.react';
+import groupBy         from '../constants/groupBy.react';
+import actions         from '../constants/actions.react';
 
-class ExpenseGroup extends React.Component {
+let IntlMixin       = ReactIntl.IntlMixin,
+    FormattedNumber = ReactIntl.FormattedNumber;
+
+export default class ExpenseGroup extends React.Component {
 
     constructor(props, context){
 
@@ -62,7 +62,3 @@ class ExpenseGroup extends React.Component {
         return <tbody>{expenseList}</tbody>;
     }
 }
-
-module.exports = ExpenseGroup;
-
-})(module, require, moment, Flux, jQuery, undefined, window);

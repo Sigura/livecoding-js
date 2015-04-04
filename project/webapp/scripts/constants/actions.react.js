@@ -1,8 +1,6 @@
-/*jshint -W030 */
-+((module) => {
 'use strict';
 
-var actions = {
+export default {
   sigIn: 'userSigin',
   apiError: 'apiError',
   loginFailed: 'loginFailed',
@@ -20,7 +18,3 @@ var actions = {
   logOut: 'logOut',
   expenseFiltered: 'expenseFiltered',
 };
-
-module.exports = actions;
-
-})(module);

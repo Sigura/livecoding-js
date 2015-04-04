@@ -1,13 +1,12 @@
-+((module, require, $, moment) => {
 'use strict';
 
-let React           = require('react'),
-    extensions      = require('./extensions.react'),
-    objectAssign    = require('object-assign'),
-    actions         = require('./actions.react'),
-    AppDispatcher   = require('./dispatcher.react');
+import React           from 'react';
+import objectAssign    from 'object-assign';
+import extensions      from '../utils/extensions.react';
+import actions         from '../constants/actions.react';
+import AppDispatcher   from '../dispatcher/dispatcher.react';
 
-class Filter extends React.Component {
+export default class Filter extends React.Component {
 
     //mixins: [React.addons.LinkedStateMixin, IntlMixin],
     constructor(props, context){
@@ -119,7 +118,3 @@ class Filter extends React.Component {
 }
 
 objectAssign(Filter.prototype, extensions);
-
-module.exports = Filter;
-
-})(module, require, jQuery, moment);

@@ -1,19 +1,19 @@
-+(function (require, module, $, JSON, lodash) {
 'use strict';
 
-let React           = require('react'),
-    resourceContext = require('./context.react'),
-    ReactIntl       = require('react-intl'),
-    resources       = require('./resources.react'),
-    extensions      = require('./extensions.react'),
-    objectAssign    = require('object-assign'),
-    Login           = require('./login.react'),
-    Expenses        = require('./expenses.react'),
-    IntlMixin       = ReactIntl.IntlMixin,
-    actions         = require('./actions.react'),
-    AppDispatcher   = require('./dispatcher.react');
+import React           from 'react';
+import ReactIntl       from 'react-intl';
+import objectAssign    from 'object-assign';
+import Login           from './login.react';
+import Expenses        from './expenses.react';
+import AppDispatcher   from '../dispatcher/dispatcher.react';
+import resourceContext from '../utils/context.react';
+import extensions      from '../utils/extensions.react';
+import actions         from '../constants/actions.react';
+import resources       from '../constants/resources.react';
 
-class Alerts extends React.Component {
+let IntlMixin       = ReactIntl.IntlMixin;
+
+export default class Alerts extends React.Component {
     constructor(props, context){
 
         super(props, context);
@@ -100,7 +100,3 @@ class Alerts extends React.Component {
 }
 
 objectAssign(Alerts.prototype, extensions);
-
-module.exports = Alerts;
-
-})(require, module, jQuery, JSON, _);

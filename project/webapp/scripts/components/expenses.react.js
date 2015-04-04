@@ -1,26 +1,26 @@
-+((module, require, moment, $, localStorage, undefined, window) => {
 'use strict';
 
-let React           = require('react'),
-    ReactIntl       = require('react-intl'),
-    resourceContext = require('./context.react'),
-    resources       = require('./resources.react'),
-    objectAssign    = require('object-assign'),
-    extensions      = require('./extensions.react'),
-    IntlMixin       = ReactIntl.IntlMixin,
-    FormattedNumber = ReactIntl.FormattedNumber,
-    L               = ReactIntl.FormattedMessage,
-    groupBy         = require('./groupBy.react'),
-    actions         = require('./actions.react'),
-    Alerts          = require('./alerts.react'),
-    GroupBy         = require('./groupByFilter.react'),
-    Filter          = require('./filter.react'),
-    ExpenseGroup    = require('./expenseGroup.react'),
-    NewExpense      = require('./newExpense.react'),
-    api             = require('./api.react'),
-    AppDispatcher   = require('./dispatcher.react');
+import React           from 'react';
+import ReactIntl       from 'react-intl';
+import objectAssign    from 'object-assign';
+import Alerts          from './alerts.react';
+import GroupBy         from './groupByFilter.react';
+import Filter          from './filter.react';
+import ExpenseGroup    from './expenseGroup.react';
+import NewExpense      from './newExpense.react';
+import resources       from '../constants/resources.react';
+import groupBy         from '../constants/groupBy.react';
+import actions         from '../constants/actions.react';
+import AppDispatcher   from '../dispatcher/dispatcher.react';
+import api             from '../store/api.react';
+import resourceContext from '../utils/context.react';
+import extensions      from '../utils/extensions.react';
 
-class Expenses extends React.Component {
+let IntlMixin       = ReactIntl.IntlMixin,
+    FormattedNumber = ReactIntl.FormattedNumber,
+    L               = ReactIntl.FormattedMessage;
+
+export default class Expenses extends React.Component {
 
     constructor(props, context){
 
@@ -301,7 +301,3 @@ class Expenses extends React.Component {
 resourceContext.extend(Expenses);
 
 objectAssign(Expenses.prototype, extensions);
-
-module.exports = Expenses;
-
-})(module, require, moment, jQuery, localStorage, undefined, window);

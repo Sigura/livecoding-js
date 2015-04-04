@@ -1,7 +1,6 @@
-+(function(module){
 'use strict';
 
-module.exports = {
+export default {
     valueLinkBuilder: function(paramName) {
         return {
             value: this.state[paramName],
@@ -22,5 +21,3 @@ module.exports = {
         return result;
     }
 };
-
-})(module);

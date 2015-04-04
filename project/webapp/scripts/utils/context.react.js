@@ -1,11 +1,10 @@
-+(function(module){
 'use strict';
 
-let React           = require('react'),
-    objectAssign    = require('object-assign'),
-    resources       = require('./resources.react');
+import React        from 'react';
+import objectAssign from 'object-assign';
+import resources    from '../constants/resources.react';
 
-module.exports = {
+export default {
     getChildContext() {
         return resources;
     },
@@ -35,5 +34,3 @@ module.exports = {
 
     }
 };
-
-})(module);

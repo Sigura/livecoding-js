@@ -1,8 +1,7 @@
-+(function(module, require){
 'use strict';
 
-let React = require('react');
-let ReactIntl = require('react-intl');
+import React     from 'react';
+import ReactIntl from 'react-intl';
 
 const defaultLang = 'en';
 let lang = defaultLang;//navigator.language || navigator.browserLanguage;
@@ -57,6 +56,4 @@ lang = isSupported ? lang : defaultLang;
 
 let data = locales.filter(filter).shift();
     
-module.exports = data;
-
-})(module, require);
+export default data

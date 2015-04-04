@@ -1,19 +1,19 @@
-+((module, require, $, undefined, window) => {
 'use strict';
 
-let React           = require('react'),
-    resourceContext = require('./context.react'),
-    ReactIntl       = require('react-intl'),
-    extensions      = require('./extensions.react'),
-    objectAssign    = require('object-assign'),
-    IntlMixin       = ReactIntl.IntlMixin,
-    FormattedNumber = ReactIntl.FormattedNumber,
-    api             = require('./api.react'),
-    AppDispatcher   = require('./dispatcher.react'),
-    actions         = require('./actions.react'),
-    groupBy         = require('./groupBy.react');
+import React           from 'react';
+import ReactIntl       from 'react-intl';
+import objectAssign    from 'object-assign';
+import api             from '../store/api.react';
+import AppDispatcher   from '../dispatcher/dispatcher.react';
+import resourceContext from '../utils/context.react';
+import extensions      from '../utils/extensions.react';
+import actions         from '../constants/actions.react';
+import groupBy         from '../constants/groupBy.react';
 
-class Expense extends React.Component {
+let IntlMixin       = ReactIntl.IntlMixin,
+    FormattedNumber = ReactIntl.FormattedNumber;
+
+export default class Expense extends React.Component {
 
     constructor(props, context){
 
@@ -135,6 +135,3 @@ class Expense extends React.Component {
 }
 
 objectAssign(Expense.prototype, extensions);
-module.exports = Expense;
-
-})(module, require, jQuery, undefined, window);

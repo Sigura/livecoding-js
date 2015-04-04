@@ -1,18 +1,18 @@
-+((module, $) => {
 'use strict';
 
-let resourceContext = require('./context.react'),
-    actions         = require('./actions.react'),
-    extensions      = require('./extensions.react'),
-    AppDispatcher   = require('./dispatcher.react'),
-    api             = require('./api.react'),
-    objectAssign    = require('object-assign'),
-    React           = require('react'),
-    ReactIntl       = require('react-intl'),
-    IntlMixin       = ReactIntl.IntlMixin,
+import objectAssign    from 'object-assign';
+import React           from 'react';
+import ReactIntl       from 'react-intl';
+import api             from '../store/api.react';
+import resourceContext from '../utils/context.react';
+import extensions      from '../utils/extensions.react';
+import AppDispatcher   from '../dispatcher/dispatcher.react';
+import actions         from '../constants/actions.react';
+
+let IntlMixin       = ReactIntl.IntlMixin,
     L               = ReactIntl.FormattedMessage;
 
-class Login extends React.Component {
+export default class Login extends React.Component {
 
     constructor(props, context){
 
@@ -172,7 +172,3 @@ class Login extends React.Component {
 resourceContext.extend(Login);
 
 objectAssign(Login.prototype, extensions);
-
-module.exports = Login;
-
-})(module, jQuery);

@@ -1,16 +1,15 @@
-+((module, require, $, undefined, window) => {
 'use strict';
 
-let React           = require('react'),
-    resourceContext = require('./context.react'),
-    objectAssign    = require('object-assign'),
-    extensions      = require('./extensions.react'),
-    groupBy         = require('./groupBy.react'),
-    actions         = require('./actions.react'),
-    AppDispatcher   = require('./dispatcher.react'),
-    api             = require('./api.react');
+import React           from 'react';
+import objectAssign    from 'object-assign';
+import api             from '../store/api.react';
+import AppDispatcher   from '../dispatcher/dispatcher.react';
+import resourceContext from '../utils/context.react';
+import extensions      from '../utils/extensions.react';
+import groupBy         from '../constants/groupBy.react';
+import actions         from '../constants/actions.react';
 
-class NewExpense extends React.Component {
+export default class NewExpense extends React.Component {
 
     constructor(props, context){
 
@@ -122,7 +121,3 @@ class NewExpense extends React.Component {
 resourceContext.extend(NewExpense);
 
 objectAssign(NewExpense.prototype, extensions);
-
-module.exports = NewExpense;
-
-})(module, require, jQuery, undefined, window);

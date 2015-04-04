@@ -1,13 +1,10 @@
-/** @jsx React.DOM */
-+(function($, JSON){
 'use strict';
 
-    let React = require('react'),
-        ExpensesApp = require('./expensesApp.react');
+import React       from 'react';
+import ExpensesApp from './components/expensesApp.react';
 
-    React.render(
-        <ExpensesApp />,
-        document.getElementById('expense-app')
-    );
+React.render(
+    <ExpensesApp />,
+    document.getElementById('expense-app')
+);
 
-})(jQuery, JSON);

@@ -1,10 +1,9 @@
-+(function(module, Flux){
 'use strict';
 
-var actions = require('./actions.react');
-var AppDispatcher = require('./dispatcher.react');
+import AppDispatcher from '../dispatcher/dispatcher.react';
+import actions       from '../constants/actions.react';
 
-var api = {
+let api = {
   user: {
     signIn: function(user){
       return $.ajax('/api/users', {
@@ -123,6 +122,4 @@ AppDispatcher.register(function(action) {
   }
 });
 
-module.exports = api;
-
-})(module, Flux);
+export default api;

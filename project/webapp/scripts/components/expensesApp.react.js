@@ -1,16 +1,15 @@
-+((module, require, $, localStorage, undefined) => {
 'use strict';
 
-let resourceContext = require('./context.react'),
-    Login           = require('./login.react'),
-    Expenses        = require('./expenses.react'),
-    actions         = require('./actions.react'),
-    AppDispatcher   = require('./dispatcher.react'),
-    React           = require('react'),
-    ReactIntl       = require('react-intl'),
-    IntlMixin       = ReactIntl.IntlMixin;
+import React           from 'react';
+import ReactIntl       from 'react-intl';
+import Login           from './login.react';
+import Expenses        from './expenses.react';
+import AppDispatcher   from '../dispatcher/dispatcher.react';
+import resourceContext from '../utils/context.react';
+import actions         from '../constants/actions.react';
+let IntlMixin          = ReactIntl.IntlMixin;
 
-class ExpensesApp extends React.Component {
+export default class ExpensesApp extends React.Component {
     constructor(props, context){
         //debugger;
         super(props, context);
@@ -92,9 +91,4 @@ class ExpensesApp extends React.Component {
 
 }
 
-resourceContext.extend(Expenses);
-
-//export default ExpensesApp;
-module.exports = ExpensesApp;
-
-})(module, require, jQuery, localStorage, undefined);
+//resourceContext.extend(ExpensesApp);
