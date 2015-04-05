@@ -1,17 +1,16 @@
-+(function(module, require, process, baseDir, console, undefined){
 'use strict';
 
-var Application = function(port){
+class Application {
+    constructor(port){
     
-    this.port = port || 3000;
+        this.port = port || 3000;
+        
+        this.init();
+        
+        //console.log('app ctor ended');
+    }
     
-    this.init();
-    
-    //console.log('app ctor ended');
-};
-// 
-Application.prototype = {
-    init: function(){
+    init () {
         this.require();
         this.vars();
         this.initExpress();
@@ -19,18 +18,20 @@ Application.prototype = {
         this.usages();
         this.initRoutes();
         //this.start();
-    },
-    vars: function(){
-        this.isDebug = process.env.serve === 'gulp';
+    }
 
-        this.distrDir = this.path.join(baseDir, '..', 'dist');
-        this.staticDir = this.path.join(baseDir, '..', 'webapp');
-        this.tmpDir = this.path.join(baseDir, '..', '.tmp');
+    vars () {
+        this.isDebug = process.env.serve === 'gulp';
+        this.baseDir = __dirname;
+        this.distrDir = this.path.join(this.baseDir, '..', 'dist');
+        this.staticDir = this.path.join(this.baseDir, '..', 'webapp');
+        this.tmpDir = this.path.join(this.baseDir, '..', '.tmp');
 
         this.isDebug && console.log('static dir: ', this.staticDir);
         this.isDebug && console.log('render dir: ', this.distrDir);
-    },
-    require: function(){
+    }
+
+    require () {
         this.Express = require('express');
         this.compression = require('compression');
         //this.cookieSession = require('cookie-session');
@@ -43,19 +44,22 @@ Application.prototype = {
         this.validator = require('express-validator');
 
         this.routes = require('./routes');
-    },
-    initExpress: function(){
+    }
+    
+    initExpress () {
         this.express = this.Express();
         
-    },
-    sets: function(){        
-        this.express.set('views', this.path.join(baseDir, 'views'));
+    }
+
+    sets () {        
+        this.express.set('views', this.path.join(this.baseDir, 'views'));
         //this.express.set('view engine', 'jsx');
         //this.express.engine('jsx', require('express-react-views').createEngine({ jsx: { harmony: true } }));
-    },
-    usages: function(){
+    }
+
+    usages () {
         
-        var me = this;
+        let me = this;
         
         //this.express.use(this.favicon(this.staticDir + '/favicon.ico'));
         this.express.use(this.logger(this.isDebug ? 'dev' : 'short'));
@@ -75,8 +79,9 @@ Application.prototype = {
         this.express.use(this.bodyParser.json());
         this.express.use(this.bodyParser.urlencoded({ extended: true }));
         this.express.use(this.validator()); 
-    },
-    initRoutes: function(){
+    }
+
+    initRoutes () {
         this.isDebug && this.express.use('/', this.Express.static(this.tmpDir, {
           dotfiles: 'ignore',
           etag: true,
@@ -109,15 +114,16 @@ Application.prototype = {
         // }));
         this.routes.register(this);
 
-    },
-    start: function(){
-        var me = this;
+    }
+
+    start () {
+        let me = this;
         console.log('start server http://%s:%s', 'localhost', this.port);
         this.server = this.express.listen(this.port, function () {
 
-            var address = me.server.address();
-            var host = address.address;
-            var port = address.port;
+            let address = me.server.address();
+            let host = address.address;
+            let port = address.port;
 
             console.log('app listening at http://%s:%s', host, port);
 
@@ -126,5 +132,3 @@ Application.prototype = {
 };
 
 module.exports = Application;
-    
-})(module, require, process, __dirname, console, undefined);

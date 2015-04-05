@@ -1,31 +1,29 @@
 'use strict';
 
-+(function(module, require, error){
-
 module.exports = {
     routeTable: [
         {path: './api/users'},
         {path: './api/expenses'}
     ],
-    register: function(main){
+    register(main){
         
         this.registerRoutes(main);
 
         this.registerErrors(main);
     },
-    registerRoutes: function(main){
+    registerRoutes(main){
 
         this.routeTable.forEach(function(item){
-            var page = require(item.path);
+            let page = require(item.path);
 
             main.express.use(page.use(main));
         });
 
     },
-    registerErrors: function(main){
+    registerErrors(main){
 
         main.express.use(function(req, res, next) {
-            var err = new error('Not Found');
+            let err = new error('Not Found');
             err.status = 404;
             
             next(err);
@@ -58,5 +56,3 @@ module.exports = {
 
     }
 };    
-
-})(module, require, Error)

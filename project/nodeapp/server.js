@@ -1,10 +1,10 @@
-+(function(module, require, process, baseDir, console, undefined){
+//+(function(module, require, process, baseDir, console, undefined){
 'use strict';
 
-var App = require('./main');
-var port = process.env.port || 3000;
-var app = new App(port);
+let App = require('./main');
+let port = process.env.port || 3000;
+let app = new App(port);
 
 app.start();
 
-})(module, require, process, __dirname, console, undefined);
+//})(module, require, process, __dirname, console, undefined);

@@ -16,6 +16,11 @@ Write a simple expenses tracker web application
 
 ## configs
 
+branch for research [io.js](https://iojs.org/en/index.html) compability with es6
+
+> iojs --es_staging --harmony_modules  nodeapp/server.js
+
+
 ### server port
 process.env.port or in server.js
 

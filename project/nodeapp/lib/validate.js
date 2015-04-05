@@ -1,11 +1,10 @@
-+(function(module, require){
 'use strict';
 
 module.exports = function(validateFn) {
     return function(req, res, next) {
         validateFn(req);
 
-        var errors = req.validationErrors();
+        let errors = req.validationErrors();
         if (errors) {
             console.info('errors in validation:', errors);
 
@@ -21,5 +20,3 @@ module.exports = function(validateFn) {
         }
     };
 };
-
-})(module, require)

@@ -65,3 +65,9 @@ sudo -u postgres bash -l -c 'psql -l | grep expenses_test || createdb expenses_t
 chmod +x /home/vagrant/project/nodeapp/knex-migrate-latest.sh
 chmod +x /home/vagrant/project/build.sh
 chmod +x /home/vagrant/project/install.sh
+
+which iojs || sudo apt-get upgrade
+which iojs || apt-get install build-essential libssl-dev
+which curl || apt-get install curl
+which iojs || curl https://raw.githubusercontent.com/creationix/nvm/v0.23.2/install.sh | bash
+which iojs || nvm install iojs

@@ -1,5 +1,6 @@
-module.exports = function(res, text, num){
 'use strict';
+
+module.exports = function(res, text, num) {
 
     console.error('error', text);
 

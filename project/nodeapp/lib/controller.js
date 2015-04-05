@@ -1,9 +1,8 @@
-+(function(module, require){
 'use strict';
 
-var express = require('express');
+let express = require('express');
 
-var controller = function(route){
+let controller = function(route){
 
     this.route = route;
 
@@ -35,5 +34,3 @@ controller.prototype = {
 };
 
 module.exports = controller;
-
-})(module, require)
