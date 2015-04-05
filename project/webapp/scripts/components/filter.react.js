@@ -19,9 +19,9 @@ export default class Filter extends React.Component {
 
     onChange(e){
         var state = this.state;
-        
+
         state[e.target.name] = e.target.value;
-        
+
         this.setState(state);
 
         //AppDispatcher.dispatch({actionType:actions.expenseFiltered, data: this.state});
@@ -39,7 +39,7 @@ export default class Filter extends React.Component {
                     break;
             }
         });
-        
+
     }
 
     componentDidMount() {
@@ -50,22 +50,24 @@ export default class Filter extends React.Component {
 
     buildComponents() {
 
-        if(this.refs.dateFrom)
+        if(this.refs.dateFrom) {
             $(this.refs.dateFrom.getDOMNode().parentNode)
                 .datetimepicker({format: 'YYYY-MM-DD'})
-                .on('dp.change', e => {
-                    this.onChange({target:this.refs.dateFrom.getDOMNode()});
+                .on('dp.change', () => {
+                    this.onChange({target: this.refs.dateFrom.getDOMNode()});
                 });
-        if(this.refs.dateTo)
+        }
+        if(this.refs.dateTo) {
             $(this.refs.dateTo.getDOMNode().parentNode)
                 .datetimepicker({format: 'YYYY-MM-DD'})
-                .on('dp.change', e => {
-                    this.onChange({target:this.refs.dateTo.getDOMNode()});
+                .on('dp.change', () => {
+                    this.onChange({target: this.refs.dateTo.getDOMNode()});
                 });
+        }
     }
 
     clear () {
-        var state = {dateFrom:'',dateTo:'',amountFrom:'',amountTo:''};
+        var state = {dateFrom: '', dateTo: '', amountFrom: '', amountTo: ''};
         this.setState(state);
         this.props.onFilterChanged && this.props.onFilterChanged(state);
     }

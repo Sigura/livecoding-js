@@ -1,7 +1,7 @@
 'use strict';
 
 import React           from 'react';
-import ReactIntl       from 'react-intl';
+import {FormattedMessage as L} from 'react-intl';
 import objectAssign    from 'object-assign';
 import Alerts          from './alerts.react';
 import GroupBy         from './groupByFilter.react';
@@ -16,10 +16,6 @@ import api             from '../store/api.react';
 import resourceContext from '../utils/context.react';
 import extensions      from '../utils/extensions.react';
 
-let IntlMixin       = ReactIntl.IntlMixin,
-    FormattedNumber = ReactIntl.FormattedNumber,
-    L               = ReactIntl.FormattedMessage;
-
 export default class Expenses extends React.Component {
 
     constructor(props, context){
@@ -30,17 +26,16 @@ export default class Expenses extends React.Component {
     }
 
     getInitState() {
-            
+
         var gb = groupBy.All;
         try{
-                gb = localStorage.groupBy || groupBy.All;
+            gb = localStorage.groupBy || groupBy.All;
 
-                if(gb === 'undefined') {
-                        gb = groupBy.All;
-                }
-        }catch(e){}
+            if(gb === 'undefined') {
+                    gb = groupBy.All;
+            }
+        }catch(e){ window.console && console.log && console.log(e); }
 
-            
         return {
             groupBy: gb,
             newExpense: {},
@@ -48,14 +43,14 @@ export default class Expenses extends React.Component {
             items: {'all': []},
             groups: ['all'],
             format: '',
-            loading: true,
+            loading: true
         };
     }
 
     componentDidMount() {
 
         var _ = this;
-    
+
         AppDispatcher.register((action) => {
 
             switch(action.actionType)
@@ -80,43 +75,43 @@ export default class Expenses extends React.Component {
                 break;
             }
         });
-        
+
         api.expenses.get();
     }
-    
+
     onUpdate(expense) {
         var _ = this;
         var state = _.state;
-        
+
         var index = _.findExpense(expense);
-        
+
         if(index > -1 ) {
             state.expenses.splice(index, 1, expense);
-            
+
             _.update(state.expenses);
         }
     }
-    
+
     findExpense (expense) {
         var _ = this;
         var state = _.state;
-        
+
         var o = state.expenses.filter((item) => item.id === expense.id).pop();
-        
+
         var index = state.expenses.indexOf(o);
-            
+
         return index;
     }
-    
+
     onDelete(expense) {
         var _ = this;
         var state = _.state;
-        
+
         var index = _.findExpense(expense);
-        
+
         if(index > -1 ) {
             state.expenses.splice(index, 1);
-            
+
             _.update(state.expenses);
         }
     }
@@ -126,7 +121,7 @@ export default class Expenses extends React.Component {
         var _ = this;
         var expenses = state.expenses = state.expenses || [];
         expenses.length && expenses.splice(0, expenses.length);
-        
+
         list.forEach(item => {
             expenses.push({
                 id: item.id,
@@ -134,30 +129,28 @@ export default class Expenses extends React.Component {
                 date: item.date.substring(0, 10),
                 time: item.time && item.time.length > 5 ? item.time.substring(0, 5) : item.time,
                 amount: item.amount,
-                comment: item.comment,
-                user_id: item.user_id
-            })
+                comment: item.comment
+            });
         });
 
         _.update(expenses);
     }
-    
+
     update(expenses, groupBy) {
-        var state = this.state;
-        var _ = this;
-        expenses = _.sort(expenses);
-        var grouped = _.groupDictionary(expenses, groupBy);
+        expenses = this.sort(expenses);
+        var grouped = this.groupDictionary(expenses, groupBy);
         localStorage.groupBy = groupBy;
 
-        _.setState(grouped);
-        _.setState({loading: false});
+        this.setState(grouped);
+        this.setState({loading: false});
     }
+
     // simulateChange(ev){
         // React.addons.TestUtils.simulateNativeEventOnNode('topInput', ev.target, {type:'input', target: ev.target});
-        // ev.stopImmediatePropagation();            
+        // ev.stopImmediatePropagation();
     // },
-    sort(expenses){
-        var state = this.state;
+
+    sort (expenses) {
 
         expenses.sort((a, b) => {
             if(a.date > b.date){
@@ -174,29 +167,29 @@ export default class Expenses extends React.Component {
             }
             return 0;
         });
+
         return expenses;
     }
-    
+
     addNewExpense(add){
-        var _ = this;
-        var state = _.state;
+        var state = this.state;
 
         state.expenses.push(add);
 
-        _.update(state.expenses);
+        this.update(state.expenses);
     }
-    
+
     filterChanged (filter) {
             //console.log('filter', filter);
             api.expenses.get(filter);
     }
-    
+
     changeGroupHandler(groupBy){
         this.setState({groupBy: groupBy});
-        
+
         this.update(this.state.expenses, groupBy);
     }
-    
+
     groupFormat(groupByLabel){
         var groupFormat = null;
         switch(groupByLabel){
@@ -212,7 +205,7 @@ export default class Expenses extends React.Component {
         }
         return groupFormat;
     }
-    
+
     groupDictionary(expenses, groupBy) {
         var _ = this;
         var state = _.state;
@@ -230,32 +223,30 @@ export default class Expenses extends React.Component {
         }
         return groupDictionary ? {items: groupDictionary, groups: groups, format: groupFormat} : {items: {'all': state.expenses}, groups: ['all'], format: ''};
     }
-    
+
     logOut(){
-            AppDispatcher.dispatch({actionType:actions.logOut});
+        AppDispatcher.dispatch({actionType: actions.logOut});
     }
-    
+
     render() {
-        var _ = this;
-        var cx = _.classSet;
-        var state = _.state;
-        var len = state.expenses && state.expenses.length || 0;
-        var maxDate = len && state.expenses[0].date;
-        var minDate = len && state.expenses[len - 1].date;
-        var sum = state.expenses.reduce((previousValue, currentValue, index, array) => previousValue + (Number(array[index].amount) || 0), 0);
-        var duration = (len && moment(maxDate).twix(minDate)) || (len && 1) || 0;
-        var days = (duration && duration.count('days')) || (len && 1) || 0;
-        var avg = (len && sum/len) || 0;
-        var dayAvg = (days && sum/days) || 0;
-        var weeks = (duration && duration.count('weeks')) || (len && 1) || 0;
-        var weekAvg = weeks && sum/weeks || dayAvg;
-        var months = (duration && duration.count('months')) || (len && 1) || 0;
-        var monthAvg = (months && sum/months) || weekAvg || dayAvg;
-        var years = (duration && duration.count('years')) || (len && 1) || 0;
-        var yearAvg = (years && sum/years) || monthAvg || weekAvg || dayAvg;
-        var groups    = state.groups;
-        var items    = state.items;
-        var width100P = {width: '100%'};
+        let _ = this;
+        let cx = _.classSet;
+        let state = _.state;
+        let len = state.expenses && state.expenses.length || 0;
+        let maxDate = len && state.expenses[0].date;
+        let minDate = len && state.expenses[len - 1].date;
+        let sum = state.expenses.reduce((previousValue, currentValue, index, array) => previousValue + (Number(array[index].amount) || 0), 0);
+        let duration = (len && moment(maxDate).twix(minDate)) || (len && 1) || 0;
+        let days = (duration && duration.count('days')) || (len && 1) || 0;
+        let avg = (len && sum/len) || 0;
+        let dayAvg = (days && sum/days) || 0;
+        let weeks = (duration && duration.count('weeks')) || (len && 1) || 0;
+        let weekAvg = weeks && sum/weeks || dayAvg;
+        let months = (duration && duration.count('months')) || (len && 1) || 0;
+        let monthAvg = (months && sum/months) || weekAvg || dayAvg;
+        let years = (duration && duration.count('years')) || (len && 1) || 0;
+        let yearAvg = (years && sum/years) || monthAvg || weekAvg || dayAvg;
+        let width100P = {width: '100%'};
 
         return (
             <div className="expenses-list panel panel-default">
@@ -263,20 +254,20 @@ export default class Expenses extends React.Component {
                     <div className="btn-toolbar pull-right hidden-print"><a className="btn btn-default logout" href="javascript:void(0);" onClick={_.logOut.bind(_)}>Logout</a></div>
                     <h2><L message={_.l10n('Expenses')}/></h2>
                 </div>
-                <div className={cx({'panel-body':true, 'hidden-print':true, 'hide-element': !state.loading})}>
+                <div className={cx({'panel-body': true, 'hidden-print': true, 'hide-element': !state.loading})}>
                     <div className="progress">
                         <div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={width100P}>
                         </div>
                     </div>
                 </div>
-                <div className={cx({'panel-body':true, 'hide-element': state.loading})}>
+                <div className={cx({'panel-body': true, 'hide-element': state.loading})}>
                     <Alerts />
                     <div className="col-sm-8">
                             <GroupBy groupBy={state.groupBy} onGroupChanged={_.changeGroupHandler.bind(_)} />
                             <Filter onFilterChanged={_.filterChanged.bind(_)} />
                     </div>
                 </div>
-                <table className={cx({'table':true, 'table-hover':true, 'table-condensed': true, 'hide-element': state.loading})}>
+                <table className={cx({'table': true, 'table-hover': true, 'table-condensed': true, 'hide-element': state.loading})}>
                     <thead>
                         <tr>
                             <th></th><th><L message={_.l10n('Date')}/></th><th>Time</th><th>Description</th><th>Amount</th><th>Comment</th>

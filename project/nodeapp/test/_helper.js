@@ -2,7 +2,7 @@
 'use strict';
 
 var knex = require('../db/connection');
-var chai = require("chai");
+var chai = require('chai');
 var Promise = require('bluebird');
 var request = require('supertest-as-promised');
 var queryString = require('query-string');
@@ -13,7 +13,7 @@ chai.use(require('chai-things'));
 
 global.expect = chai.expect;
 global.lodash = require('lodash');
-global.app = (new App()).express;
+var app = global.app = (new App()).express;
 global.Promise = Promise;
 global.queryString = queryString;
 global.request = function() {
@@ -22,7 +22,7 @@ global.request = function() {
 global.cleanDb = function () {
     before(function(done) {
         return Promise.all([
-            knex('expenses').delete(), 
+            knex('expenses').delete(),
             knex('users').delete()
         ]).then(function(){
             done();
@@ -46,6 +46,5 @@ before(function(done) {
 beforeEach(function(){
     //cleanDb();
 });
-
 
 })(global || window, require);

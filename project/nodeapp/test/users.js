@@ -78,7 +78,6 @@
         });
     });
     describe('register with invalid values', function () {
-        var result;
         cleanDb();
         it('register returns 200', function() {
             return request()
@@ -94,7 +93,6 @@
         });
     });
     describe('login with invalid values', function () {
-        var result;
         cleanDb();
         it('register returns 200', function() {
             return request()

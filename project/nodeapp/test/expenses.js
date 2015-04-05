@@ -1,8 +1,8 @@
-+(function (global) {
++(function () {
 'use strict';
 
     var token, token2;
-    
+
     var expensesSet = [
         {
             description: 'test expense 1',
@@ -49,10 +49,10 @@
         {
             description: 'test expense 8',
             amount: 8,
-            date: '2015-01-08',
+            date: '2015-01-08'
         }
     ];
-    
+
     var registerTestUsers = function() {
         before(function(done) {
             var p1 = request()
@@ -81,13 +81,13 @@
                 });
         });
     };
-  
+
   describe('/api/expenses', function () {
     describe('expense create', function () {
         var result;
         cleanDb();
         registerTestUsers();
-        
+
         it('create returns 200', function() {
             return request()
                 .put('/api/expenses')
@@ -102,7 +102,7 @@
                 .expect(200)
                 .then(function(res) {
                     result = res.body;
-                })
+                });
         });
         it('create with wrong values, check empty date', function() {
             return request()
@@ -261,7 +261,7 @@
                     done();
                 });
         });
-        
+
         it('update returns 200', function() {
 
             var update = {
@@ -327,7 +327,7 @@
                     done();
                 });
         });
-        
+
         it('delete unexistance', function() {
 
             var update = {
@@ -370,9 +370,8 @@
             });
         });
     });
-    
+
     describe('check auth', function () {
-        var result;
         cleanDb();
         it('get expenses without token', function() {
             return request()
@@ -387,8 +386,6 @@
         });
     });
 
-
-    
     describe('filter expenses', function() {
         cleanDb();
         registerTestUsers();
@@ -404,7 +401,7 @@
             .then(function() {
                 done();
             });
-        });        
+        });
 
         it('all accessed', function() {
             return request()
@@ -424,7 +421,7 @@
                 expect(res.body).to.have.length(0);
             });
         });
-        
+
         var options = [
             {
                 title: 'load more then 5 amount',
@@ -460,10 +457,9 @@
                 title: 'load between 1 and 5 amount and between 2015-01-07 and 2015-01-02 date',
                 query: {dateTo: '2015-01-07', dateFrom: '2015-01-02', amountTo: 5, amountFrom: 1},
                 result: 4
-            },
+            }
         ];
-        
-        
+
         options.forEach(function (data) {
             it(data.title, function() {
                 return request()
@@ -502,8 +498,7 @@
                 query: {ddateTo: '2015-01', dateFrom: '2015-13-35', amountTo: Infinity, amountFrom: ''}
             }
         ];
-        
-        
+
         badOptions.forEach(function (data) {
             it(data.title, function() {
                 return request()
@@ -516,4 +511,4 @@
     });
 });
 
-})(global || window);
+})();

@@ -1,4 +1,4 @@
-+(function(module, require, process, baseDir, console, undefined){
++(function(module, require, process){
 'use strict';
 
 var App = require('./main');
@@ -7,4 +7,4 @@ var app = new App(port);
 
 app.start();
 
-})(module, require, process, __dirname, console, undefined);
+})(module, require, process);

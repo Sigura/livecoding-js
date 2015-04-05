@@ -1,6 +1,6 @@
 'use strict';
 
-exports.up = function(knex, p) {
+exports.up = function(knex/*, p*/) {
     return knex.schema.createTable('expenses', function(table) {
         table.increments();
         table.date('date').notNullable();
@@ -11,9 +11,8 @@ exports.up = function(knex, p) {
         table.integer('user_id').references('id').inTable('users');
         table.timestamps();
     });
-  
 };
 
-exports.down = function(knex, p) {
+exports.down = function(knex/*, p*/) {
     return knex.schema.dropTableIfExists('expenses');
 };

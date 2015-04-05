@@ -1,17 +1,15 @@
 +(function(module, require){
 'use strict';
 
-var uuid = require('node-uuid');
 var db = require('../db/connection');
-var hash = require('../lib/hash');
 var error = require('../lib/error');
 var validate = require('../lib/validate');
-var controller = require('../lib/controller');
+var Controller = require('../lib/controller');
 var authentication = require('../lib/authentication');
 
 var path = '/api/expenses';
 
-var expenseController = new controller(path);
+var expenseController = new Controller(path);
 var helpers = {
     validate: function (req) {
         req.checkBody('date', 'date format is YYYY-MM-DD').isLength(10).isDate();
@@ -27,16 +25,18 @@ var helpers = {
             description: req.body.description,
             amount: req.body.amount,
             comment: req.body.comment,
+            /*eslint-disable camelcase*/
             user_id: req.user.id
+            /*eslint-enable camelcase*/
         };
-        
+
         if(req.body.id) {
             res.id = req.body.id;
         }
-        
+
         return res;
     }
-}
+};
 
 //expenseController.router.use(authentication());
 
@@ -48,23 +48,29 @@ expenseController.router.get(path, authentication(), validate(function (req) {
     req.query.dateTo     && req.checkQuery('dateTo', 'date format is YYYY-MM-DD').isLength(10).isDate();
     req.query.amountFrom && req.checkQuery('amountFrom', 'amount should be number').isLength(0, 7).isFloat();
     req.query.amountTo   && req.checkQuery('amountTo', 'amount should be number').isLength(0, 7).isFloat();
-    
-}), function (req, res, next) {
+
+}), function (req, res/*, next*/) {
 
     var query = db('expenses')
+        /*eslint-disable camelcase*/
         .where({user_id: req.user.id});
-    
-    if(req.query.dateFrom)
+        /*eslint-enable camelcase*/
+
+    if(req.query.dateFrom) {
         query = query.where('date', '>=', req.query.dateFrom);
-    if(req.query.dateTo)
+    }
+    if(req.query.dateTo) {
         query = query.where('date', '<=', req.query.dateTo);
-    if(req.query.amountFrom)
+    }
+    if(req.query.amountFrom) {
         query = query.where('amount', '>=', req.query.amountFrom);
-    if(req.query.amountTo)
+    }
+    if(req.query.amountTo) {
         query = query.where('amount', '<=', req.query.amountTo);
-    
+    }
+
     //console.log('query', query);
-    
+
     query
         .orderBy('date')
         .orderBy('time')
@@ -74,16 +80,17 @@ expenseController.router.get(path, authentication(), validate(function (req) {
         .catch(function(ex){
             error(res, ex, 500);
         });
-        
 
 });
 
 // delete expense
-expenseController.router.delete(path, authentication(), function (req, res, next) {
+expenseController.router.delete(path, authentication(), function (req, res/*, next*/) {
     var expense = helpers.expense(req);
-    
+
     db('expenses')
+        /*eslint-disable camelcase*/
         .where({id: expense.id, user_id: req.user.id})
+        /*eslint-enable camelcase*/
         .del()
         .then(function(result) {
             if(!result){
@@ -99,10 +106,11 @@ expenseController.router.delete(path, authentication(), function (req, res, next
 });
 
 // update expense
-expenseController.router.post(path, authentication(), validate(helpers.validate), function (req, res, next) {
+expenseController.router.post(path, authentication(), validate(helpers.validate), function (req, res/*, next*/) {
 
     var expense = helpers.expense(req);
 
+    /*eslint-disable camelcase*/
     expense.user_id = req.user.id;
     expense.time = expense.time || null;
 
@@ -119,21 +127,23 @@ expenseController.router.post(path, authentication(), validate(helpers.validate)
         .catch(function(ex) {
             error(res, ex, 404);
         });
+    /*eslint-enable camelcase*/
 
 });
 
 // create new expense
-expenseController.router.put(path, authentication(), validate(helpers.validate), function (req, res, next) {
+expenseController.router.put(path, authentication(), validate(helpers.validate), function (req, res/*, next*/) {
 
     var expense = helpers.expense(req);
 
+    /*eslint-disable camelcase*/
     expense.time = expense.time || null;
     expense.user_id = req.user.id;
 
     db('expenses')
         .insert(expense, 'id')
         .then(function(ids) {
-            if(!ids || !ids.length){
+            if (!ids || !ids.length) {
                 throw 'failed to create a expense';
             }
 
@@ -143,11 +153,11 @@ expenseController.router.put(path, authentication(), validate(helpers.validate),
         })
         .catch(function(ex) {
             error(res, ex, 500);
-        })
+        });
+    /*eslint-enable camelcase*/
 
-    
 });
 
 module.exports = expenseController;
 
-})(module, require)
+})(module, require);

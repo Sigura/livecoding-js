@@ -1,13 +1,11 @@
 'use strict';
 
 import React           from 'react';
-import ReactIntl       from 'react-intl';
 import Login           from './login.react';
 import Expenses        from './expenses.react';
 import AppDispatcher   from '../dispatcher/dispatcher.react';
 import resourceContext from '../utils/context.react';
 import actions         from '../constants/actions.react';
-let IntlMixin          = ReactIntl.IntlMixin;
 
 export default class ExpensesApp extends React.Component {
     constructor(props, context){
@@ -24,7 +22,7 @@ export default class ExpensesApp extends React.Component {
         this.registerEvents();
         this.loadStoredData();
     }
-    
+
     registerEvents () {
 
         AppDispatcher.register((action) => {
@@ -41,21 +39,21 @@ export default class ExpensesApp extends React.Component {
                     this.determinateActionOnError(action.data);
                 break;
             }
-        });        
+        });
     }
 
     determinateActionOnError(data) {
         data && data.error === 'invalid token' && this.logOut(data);
         data && data.error === 'token expired' && this.logOut(data);
     }
-    
+
     loadStoredData () {
-        
+
         let user;
         try{
             user = localStorage.user && JSON.parse(localStorage.user);
-        }catch(e){}
-        
+        }catch(e){ window.console && console.log && console.log(e); }
+
         if(user && user.token) {
             AppDispatcher.dispatch({actionType: actions.signIn, data: user});
 
@@ -65,7 +63,7 @@ export default class ExpensesApp extends React.Component {
 
     logOut () {
         delete localStorage.user;
-        
+
         location.reload(true);
     }
 
@@ -78,10 +76,10 @@ export default class ExpensesApp extends React.Component {
     render () {
 
         let state = this.getState();
-    
-        if(!state.user)
+
+        if(!state.user) {
            return (<Login onLogin={this.loginHandler.bind(this)} />);
-        
+        }
         return (<Expenses />);
     }
 
@@ -90,5 +88,3 @@ export default class ExpensesApp extends React.Component {
     }
 
 }
-
-//resourceContext.extend(ExpensesApp);

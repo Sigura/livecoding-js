@@ -1,6 +1,6 @@
 'use strict';
 
-+(function(module, require, error){
++(function(module, require, Error){
 
 module.exports = {
     routeTable: [
@@ -8,7 +8,7 @@ module.exports = {
         {path: './api/expenses'}
     ],
     register: function(main){
-        
+
         this.registerRoutes(main);
 
         this.registerErrors(main);
@@ -25,16 +25,16 @@ module.exports = {
     registerErrors: function(main){
 
         main.express.use(function(req, res, next) {
-            var err = new error('Not Found');
+            var err = new Error('Not Found');
             err.status = 404;
-            
+
             next(err);
         });
 
         // development error handler
         // will print stacktrace
         if (main.isDebug) {
-            main.express.use(function(err, req, res, next) {
+            main.express.use(function(err, req, res/*, next*/) {
                 res.status(err.status || 500);
                 res.json({
                     title: 'Error 500: ' + err.message,
@@ -46,7 +46,7 @@ module.exports = {
 
         // production error handler
         // no stacktraces leaked to user
-        main.express.use(function(err, req, res, next) {
+        main.express.use(function(err, req, res/*, next*/) {
             res.status(err.status || 500);
 
             res.json({
@@ -57,6 +57,6 @@ module.exports = {
         });
 
     }
-};    
+};
 
-})(module, require, Error)
+})(module, require, Error);

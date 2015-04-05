@@ -12,7 +12,7 @@ export default {
             })
         };
     },
-    
+
     classSet: function(obj) {
         let result = Object.keys(obj)
             .filter(key => obj[key])

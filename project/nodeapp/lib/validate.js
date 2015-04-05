@@ -1,4 +1,4 @@
-+(function(module, require){
++(function(module){
 'use strict';
 
 module.exports = function(validateFn) {
@@ -22,4 +22,4 @@ module.exports = function(validateFn) {
     };
 };
 
-})(module, require)
+})(module);

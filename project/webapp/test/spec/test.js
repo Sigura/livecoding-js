@@ -34,7 +34,7 @@
             }
         });
     };
-  
+
     var login = function(){
         return $.ajax('/api/users', {
             dataType: 'json',
@@ -94,7 +94,7 @@
             .then(function(res){
                 expense.id = res.id;
                 expense.user_id = res.user_id;
-                
+
                 return res;
             });
         };
@@ -121,7 +121,7 @@
     var expenseGet = function(param){
         param = param || {};
         return function(){
-            
+
             return $.ajax('/api/expenses?' + queryString.stringify(param), {
                 dataType: 'json',
                 headers: {
@@ -135,7 +135,7 @@
             });
         };
     };
-    
+
   describe('user api', function () {
         var user;
 
@@ -179,7 +179,6 @@
         });
    });
 
-
   describe('expense api', function () {
     var user;
     var expense = {
@@ -189,7 +188,7 @@
         amount: 10,
         comment: 'comment'
     };
-      
+
     before(function (done) {
         return register()
             .then(function(usr){

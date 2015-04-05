@@ -4,14 +4,7 @@
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
-//var nodemon = require('gulp-nodemon');
-var sourcemaps = require('gulp-sourcemaps');
-var reactify = require('reactify');
-//var react = require('gulp-react');
 var server = require('gulp-develop-server');
-var source = require('vinyl-source-stream');
-var babel = require('gulp-babel');
-var babelify = require('babelify');
 var reload = browserSync.reload;
 var port = 5000;
 var proxy = 3000;
@@ -26,25 +19,25 @@ gulp.task('styles', function () {
 });
 
 gulp.task('jshint', function () {
-    return gulp.src(['webapp/scripts/**/*.js', 'nodeapp/**/*.js'])
-        .pipe($.react())
+    return gulp.src([
+        'gulpfile.js',
+        'webapp/scripts/**/*.js',
+        'nodeapp/**/*.js',
+        '!webapp/scripts/components/timepicker.js'
+    ])
         .pipe(reload({stream: true, once: true}))
-        .pipe($.jshint())
-        .pipe($.jshint.reporter('jshint-stylish'))
-        .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
+        .pipe($.eslint())
+        .pipe($.eslint.format());
+        //.pipe($.if(!browserSync.active, $.eslint.failOnError()));
 });
 
 gulp.task('html', ['styles'], function () {
-    var assets = $.useref.assets({searchPath: ['.tmp', 'webapp', 'dist']})
+    var assets = $.useref.assets({searchPath: ['.tmp', 'webapp', 'dist']});
     var uglify = $.uglify();
-    var isJs = function(file){
-        var res = /.*\.js$/i.test(file.path) && !/.*\.react\.js$/i.test(file.path);
-        //console.log('isJS', file.path, res);
-        return res;
-    };
+
     assets.on('error', $.util.log);
     uglify.on('error', $.util.log);
-  
+
     return gulp.src(['webapp/*.html'])
         .pipe(assets)
         .pipe($.if('*.js', uglify))
@@ -85,13 +78,15 @@ gulp.task('extras', function () {
 
 gulp.task( 'server:restart', function() {
     server.restart( function( error ) {
-        if( ! error ) browserSync.reload();
+        if( !error ) {
+            browserSync.reload();
+        }
     });
 });
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist/*']));
 
-gulp.task('serve', ['styles', 'templates', 'fonts'], function () {
+gulp.task('serve', ['styles', 'templates', 'fonts', 'jshint'], function () {
 
     server.listen( {
         path: './nodeapp/server.js',
@@ -102,26 +97,20 @@ gulp.task('serve', ['styles', 'templates', 'fonts'], function () {
           'port': port
         }
     }, function( error ) {
-        if( ! error ) browserSync({
-            notify: false,
-            logPrefix: 'BS',
-            proxy: 'http://localhost:' + port,
-            //files: ['webapp/**/*.*', '!webapp/style/**/*.css'],
-            port: proxy,
-            // Run as an https by uncommenting 'https: true'
-            // Note: this uses an unsigned certificate which on first access
-            //       will present a certificate warning in the browser.
-            // https: true,
-            //server: ['dist', 'webapp']
-        });
+        if( !error ){
+            browserSync({
+                notify: false,
+                logPrefix: 'BS',
+                proxy: 'http://localhost:' + port,
+                port: proxy
+            });
+        }
     } );
-    gulp.watch( ['./nodeapp/**/*.js'], [ 'server:restart' ] )
-
+    gulp.watch( ['./nodeapp/**/*.js'], [ 'server:restart' ] );
 
     // watch for changes
     gulp.watch([
-        'webapp/*.html',
-        //'.tmp/scripts/**/*.js'
+        'webapp/*.html'
     ], [reload]);
 
     gulp.watch('webapp/styles/**/*.css', ['styles']);
@@ -131,13 +120,13 @@ gulp.task('serve', ['styles', 'templates', 'fonts'], function () {
 });
 
 gulp.task('bundle', function () {
-    
+
     var uglify = $.uglify();
     uglify.on('error', $.util.log);
 
     return gulp.src('webapp/scripts/main.react.js')
     .pipe($.browserify({
-        insertGlobals : false,
+        insertGlobals: false,
         transform: ['babelify', 'reactify'],
         debug: false
     }))
@@ -148,10 +137,10 @@ gulp.task('bundle', function () {
 });
 
 gulp.task('templates', function () {
-    
+
     return gulp.src('webapp/scripts/main.react.js')
     .pipe($.browserify({
-        insertGlobals : false,
+        insertGlobals: false,
         transform: ['babelify', 'reactify'],
         debug: true
     }))
@@ -160,11 +149,12 @@ gulp.task('templates', function () {
 
 });
 
-gulp.task('build', ['bundle', 'html', 'images', 'fonts', 'extras'], function () {
+gulp.task('build', ['bundle', 'html', 'images', 'fonts', 'extras', 'jshint'], function () {
     return gulp.src('dist/**/*');//.pipe($.size({title: 'build', gzip: true}));
 });
 
 gulp.task('default', ['clean'], function () {
     gulp.start('build');
 });
+
 })(require);

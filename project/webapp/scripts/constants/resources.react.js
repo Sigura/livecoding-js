@@ -16,7 +16,7 @@ let locales = [{
                 currency: 'USD',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
-            },
+            }
         }
     },
     messages: {
@@ -28,7 +28,8 @@ let locales = [{
         expensesLoaded: 'Expenses data loaded',
         expenseInserted: 'Expense inserted'
     }
-},{
+},
+{
     lang: 'ru',
     locales: 'ru-RU',
     formats: {
@@ -38,7 +39,7 @@ let locales = [{
                 currency: 'USD',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
-            },
+            }
         }
     },
     messages: {
@@ -55,5 +56,5 @@ let isSupported = locales.filter(filter).length;
 lang = isSupported ? lang : defaultLang;
 
 let data = locales.filter(filter).shift();
-    
+
 export default data

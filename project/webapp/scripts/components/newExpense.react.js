@@ -42,7 +42,7 @@ export default class NewExpense extends React.Component {
                 break;
             }
         });
-        
+
     }
 
     fill(expense){
@@ -53,20 +53,21 @@ export default class NewExpense extends React.Component {
     }
 
     buildComponents(){
-        var _ = this;
 
-        if(this.refs.Time)
-        $(this.refs.Time.getDOMNode())
-            .timepicker({
-                minuteStep: 10,
-                appendWidgetTo: 'body',
-                showMeridian: false,
-                defaultTime: 'current'
-            }).on('changeTime.timepicker', e => this.setState({time: e.target.value}));
-        if(this.refs.Date)
-        $(this.refs.Date.getDOMNode())
-            .datetimepicker({format: 'YYYY-MM-DD'})
-            .on('dp.change', e => this.setState({date: e.target.value}));
+        if(this.refs.Time) {
+            $(this.refs.Time.getDOMNode())
+                .timepicker({
+                    minuteStep: 10,
+                    appendWidgetTo: 'body',
+                    showMeridian: false,
+                    defaultTime: 'current'
+                }).on('changeTime.timepicker', e => this.setState({time: e.target.value}));
+        }
+        if(this.refs.Date) {
+            $(this.refs.Date.getDOMNode())
+                .datetimepicker({format: 'YYYY-MM-DD'})
+                .on('dp.change', e => this.setState({date: e.target.value}));
+        }
     }
 
     clearNewForm(){
@@ -75,7 +76,7 @@ export default class NewExpense extends React.Component {
             time: null,
             amount: null,
             description: null,
-            ccomment: null,
+            ccomment: null
         });
     }
 
@@ -92,7 +93,7 @@ export default class NewExpense extends React.Component {
             .done(() => this.clearNewForm())
             .always(() => $save.button('reset'));
     }
-    
+
     render(){
         var _ = this;
         var state = this.state;
@@ -116,7 +117,7 @@ export default class NewExpense extends React.Component {
         </tbody>);
     }
 
-};
+}
 
 resourceContext.extend(NewExpense);
 

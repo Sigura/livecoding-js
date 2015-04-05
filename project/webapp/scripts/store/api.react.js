@@ -5,37 +5,29 @@ import actions       from '../constants/actions.react';
 
 let api = {
   user: {
-    signIn: function(user){
+    signIn (user){
       return $.ajax('/api/users', {
           dataType: 'json',
           contentType: 'application/json',
           method: 'POST',
           data: JSON.stringify(user)
         })
-        .fail(function(res){
-            AppDispatcher.dispatch({actionType: actions.loginFailed, data: res.responseJSON});
-        })
-        .done(function(data){
-            AppDispatcher.dispatch({actionType: actions.signIn, data: data});
-        });
+        .fail((res) => AppDispatcher.dispatch({actionType: actions.loginFailed, data: res.responseJSON}))
+        .done((data) => AppDispatcher.dispatch({actionType: actions.signIn, data: data}));
     },
-    register: function(user){
+    register (user){
       return $.ajax('/api/users', {
           dataType: 'json',
           contentType: 'application/json',
           method: 'PUT',
-          data: JSON.stringify(user),
+          data: JSON.stringify(user)
         })
-        .fail(function(res){
-            AppDispatcher.dispatch({actionType: actions.registerFailed, data: res.responseJSON});        
-        })
-        .done(function(data){
-            AppDispatcher.dispatch({actionType: actions.userRegistered, data: data});
-        });
-    },
+        .fail(res => AppDispatcher.dispatch({actionType: actions.registerFailed, data: res.responseJSON}))
+        .done(data => AppDispatcher.dispatch({actionType: actions.userRegistered, data: data}));
+    }
   },
   expenses: {
-    get: function(filter) {
+    get (filter) {
       filter = filter || {};
       return $.ajax('/api/expenses', {
           dataType: 'json',
@@ -44,16 +36,12 @@ let api = {
           headers: {
             Authorization: api.user.current.token
           },
-          data: filter,
+          data: filter
         })
-        .fail(function(res){
-            AppDispatcher.dispatch({actionType: actions.expensesLoadError, data: res.responseJSON});        
-        })
-        .done(function(data){
-            AppDispatcher.dispatch({actionType: actions.expensesLoaded, data: data});
-        });
+        .fail(res => AppDispatcher.dispatch({actionType: actions.expensesLoadError, data: res.responseJSON}))
+        .done(data => AppDispatcher.dispatch({actionType: actions.expensesLoaded, data: data}));
     },
-    insert: function(expense){
+    insert (expense){
       return $.ajax('/api/expenses', {
           dataType: 'json',
           contentType: 'application/json',
@@ -63,14 +51,10 @@ let api = {
           },
           data: JSON.stringify(expense)
         })
-        .fail(function(res){
-            AppDispatcher.dispatch({actionType: actions.expenseInsertError, data: res.responseJSON});        
-        })
-        .done(function(data){
-            AppDispatcher.dispatch({actionType: actions.expenseInserted, data: data});
-        });
+        .fail(res => AppDispatcher.dispatch({actionType: actions.expenseInsertError, data: res.responseJSON}))
+        .done(data => AppDispatcher.dispatch({actionType: actions.expenseInserted, data: data}));
     },
-    update: function(expense){
+    update (expense) {
       return $.ajax('/api/expenses', {
         dataType: 'json',
         contentType: 'application/json',
@@ -80,14 +64,10 @@ let api = {
         },
         data: JSON.stringify(expense)
       })
-        .fail(function(res){
-            AppDispatcher.dispatch({actionType: actions.expenseUpdateError, data: res.responseJSON});        
-        })
-        .done(function(data){
-            AppDispatcher.dispatch({actionType: actions.expenseUpdated, data: data});
-        });
+        .fail(res => AppDispatcher.dispatch({actionType: actions.expenseUpdateError, data: res.responseJSON}))
+        .done(data => AppDispatcher.dispatch({actionType: actions.expenseUpdated, data: data}));
     },
-    'delete': function(expense){
+    'delete' (expense) {
       return $.ajax('/api/expenses', {
           dataType: 'json',
           headers: {
@@ -97,17 +77,13 @@ let api = {
           method: 'DELETE',
           data: JSON.stringify(expense)
         })
-        .fail(function(res){
-            AppDispatcher.dispatch({actionType: actions.expenseDeleteError, data: res.responseJSON});
-        })
-        .done(function(data){
-            AppDispatcher.dispatch({actionType: actions.expenseDeleted, data: data});
-        });
+        .fail(res => AppDispatcher.dispatch({actionType: actions.expenseDeleteError, data: res.responseJSON}))
+        .done(data => AppDispatcher.dispatch({actionType: actions.expenseDeleted, data: data}));
     }
   }
 };
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(action => {
   switch(action.actionType)
   {
     case actions.sigIn:

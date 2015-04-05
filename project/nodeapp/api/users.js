@@ -1,4 +1,3 @@
-+(function(module, require){
 'use strict';
 
 var db = require('../db/connection');
@@ -6,14 +5,14 @@ var hash = require('../lib/hash');
 var error = require('../lib/error');
 var validate = require('../lib/validate');
 var uuid = require('node-uuid');
-var controller = require('../lib/controller');
+var Controller = require('../lib/controller');
 var authentication = require('../lib/authentication');
 
 var path = '/api/users';
 
-var userController = new controller(path);
+var userController = new Controller(path);
 
-userController.router.get(path, function(req, res, next){
+userController.router.get(path, function(req, res/*, next*/){
 
     db('users')
         .select('id', 'name', 'last_accessed_at')
@@ -23,12 +22,11 @@ userController.router.get(path, function(req, res, next){
         .catch(function(ex){
             error(res, ex, 500);
         });
-        
 
 });
 
-userController.router.delete(path, authentication(), function(req, res, next) {
-   
+userController.router.delete(path, authentication(), function(req, res/*, next*/) {
+
     db('users')
         .where({id: req.user.id})
         .del()
@@ -52,6 +50,8 @@ userController.router.post(path, validate(function(req) {
     req.checkBody('password', 'password should be not empty').notEmpty();
 
 }), function(req, res, next) {
+
+    /*eslint-disable camelcase, no-spaced-func*/
     var name = req.body.name;
     var password = req.body.password;
     var token, id, last_accessed_at;
@@ -90,13 +90,13 @@ userController.router.post(path, validate(function(req) {
                 .update({
                     token: row.token,
                     last_accessed_at: row.last_accessed_at
-                })
+                });
         })
         .then(function(result) {
             if(!result){
                 return false;
             }
-            
+
             res.json({
                 id: id,
                 token: token,
@@ -104,6 +104,7 @@ userController.router.post(path, validate(function(req) {
             });
         })
         .catch (next);
+    /*eslint-enable camelcase, no-spaced-func*/
 });
 
 // create new user
@@ -112,11 +113,12 @@ userController.router.put(path, validate(function(req) {
     req.checkBody('name', 'name length should be 1-255 chars').isLength(1, 255);
     req.checkBody('password', 'password length should be 1-25 chars').isLength(1, 25);
 
-}), function(req, res, next) {
+}), function(req, res/*, next*/) {
 
+    /*eslint-disable camelcase*/
     var name = req.body.name;
     var password = req.body.password;
-    var token, id, last_accessed_at;
+    var token, last_accessed_at;
 
     db('users')
         .first('id', 'name')
@@ -124,7 +126,6 @@ userController.router.put(path, validate(function(req) {
         .then(function(row) {
             if (row) {
                 throw 'User "' + name + '" already exists';
-                return false;
             } else {
                 return true;
             }
@@ -146,7 +147,7 @@ userController.router.put(path, validate(function(req) {
             if(!ids || !ids.length){
                 throw 'failed to create a user, insert failed';
             }
-            
+
             res.json({
                 id: ids[0],
                 token: token,
@@ -155,11 +156,9 @@ userController.router.put(path, validate(function(req) {
         })
         .catch(function(ex) {
             error(res, ex, 500);
-        })
+        });
+    /*eslint-enable camelcase*/
 
-    
 });
 
 module.exports = userController;
-
-})(module, require)

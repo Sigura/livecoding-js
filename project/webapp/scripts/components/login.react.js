@@ -2,15 +2,12 @@
 
 import objectAssign    from 'object-assign';
 import React           from 'react';
-import ReactIntl       from 'react-intl';
+import {FormattedMessage as L} from 'react-intl';
 import api             from '../store/api.react';
 import resourceContext from '../utils/context.react';
 import extensions      from '../utils/extensions.react';
 import AppDispatcher   from '../dispatcher/dispatcher.react';
 import actions         from '../constants/actions.react';
-
-let IntlMixin       = ReactIntl.IntlMixin,
-    L               = ReactIntl.FormattedMessage;
 
 export default class Login extends React.Component {
 
@@ -41,13 +38,13 @@ export default class Login extends React.Component {
 
     updateState(res) {
 
-        let state = this.state
+        let state = this.state;
         state.id = res.id;
         state.token = res.token;
         state.operationStart = false;
-        this.setState(state);
 
-        this.props.onLogin({id:state.id, name:state.name, token:state.token});
+        this.setState(state);
+        this.props.onLogin({id: state.id, name: state.name, token: state.token});
     }
 
     error(res) {
@@ -56,34 +53,34 @@ export default class Login extends React.Component {
         var error = res && (res.responseJSON || res).error;
         var nameError = _.errorMessageByField(res, 'name');
         var passwordError = _.errorMessageByField(res, 'password');
-        
+
         if(nameError || passwordError){
             _.state.errors = {
                 name: nameError,
                 password: passwordError
-            }
+            };
         }
-        _.state.error = typeof(error) === 'string' ? error : null;
-        
+        _.state.error = typeof error === 'string' ? error : null;
+
         _.state.operationStart = false;
 
         console.info(_.state);
-        
+
         _.setState(_.state);
     }
-    
-    signInHandler(event) {
+
+    signInHandler(/*event*/) {
 
         var _ = this;
 
         _.clearState();
 
-        api.user.signIn(_.state);        
+        api.user.signIn(_.state);
     }
 
     toggleButtons() {
         var _ = this;
-        
+
         [_.refs.signInButton, _.refs.registerButton].each(
             (item) =>
                 $(item.getDOMNode()).button(!_.state.operationStart    ? 'reset' : 'loading')
@@ -92,14 +89,14 @@ export default class Login extends React.Component {
 
     errorMessageByField(res, name) {
         var errors = res && res.error && res.error.errors;
-        
+
         if(!errors || !errors.length){
             //console.info(res);
-            return;
+            return '';
         }
 
         var message = errors.filter((item) => item.param === name).shift();
-        
+
         return message && message.msg;
     }
 
@@ -113,7 +110,7 @@ export default class Login extends React.Component {
         _.setState(this.state);
     }
 
-    registerHandler(event) {
+    registerHandler(/*event*/) {
         var _ = this;
 
         _.clearState();
@@ -123,10 +120,10 @@ export default class Login extends React.Component {
 
     handleChange(event){
         this.state[event.target.name] = event.target.value.trim();
-        
+
         this.setState(this.state);
     }
-    
+
     renderError(error) {
         return error ? (
             <div className="alert alert-danger" role="alert">
@@ -134,7 +131,7 @@ export default class Login extends React.Component {
                 <span className="sr-only">Error:</span>{error}
             </div>
         ) : null;
-        
+
     }
 
     render() {
@@ -144,15 +141,16 @@ export default class Login extends React.Component {
         let errorName = state.errors && _.renderError(state.errors.name);
         let errorPassword = state.errors && _.renderError(state.errors.password);
         let cx = _.classSet;
-    
+
+        /*jshint ignore:start */
         return (
             <form className="form-signin">
                 <div className="row"><h2 className="form-signin-heading col-md-12"><L message={_.l10n('LoginFormTitle')}/></h2></div>
                 <div className="row">
-                        <div className={cx({'col-md-12': true, 'form-group':true, 'has-success':state.errors && !state.errors.name, 'has-error': state.errors && state.errors.name})}><label htmlFor="email" className="sr-only">Email address</label>
+                        <div className={cx({'col-md-12': true, 'form-group': true, 'has-success': state.errors && !state.errors.name, 'has-error': state.errors && state.errors.name})}><label htmlFor="email" className="sr-only">Email address</label>
                         <input type="text" name="email" className="form-control" placeholder="Name or email address" required autofocus valueLink={_.valueLinkBuilder('name')} /></div>
                 </div>
-                <div className="row"><div className={cx({'col-md-12': true, 'form-group':true, 'has-success':state.errors && !state.errors.password, 'has-error': state.errors && state.errors.password})}>
+                <div className="row"><div className={cx({'col-md-12': true, 'form-group': true, 'has-success': state.errors && !state.errors.password, 'has-error': state.errors && state.errors.password})}>
                         <label htmlFor="password" className="sr-only">Password</label>
                         <input type="password" className="form-control" placeholder="Password" required valueLink={_.valueLinkBuilder('password')} /></div></div>
                 <div className="row">
@@ -165,6 +163,7 @@ export default class Login extends React.Component {
                 </div>
             </form>
         );
+        /*jshint ignore:end */
     }
 
 }

@@ -16,5 +16,5 @@ export default {
   expenseDeleteError: 'expenseDeleteError',
   copyToNewExpense: 'copyToNewExpense',
   logOut: 'logOut',
-  expenseFiltered: 'expenseFiltered',
+  expenseFiltered: 'expenseFiltered'
 };

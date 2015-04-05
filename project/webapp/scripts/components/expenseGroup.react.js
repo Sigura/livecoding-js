@@ -1,16 +1,13 @@
 'use strict';
 
-import React           from 'react';
-import ReactIntl       from 'react-intl';
-import objectAssign    from 'object-assign';
-import Expense         from './expense.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
-import resourceContext from '../utils/context.react';
-import groupBy         from '../constants/groupBy.react';
-import actions         from '../constants/actions.react';
-
-let IntlMixin       = ReactIntl.IntlMixin,
-    FormattedNumber = ReactIntl.FormattedNumber;
+import React              from 'react';
+import {FormattedNumber}  from 'react-intl';
+import objectAssign       from 'object-assign';
+import Expense            from './expense.react';
+import AppDispatcher      from '../dispatcher/dispatcher.react';
+import resourceContext    from '../utils/context.react';
+import groupBy            from '../constants/groupBy.react';
+import actions            from '../constants/actions.react';
 
 export default class ExpenseGroup extends React.Component {
 
@@ -18,7 +15,7 @@ export default class ExpenseGroup extends React.Component {
 
         super(props, context);
 
-        this.state = {expenses:[], groupBy: 'all'};
+        this.state = {expenses: [], groupBy: 'all'};
     }
 
     componentDidMount() {
@@ -31,12 +28,11 @@ export default class ExpenseGroup extends React.Component {
                 break;
             }
         });
-        
+
     }
 
     render () {
         let _ = this;
-        let state = _.state;
         let expenses = _.props.expenses;
         let len = expenses.length;
         let sum = expenses.reduce((previousValue, currentValue, index, array) => previousValue + (Number(array[index].amount) || 0), 0);
@@ -44,7 +40,7 @@ export default class ExpenseGroup extends React.Component {
         let minDate = len && expenses[len - 1].date;
         let duration = (len && moment(maxDate).twix(minDate)) || (len && 1) || 0;
         let days = (duration && duration.count('days')) || (len && 1) || 0;
-        let dayAvg = days && sum/len || 0;        
+        let dayAvg = (days && len && (sum/len)) || 0;
         let expenseList = expenses.map(function(expense) {
             return <Expense key={'expense-' + expense.id} expense={expense} />;
         });
@@ -54,7 +50,6 @@ export default class ExpenseGroup extends React.Component {
                 <td colSpan="2">Sum: <FormattedNumber value={sum} format="USD" />, Avg: <FormattedNumber value={dayAvg} format="USD" /></td>
             </tr>
         );
-
         if(_.props.groupBy !== groupBy.All) {
             expenseList.unshift(summary);
         }
