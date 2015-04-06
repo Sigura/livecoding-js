@@ -1,6 +1,6 @@
 'use strict';
 
-import React           from 'react';
+//import React           from 'react';
 import Login           from './login.react';
 import Expenses        from './expenses.react';
 import AppDispatcher   from '../dispatcher/dispatcher.react';
@@ -9,8 +9,8 @@ import actions         from '../constants/actions.react';
 
 export default class ExpensesApp extends React.Component {
     constructor(props, context){
-        //debugger;
         super(props, context);
+
         this.state = {user: false};
     }
 
@@ -19,27 +19,36 @@ export default class ExpensesApp extends React.Component {
     }
 
     componentDidMount () {
-        this.registerEvents();
         this.loadStoredData();
+        this.registerEvents();
     }
 
-    registerEvents () {
+    componentWillUnmount() {
+        this.listener && AppDispatcher.unregister(this.listener);
+    }
 
-        AppDispatcher.register((action) => {
+    registerEvents() {
 
-            switch(action.actionType)
-            {
-                case actions.logOut:
-                    this.logOut(action.data);
-                break;
-                case actions.expenseDeleteError:
-                case actions.expenseUpdateError:
-                case actions.expensesLoadError:
-                case actions.expenseInsertError:
-                    this.determinateActionOnError(action.data);
-                break;
-            }
-        });
+        this.listener = this.handleFluxEvents && AppDispatcher.register((action) => this.handleFluxEvents(action));
+    }
+
+    handleFluxEvents(action) {
+        switch(action.actionType)
+        {
+            case actions.sigIn:
+            case actions.userRegistered:
+                this.logIn(action.data);
+            break;
+            case actions.logOut:
+                this.logOut(action.data);
+            break;
+            case actions.expenseDeleteError:
+            case actions.expenseUpdateError:
+            case actions.expensesLoadError:
+            case actions.expenseInsertError:
+                this.determinateActionOnError(action.data);
+            break;
+        }
     }
 
     determinateActionOnError(data) {
@@ -63,24 +72,32 @@ export default class ExpensesApp extends React.Component {
 
     logOut () {
         delete localStorage.user;
+        this.state.user = false;
+        this.setState({user: false});
 
-        location.reload(true);
+        //location.reload(true);
+        //this.context.router.transitionTo('/login');
     }
 
-    loginHandler (user) {
+    logIn (user) {
         localStorage.user = JSON.stringify(user);
-
+        this.state.user = user;
         this.setState({user: user});
+        //this.context.router.transitionTo('/');
     }
 
     render () {
 
-        let state = this.getState();
+        let state = this.state;
+        /*eslint-disable no-unused-vars*/
+        let RouteHandler = ReactRouter.RouteHandler;
+        /*eslint-enable no-unused-vars*/
 
         if(!state.user) {
-           return (<Login onLogin={this.loginHandler.bind(this)} />);
+            return (<Login />);
         }
-        return (<Expenses />);
+
+        return (<RouteHandler {...this.props}/>);
     }
 
     _onChange () {
@@ -88,3 +105,7 @@ export default class ExpensesApp extends React.Component {
     }
 
 }
+
+ExpensesApp.contextTypes = {
+  router: React.PropTypes.func
+};

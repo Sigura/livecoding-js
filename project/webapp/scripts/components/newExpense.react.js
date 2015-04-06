@@ -1,6 +1,6 @@
 'use strict';
 
-import React           from 'react';
+//import React           from 'react';
 import objectAssign    from 'object-assign';
 import api             from '../store/api.react';
 import AppDispatcher   from '../dispatcher/dispatcher.react';
@@ -31,18 +31,23 @@ export default class NewExpense extends React.Component {
         this.setState(update);
     }
 
+    componentWillUnmount() {
+        this.listener && AppDispatcher.unregister(this.listener);
+    }
+
+    handleFluxEvents(action) {
+
+        switch(action.actionType)
+        {
+            case actions.copyToNewExpense:
+                this.fill(action.data);
+            break;
+        }
+    }
+
     registerEvents() {
 
-        AppDispatcher.register((action) => {
-
-            switch(action.actionType)
-            {
-                case actions.copyToNewExpense:
-                    this.fill(action.data);
-                break;
-            }
-        });
-
+        this.listener = this.handleFluxEvents && AppDispatcher.register((action) => this.handleFluxEvents(action));
     }
 
     fill(expense){

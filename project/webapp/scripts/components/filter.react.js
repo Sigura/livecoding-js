@@ -1,6 +1,6 @@
 'use strict';
 
-import React           from 'react';
+//import React           from 'react';
 import objectAssign    from 'object-assign';
 import extensions      from '../utils/extensions.react';
 import actions         from '../constants/actions.react';
@@ -8,7 +8,6 @@ import AppDispatcher   from '../dispatcher/dispatcher.react';
 
 export default class Filter extends React.Component {
 
-    //mixins: [React.addons.LinkedStateMixin, IntlMixin],
     constructor(props, context){
 
         super(props, context);
@@ -24,27 +23,11 @@ export default class Filter extends React.Component {
 
         this.setState(state);
 
-        //AppDispatcher.dispatch({actionType:actions.expenseFiltered, data: this.state});
         this.props.onFilterChanged && this.props.onFilterChanged(this.state);
-    }
-
-    registerEvents(){
-
-        AppDispatcher.register((action) => {
-
-            switch(action.actionType)
-            {
-                case actions.copyToNewExpense:
-                    //_.fill(action.data);
-                    break;
-            }
-        });
-
     }
 
     componentDidMount() {
 
-        this.registerEvents();
         this.buildComponents();
     }
 

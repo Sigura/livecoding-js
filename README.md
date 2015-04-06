@@ -21,55 +21,77 @@ process.env.port or in server.js
 
 ### db
 project\nodeapp\knexfile.js
-> cd project
-> npm run db
 
+```bash
+cd project
+npm run db
+```
 ## setup
 NODE_ENV to development or production
 
-> cd project
-> gulp
-
+```bash
+cd project
+gulp
+```
 then
-> forever nodeapp/server.js
-
+```bash
+forever nodeapp/server.js
+```
 or
-> npm start
-
+```bash
+npm start
+```
 ## dev
 environment watch environment\Vagrantfile
 buld system gulp watch project\gulpfile.js
 
 for setup dev environment just
-> cd environment
-> .\environment\vagrant up
-
+```bash
+cd environment
+.\environment\vagrant up
+```
 then ssh to localhost:2222 (vagrant@vagrant) and run
-> gulp serve
+```bash
+gulp serve
+```
 or
-> npm start
+```bash
+npm start
+```
 or
-> npm test
+```bash
+npm test
+```
 and etc.
 
 you can change or import private key after vagrant up there:
-> environment\.vagrant\machines\default\virtualbox\
-
+```bash
+environment\.vagrant\machines\default\virtualbox\
+```
 ## web app
 by default:
-> http://localhost:3000/
-
+```bash
+http://localhost:3000/
+```
 ui test accessed in gulp serve:
-> http://localhost:3000/test/
-
+```bash
+http://localhost:3000/test/
+```
 casper test avalible:
-> cd project
-> casperjs test test/index.js
-
+```bash
+cd project
+casperjs test test/index.js
+```
+or
+```bash
+cd project
+npm test
+```
 ## install
-> cd project
-> npm run installAll
-
+```bash
+cd project
+npm run installAll
+```
 ## architecture
 ![project architecture](/docs/architecture.png "architecture of project")
 

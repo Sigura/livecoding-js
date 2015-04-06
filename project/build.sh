@@ -1,3 +1,3 @@
 npm run installAll
 gulp
-npm test
+npm run api-test

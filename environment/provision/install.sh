@@ -1,6 +1,6 @@
 #node,bower,git
+which git || apt-get -y install git-core
 which wget || apt-get -y install wget
-# apt-get -y install build-essential g++
 which nave || (
 
     echo " "
@@ -22,19 +22,31 @@ echo "*   usemain 0.10.35   *"
 echo "***********************"
 echo " "
 node -v | grep 0.10.35 || nave usemain 0.10.35
-which node || apt-add-repository ppa:chris-lea/node.js
-which node || apt-add update
+#which node || apt-add-repository ppa:chris-lea/node.js
+#which node || apt-add update
 which node || apt-get -y install nodejs
 which node || sudo apt-get -y install nodejs-legacy
 which npm || apt-get -y install npm
-# npm -g install npm@next
-which git || apt-get -y install git-core
-which gulp || npm install -g gulp
+#npm install -g npm
+# echo " "
+# echo "***********************"
+# echo "*   install node-gyp  *"
+# echo "* build-essential g++ *"
+# echo "***********************"
+# echo " "
+# apt-get -y install node-gyp build-essential g++
+echo " "
+echo "***********************"
+echo "*    install global   *"
+echo "*     dependancies    *"
+echo "***********************"
+echo " "
+#hich gulp || npm install -g gulp 
 which bower || npm install -g bower
 which knex || npm install -g knex
 which forever || npm install -g forever
 which babel || npm install -g babel
-which babel || npm install -g eslint babel-eslint
+which eslint || npm install -g eslint babel-eslint
 which phantomjs || npm install -g phantomjs
 which casperjs || npm install -g casperjs
 which react-tools || npm install -g react-tools

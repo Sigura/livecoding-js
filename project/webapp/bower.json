@@ -13,6 +13,7 @@
     "flux": "~2.0.2",
     "lodash": "~3.5.0",
     "localforage": "~1.2.2",
-    "intl": "~0.1.4"
+    "intl": "~0.1.4",
+    "react-router": "~0.13.2"
   }
 }

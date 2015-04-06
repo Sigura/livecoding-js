@@ -1,7 +1,7 @@
 'use strict';
 
-import React     from 'react';
-import ReactIntl from 'react-intl';
+//import React     from 'react';
+//import ReactIntl from 'react-intl';
 
 const defaultLang = 'en';
 let lang = defaultLang;//navigator.language || navigator.browserLanguage;

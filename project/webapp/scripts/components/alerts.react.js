@@ -1,7 +1,5 @@
 'use strict';
 
-import React           from 'react';
-import ReactIntl       from 'react-intl';
 import objectAssign    from 'object-assign';
 import Login           from './login.react';
 import Expenses        from './expenses.react';
@@ -17,6 +15,7 @@ export default class Alerts extends React.Component {
         super(props, context);
 
         this.state = this.getInitState();
+        this.registerEvents();
     }
 
     getInitState () {
@@ -26,24 +25,33 @@ export default class Alerts extends React.Component {
     componentDidMount () {
 
         this.mounted = true;
+    }
 
-        AppDispatcher.register((action) => {
+    componentWillUnmount() {
+        this.mounted = false;
+        this.listener && AppDispatcher.unregister(this.listener);
+    }
 
-            switch (action.actionType) {
-                case actions.expensesLoadError:
-                case actions.expenseInsertError:
-                case actions.expenseUpdateError:
-                case actions.expenseDeleteError:
-                    this.addErrors(action.data);
-                break;
-                case actions.expenseDeleted:
-                case actions.expensesLoaded:
-                case actions.expenseInserted:
-                    this.addAlert(action.actionType);
-                break;
+    registerEvents() {
 
-            }
-        });
+        this.listener = this.handleFluxEvents && AppDispatcher.register((action) => this.handleFluxEvents(action));
+    }
+
+    handleFluxEvents(action) {
+        switch (action.actionType) {
+            case actions.expensesLoadError:
+            case actions.expenseInsertError:
+            case actions.expenseUpdateError:
+            case actions.expenseDeleteError:
+                this.addErrors(action.data);
+            break;
+            case actions.expenseDeleted:
+            case actions.expensesLoaded:
+            case actions.expenseInserted:
+                this.addAlert(action.actionType);
+            break;
+
+        }
     }
 
     setupRemoveTimer (error) {

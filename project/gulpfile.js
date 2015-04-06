@@ -5,9 +5,25 @@ var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
 var server = require('gulp-develop-server');
+//var vinyl = require('vinyl-source-stream');
+var exec = require('child_process').exec;
 var reload = browserSync.reload;
 var port = 5000;
 var proxy = 3000;
+var test = {
+    /*eslint-disable handle-callback-err*/
+    output: function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+    },
+    /*eslint-enbale handle-callback-err*/
+    ui: function() {
+        exec('npm run ui-test', test.output);
+    },
+    api: function() {
+        exec('npm run api-test', test.output);
+    }
+};
 
 gulp.task('styles', function () {
     return gulp.src('webapp/styles/main.css')
@@ -86,11 +102,11 @@ gulp.task( 'server:restart', function() {
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist/*']));
 
-gulp.task('serve', ['styles', 'templates', 'fonts', 'jshint'], function () {
+gulp.task('serve', ['styles', 'templates', 'fonts'], function (/*cb*/) {
 
     server.listen( {
         path: './nodeapp/server.js',
-        //sexecArgv: [ '--harmony' ],
+        execArgv: [ '--harmony' ],
         verbose: true,
         env: {
           'serve': 'gulp',
@@ -106,20 +122,18 @@ gulp.task('serve', ['styles', 'templates', 'fonts', 'jshint'], function () {
             });
         }
     } );
-    gulp.watch( ['./nodeapp/**/*.js'], [ 'server:restart' ] );
+    gulp.watch( ['./nodeapp/**/*.js'], [ 'server:restart', test.api ] );
 
     // watch for changes
-    gulp.watch([
-        'webapp/*.html'
-    ], ['html']);
+    gulp.watch(['webapp/*.html'], ['html', test.ui]);
 
-    gulp.watch('webapp/styles/**/*.css', ['styles']);
+    gulp.watch('webapp/styles/**/*.css', ['styles', test.ui]);
     gulp.watch('webapp/fonts/**/*', ['fonts']);
-    gulp.watch('webapp/scripts/**/*.js', ['templates', reload]);
+    gulp.watch('webapp/scripts/**/*.js', ['templates', test.ui]);
     //gulp.watch('webapp/bower.json', ['wiredep', 'fonts']);
 });
 
-gulp.task('bundle', function () {
+gulp.task('bundle', ['jshint'], function () {
 
     var uglify = $.uglify();
     uglify.on('error', $.util.log);
@@ -136,7 +150,7 @@ gulp.task('bundle', function () {
     .pipe(gulp.dest('dist/scripts'));
 });
 
-gulp.task('templates', function () {
+gulp.task('templates', ['jshint'], function () {
 
     return gulp.src('webapp/scripts/main.react.js')
     .pipe($.browserify({
@@ -149,7 +163,7 @@ gulp.task('templates', function () {
 
 });
 
-gulp.task('build', ['bundle', 'html', 'images', 'fonts', 'extras', 'jshint'], function () {
+gulp.task('build', ['bundle', 'html', 'images', 'fonts', 'extras'], function () {
     return gulp.src('dist/**/*');//.pipe($.size({title: 'build', gzip: true}));
 });
 

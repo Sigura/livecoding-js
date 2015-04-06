@@ -1,7 +1,7 @@
 'use strict';
 
-import React           from 'react';
-import {FormattedMessage as L} from 'react-intl';
+//import React           from 'react';
+//import {FormattedMessage as L} from 'react-intl';
 import objectAssign    from 'object-assign';
 import Alerts          from './alerts.react';
 import GroupBy         from './groupByFilter.react';
@@ -27,21 +27,12 @@ export default class Expenses extends React.Component {
 
     getInitState() {
 
-        var gb = groupBy.All;
-        try{
-            gb = localStorage.groupBy || groupBy.All;
-
-            if(gb === 'undefined') {
-                    gb = groupBy.All;
-            }
-        }catch(e){ window.console && console.log && console.log(e); }
-
         return {
-            groupBy: gb,
+            groupBy: (this.props.params && this.props.params.groupBy) || groupBy.All,
             newExpense: {},
             expenses: [],
-            items: {'all': []},
-            groups: ['all'],
+            items: {[groupBy.All]: []},
+            groups: [groupBy.All],
             format: '',
             loading: true
         };
@@ -49,34 +40,43 @@ export default class Expenses extends React.Component {
 
     componentDidMount() {
 
-        var _ = this;
+        this.registerEvents();
+        !this.state.expenses.length && api.user.current && api.expenses.get();
+    }
 
-        AppDispatcher.register((action) => {
+    componentWillUnmount() {
+        this.listener && AppDispatcher.unregister(this.listener);
+    }
 
-            switch(action.actionType)
-            {
-                case actions.expenseUpdated:
-                    _.onUpdate(action.data);
-                break;
-                case actions.groupChanged:
-                    _.setState(action.data);
-                break;
-                case actions.expensesLoaded:
-                    _.dateLoaded(action.data);
-                break;
-                case actions.expenseInserted:
-                    _.addNewExpense(action.data);
-                break;
-                case actions.expenseDeleted:
-                    _.onDelete(action.data);
-                break;
-                case actions.expensesLoadError:
-                    _.dateLoaded([]);
-                break;
-            }
-        });
+    registerEvents() {
 
-        api.expenses.get();
+        this.listener = this.handleFluxEvents && AppDispatcher.register((action) => this.handleFluxEvents(action));
+    }
+
+    handleFluxEvents(action) {
+
+        switch(action.actionType)
+        {
+            case actions.sigIn:
+            case actions.userRegistered:
+                api.user.current && api.expenses.get();
+            break;
+            case actions.expenseUpdated:
+                this.onUpdate(action.data);
+            break;
+            case actions.expensesLoaded:
+                this.dataLoaded(action.data);
+            break;
+            case actions.expenseInserted:
+                this.addNewExpense(action.data);
+            break;
+            case actions.expenseDeleted:
+                this.onDelete(action.data);
+            break;
+            case actions.expensesLoadError:
+                this.dataLoaded([]);
+            break;
+        }
     }
 
     onUpdate(expense) {
@@ -116,7 +116,7 @@ export default class Expenses extends React.Component {
         }
     }
     //componentWillUnmount() { },
-    dateLoaded(list){
+    dataLoaded(list){
         var state = this.state;
         var _ = this;
         var expenses = state.expenses = state.expenses || [];
@@ -136,13 +136,19 @@ export default class Expenses extends React.Component {
         _.update(expenses);
     }
 
+    componentWillReceiveProps(obj){
+        let group = (obj.params && obj.params.groupBy) || groupBy.All;
+        this.setState({groupBy: group});
+        this.update(this.state.expenses, group);
+    }
+
     update(expenses, groupBy) {
-        expenses = this.sort(expenses);
-        var grouped = this.groupDictionary(expenses, groupBy);
-        localStorage.groupBy = groupBy;
+        groupBy = groupBy || this.state.groupBy;
+        expenses = this.sort(expenses || this.state.expenses);
+        let grouped = this.groupDictionary(expenses, groupBy);
 
         this.setState(grouped);
-        this.setState({loading: false});
+        this.setState({loading: false, groupBy: groupBy});
     }
 
     // simulateChange(ev){
@@ -180,14 +186,8 @@ export default class Expenses extends React.Component {
     }
 
     filterChanged (filter) {
-            //console.log('filter', filter);
-            api.expenses.get(filter);
-    }
-
-    changeGroupHandler(groupBy){
-        this.setState({groupBy: groupBy});
-
-        this.update(this.state.expenses, groupBy);
+        //console.log('filter', filter);
+        api.expenses.get(filter);
     }
 
     groupFormat(groupByLabel){
@@ -247,6 +247,9 @@ export default class Expenses extends React.Component {
         let years = (duration && duration.count('years')) || (len && 1) || 0;
         let yearAvg = (years && sum/years) || monthAvg || weekAvg || dayAvg;
         let width100P = {width: '100%'};
+        /*eslint-disable no-unused-vars*/
+        let L = ReactIntl.FormattedMessage;
+        /*eslint-enbale no-unused-vars*/
 
         return (
             <div className="expenses-list panel panel-default">
@@ -263,8 +266,8 @@ export default class Expenses extends React.Component {
                 <div className={cx({'panel-body': true, 'hide-element': state.loading})}>
                     <Alerts />
                     <div className="col-sm-8">
-                            <GroupBy groupBy={state.groupBy} onGroupChanged={_.changeGroupHandler.bind(_)} />
-                            <Filter onFilterChanged={_.filterChanged.bind(_)} />
+                        <GroupBy />
+                        <Filter onFilterChanged={_.filterChanged.bind(_)} />
                     </div>
                 </div>
                 <table className={cx({'table': true, 'table-hover': true, 'table-condensed': true, 'hide-element': state.loading})}>
@@ -289,6 +292,9 @@ export default class Expenses extends React.Component {
     }
 }
 
+Expenses.contextTypes = {
+    router: React.PropTypes.func
+};
 resourceContext.extend(Expenses);
 
 objectAssign(Expenses.prototype, extensions);

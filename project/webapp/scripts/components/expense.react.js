@@ -1,7 +1,5 @@
 'use strict';
 
-import React              from 'react';
-import {FormattedNumber}  from 'react-intl';
 import objectAssign       from 'object-assign';
 import api                from '../store/api.react';
 import AppDispatcher      from '../dispatcher/dispatcher.react';
@@ -21,10 +19,8 @@ export default class Expense extends React.Component {
     }
 
     componentDidMount () {
-        var _ = this;
-
-        _.setState(_.props.expense || {});
-        _.buildComponents();
+        this.setState(this.props.expense || {});
+        this.buildComponents();
     }
 
     componentDidUpdate (/*prevProps, prevState*/) {
@@ -32,10 +28,9 @@ export default class Expense extends React.Component {
     }
 
     buildComponents () {
-        var _ = this;
 
-        if (_.refs.Time) {
-            $(_.refs.Time.getDOMNode())
+        if (this.refs.Time) {
+            $(this.refs.Time.getDOMNode())
                 .timepicker({
                     minuteStep: 10,
                     appendWidgetTo: 'body',
@@ -44,10 +39,10 @@ export default class Expense extends React.Component {
                 }).on('changeTime.timepicker', (e) => this.setState({time: e.target.value}));
         }
 
-        if(_.refs.Date) {
-            $(_.refs.Date.getDOMNode())
+        if(this.refs.Date) {
+            $(this.refs.Date.getDOMNode())
                 .datetimepicker({format: 'YYYY-MM-DD'})
-                .on('dp.change', (e) => _.setState({date: e.target.value}));
+                .on('dp.change', (e) => this.setState({date: e.target.value}));
         }
     }
 
@@ -65,24 +60,22 @@ export default class Expense extends React.Component {
     }
 
     save () {
-        var _ = this;
-        var state = _.state;
-        var $save = $(_.refs.save.getDOMNode());
+        var state = this.state;
+        var $save = $(this.refs.save.getDOMNode());
         state.amount = Number(state.amount);
         $save.prop('disabled', true);
 
         api.expenses.update(state)
             .done(data => {
-                _.props.expense = data;
-                _.stopEdit();
+                this.props.expense = data;
+                this.stopEdit();
             })
             .always(() => $save.prop('disabled', false));
     }
 
     remove () {
-        var _ = this;
-        var state = _.state;
-        var $save = $(_.refs.remove.getDOMNode());
+        var state = this.state;
+        var $save = $(this.refs.remove.getDOMNode());
         state.amount = Number(state.amount);
         $save.button('loading');
 
@@ -102,9 +95,12 @@ export default class Expense extends React.Component {
     }
 
     render () {
-        var _ = this;
-        var state = _.state;
-        var cx = _.classSet;
+        let _ = this;
+        let state = _.state;
+        let cx = _.classSet;
+        /*eslint-disable no-unused-vars*/
+        let FormattedNumber = ReactIntl.FormattedNumber;
+        /*eslint-enbale no-unused-vars*/
 
         return (
             <tr className={cx({'expense-row': true, 'expense-edit': state.edit})} onDoubleClick={_.startEdit.bind(this)}>

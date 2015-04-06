@@ -9,7 +9,9 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "cd nodeapp && NODE_ENV=test ../node_modules/.bin/mocha && cd .. && casperjs test test/index.js",
+    "api-test": "cd nodeapp && NODE_ENV=test ../node_modules/.bin/mocha",
+    "ui-test": "casperjs test test/index.js",
+    "test": "npm run api-test && npm run ui-test",
     "start": "forever nodeapp/server.js",
     "installAll": "npm install && cd webapp && bower install && cd test && bower install",
     "dev": "gulp serve",
@@ -61,7 +63,6 @@
     "query-string": "^1.0.0",
     "react-tools": "^0.13.1",
     "reactify": "^1.0.0",
-    "selenium-webdriver": "^2.45.1",
     "strip-debug": "^1.0.1",
     "supertest": "^0.15.0",
     "supertest-as-promised": "^1.0.0",
@@ -86,6 +87,7 @@
     "pg": "^4.3.0",
     "react": "^0.13.1",
     "react-intl": "^1.2.0",
+    "react-router": "^0.13.2",
     "serve-favicon": "^2.2.0",
     "serve-static": "^1.9.1",
     "twix": "^0.6.2"

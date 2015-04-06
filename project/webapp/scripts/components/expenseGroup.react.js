@@ -1,7 +1,7 @@
 'use strict';
 
-import React              from 'react';
-import {FormattedNumber}  from 'react-intl';
+//import React              from 'react';
+//import {FormattedNumber}  from 'react-intl';
 import objectAssign       from 'object-assign';
 import Expense            from './expense.react';
 import AppDispatcher      from '../dispatcher/dispatcher.react';
@@ -31,6 +31,9 @@ export default class ExpenseGroup extends React.Component {
         let expenseList = expenses.map(function(expense) {
             return <Expense key={'expense-' + expense.id} expense={expense} />;
         });
+        /*eslint-disable no-unused-vars*/
+        let FormattedNumber = ReactIntl.FormattedNumber;
+        /*eslint-enbale no-unused-vars*/
         let summary = (
             <tr key={'group-total-' + _.props.groupBy + '-' + _.props.name + '-' + _.props.index} className="info group-summary">
                 <td colSpan="4">{moment(maxDate).format(_.props.format)}</td>

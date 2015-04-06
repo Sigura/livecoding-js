@@ -8,6 +8,7 @@ var utils = require('utils');
     // verbose: true                  // log messages will be printed out to the console
 // });
 var baseUrl = 'http://localhost:3000';
+var captureBasedir = 'test/result-capture/';
 
 casper.test.begin('auth & load expenses', function(test) {
 
@@ -51,7 +52,7 @@ casper.test.begin('auth & load expenses', function(test) {
         
     casper
         .waitForSelector('form.form-signin,.expenses-list', function() {
-            this.captureSelector('test-result-capture/0-form-list.png', 'html');
+            this.captureSelector(captureBasedir + '0-form-list.png', 'html');
         });
 
     casper
@@ -74,10 +75,10 @@ casper.test.begin('auth & load expenses', function(test) {
 
     casper
         .waitForSelector('.expenses-list', function() {
-            this.captureSelector('test-result-capture/1-list-load-ok.png', 'html');
+            this.captureSelector(captureBasedir + '1-list-load-ok.png', 'html');
 
         }, function () {
-            this.captureSelector('test-result-capture/1-list-load-fail.png', 'html');
+            this.captureSelector(captureBasedir + '1-list-load-fail.png', 'html');
 
             this.echo(".expenses-list not found\n" + this.getHTML()).exit();
         });

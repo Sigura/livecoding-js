@@ -48,6 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rsync__args: ["--verbose", "--archive", "--delete", "-z"],
     rsync__auto: true
   config.vm.synced_folder "../project/dist", "/home/vagrant/project/dist"
+  config.vm.synced_folder "../project/test/result-capture", "/home/vagrant/project/test/result-capture"
 
   
   # config.sync.host_folder = "../project"  #relative to the folder your Vagrantfile is in

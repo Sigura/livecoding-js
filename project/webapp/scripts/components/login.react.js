@@ -1,8 +1,8 @@
 'use strict';
 
 import objectAssign    from 'object-assign';
-import React           from 'react';
-import {FormattedMessage as L} from 'react-intl';
+//import React           from 'react';
+//import {FormattedMessage as L} from 'react-intl';
 import api             from '../store/api.react';
 import resourceContext from '../utils/context.react';
 import extensions      from '../utils/extensions.react';
@@ -14,25 +14,36 @@ export default class Login extends React.Component {
     constructor(props, context){
 
         super(props, context);
+
         this.state = {};
     }
 
-    componentDidMount() {
+    componentDidMount () {
+        this.registerEvents();
+    }
 
-        AppDispatcher.register((action) => {
+    componentWillUnmount() {
+        this.listener && AppDispatcher.unregister(this.listener);
+    }
 
-            switch(action.actionType)
-            {
-                case actions.sigIn:
-                case actions.userRegistered:
-                    this.updateState(action.data);
-                break;
-                case actions.loginFailed:
-                case actions.registerFailed:
-                    this.error(action.data);
-                break;
-            }
-        });
+    registerEvents() {
+
+        this.listener = this.handleFluxEvents && AppDispatcher.register((action) => this.handleFluxEvents(action));
+    }
+
+    handleFluxEvents(action) {
+
+        switch(action.actionType)
+        {
+            //case actions.sigIn:
+            //case actions.userRegistered:
+            //    this.updateState(action.data);
+            //break;
+            case actions.loginFailed:
+            case actions.registerFailed:
+                this.error(action.data);
+            break;
+        }
 
     }
 
@@ -44,7 +55,6 @@ export default class Login extends React.Component {
         state.operationStart = false;
 
         this.setState(state);
-        this.props.onLogin({id: state.id, name: state.name, token: state.token});
     }
 
     error(res) {
@@ -141,6 +151,9 @@ export default class Login extends React.Component {
         let errorName = state.errors && _.renderError(state.errors.name);
         let errorPassword = state.errors && _.renderError(state.errors.password);
         let cx = _.classSet;
+        /*eslint-disable no-unused-vars*/
+        let L = ReactIntl.FormattedMessage;
+        /*eslint-enbale no-unused-vars*/
 
         return (
             <form className="form-signin">
