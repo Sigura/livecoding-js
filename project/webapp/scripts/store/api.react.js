@@ -83,6 +83,8 @@ let api = {
   }
 };
 
+window.getCurrentUser = () => api.user.current;
+
 AppDispatcher.register(action => {
   switch(action.actionType)
   {

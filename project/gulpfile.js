@@ -15,7 +15,7 @@ gulp.task('styles', function () {
         .pipe($.autoprefixer('last 1 version'))
         .pipe($.sourcemaps.write())
         .pipe(gulp.dest('.tmp/styles'))
-        .pipe(reload({stream: true}));
+        .pipe(reload({stream: true, once: true}));
 });
 
 gulp.task('jshint', function () {
@@ -111,10 +111,10 @@ gulp.task('serve', ['styles', 'templates', 'fonts', 'jshint'], function () {
     // watch for changes
     gulp.watch([
         'webapp/*.html'
-    ], [reload]);
+    ], ['html']);
 
     gulp.watch('webapp/styles/**/*.css', ['styles']);
-    gulp.watch('webapp/fonts/**/*', ['fonts', reload]);
+    gulp.watch('webapp/fonts/**/*', ['fonts']);
     gulp.watch('webapp/scripts/**/*.js', ['templates', reload]);
     //gulp.watch('webapp/bower.json', ['wiredep', 'fonts']);
 });

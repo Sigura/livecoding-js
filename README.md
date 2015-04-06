@@ -62,9 +62,19 @@ by default:
 ui test accessed in gulp serve:
 > http://localhost:3000/test/
 
+casper test avalible:
+> cd project
+> casperjs test test/index.js
+
 ## install
 > cd project
 > npm run installAll
+
+## architecture
+![project architecture](/docs/architecture.png "architecture of project")
+
+## description
+![project description](/docs/description.png "description of project")
 
 ### Window$ Dev
 

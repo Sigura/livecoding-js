@@ -142,7 +142,6 @@ export default class Login extends React.Component {
         let errorPassword = state.errors && _.renderError(state.errors.password);
         let cx = _.classSet;
 
-        /*jshint ignore:start */
         return (
             <form className="form-signin">
                 <div className="row"><h2 className="form-signin-heading col-md-12"><L message={_.l10n('LoginFormTitle')}/></h2></div>
@@ -152,18 +151,17 @@ export default class Login extends React.Component {
                 </div>
                 <div className="row"><div className={cx({'col-md-12': true, 'form-group': true, 'has-success': state.errors && !state.errors.password, 'has-error': state.errors && state.errors.password})}>
                         <label htmlFor="password" className="sr-only">Password</label>
-                        <input type="password" className="form-control" placeholder="Password" required valueLink={_.valueLinkBuilder('password')} /></div></div>
+                        <input type="password" name="password" className="form-control" placeholder="Password" required valueLink={_.valueLinkBuilder('password')} /></div></div>
                 <div className="row">
                     <div className="error-list col-md-5">{error}{errorName}{errorPassword}</div>
                     <div className="col-md-7" role="group">
                             <div className="pull-right btn-group">
-                                <button className="btn btn-lg btn-primary" onClick={_.signInHandler.bind(_)} type="button" data-loading-text="Wait response..." ref="signInButton">Sign in</button>
-                                <button className="btn btn-lg pull-right" type="button" onClick={_.registerHandler.bind(_)} data-loading-text="Wait response..." ref="registerButton">Register</button>
+                                <button className="btn btn-lg btn-primary signIn-button" onClick={_.signInHandler.bind(_)} type="button" data-loading-text="Wait response..." ref="signInButton">Sign in</button>
+                                <button className="btn btn-lg pull-right register-button" type="button" onClick={_.registerHandler.bind(_)} data-loading-text="Wait response..." ref="registerButton">Register</button>
                             </div></div>
                 </div>
             </form>
         );
-        /*jshint ignore:end */
     }
 
 }

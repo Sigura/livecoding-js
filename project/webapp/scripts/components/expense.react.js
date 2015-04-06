@@ -105,7 +105,7 @@ export default class Expense extends React.Component {
         var _ = this;
         var state = _.state;
         var cx = _.classSet;
-        /*jshint ignore:start */
+
         return (
             <tr className={cx({'expense-row': true, 'expense-edit': state.edit})} onDoubleClick={_.startEdit.bind(this)}>
                 <td>
@@ -131,7 +131,6 @@ export default class Expense extends React.Component {
                 <td>{state.edit && <input type="text" className="form-control hidden-print" placeholder="Comment" valueLink={_.valueLinkBuilder('comment')} />}<span className={cx({'visible-print-inline': state.edit, 'amount-value': true})}>{state.comment}</span></td>
             </tr>
         );
-        /*jshint ignore:end */
     }
 }
 

@@ -18,19 +18,6 @@ export default class ExpenseGroup extends React.Component {
         this.state = {expenses: [], groupBy: 'all'};
     }
 
-    componentDidMount() {
-
-        AppDispatcher.register((action) => {
-            switch(action.actionType)
-            {
-                case actions.groupChanged:
-                    console.log(action.data);
-                break;
-            }
-        });
-
-    }
-
     render () {
         let _ = this;
         let expenses = _.props.expenses;

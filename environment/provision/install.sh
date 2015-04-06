@@ -35,6 +35,8 @@ which knex || npm install -g knex
 which forever || npm install -g forever
 which babel || npm install -g babel
 which babel || npm install -g eslint babel-eslint
+which phantomjs || npm install -g phantomjs
+which casperjs || npm install -g casperjs
 which react-tools || npm install -g react-tools
 
 #postgres

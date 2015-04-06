@@ -9,7 +9,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "cd nodeapp && NODE_ENV=test ../node_modules/.bin/mocha",
+    "test": "cd nodeapp && NODE_ENV=test ../node_modules/.bin/mocha && cd .. && casperjs test test/index.js",
     "start": "forever nodeapp/server.js",
     "installAll": "npm install && cd webapp && bower install && cd test && bower install",
     "dev": "gulp serve",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://git.toptal.com/Artur-Dudnik/artur-dudnik"
+    "url": "https://github.com/Sigura/livecoding-js"
   },
   "devDependencies": {
     "babel": "^4.7.16",
@@ -61,6 +61,7 @@
     "query-string": "^1.0.0",
     "react-tools": "^0.13.1",
     "reactify": "^1.0.0",
+    "selenium-webdriver": "^2.45.1",
     "strip-debug": "^1.0.1",
     "supertest": "^0.15.0",
     "supertest-as-promised": "^1.0.0",
