@@ -38,15 +38,16 @@ which npm || apt-get -y install npm
 echo " "
 echo "***********************"
 echo "*    install global   *"
-echo "*     dependancies    *"
+echo "*   dev dependancies  *"
 echo "***********************"
 echo " "
-#hich gulp || npm install -g gulp 
+which gulp || npm install -g gulp 
 which bower || npm install -g bower
 which knex || npm install -g knex
 which forever || npm install -g forever
 which babel || npm install -g babel
 which eslint || npm install -g eslint babel-eslint
+apt-get -y install libfontconfig
 which phantomjs || npm install -g phantomjs
 which casperjs || npm install -g casperjs
 which react-tools || npm install -g react-tools
