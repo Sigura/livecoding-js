@@ -10,7 +10,7 @@ import actions         from '../constants/actions.react';
 import resources       from '../constants/resources.react';
 
 export default class Alerts extends React.Component {
-    constructor(props, context){
+    constructor (props, context) {
 
         super(props, context);
 

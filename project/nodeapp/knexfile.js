@@ -10,6 +10,7 @@ module.exports = {
         tableName: 'knex_migrations'
     }
   },
+
   test: {
     client: 'postgres',
     connection: 'postgres://vagrant@localhost/expenses_test',
@@ -20,8 +21,8 @@ module.exports = {
         tableName: 'knex_migrations'
     }
   },
+
   production: {
-    // Update with your config settings.
     client: 'postgres',
     connection: 'postgres://USER@DBSERVER/expenses',
     pool: {

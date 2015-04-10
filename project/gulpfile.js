@@ -123,9 +123,12 @@ gulp.task('serve', ['styles', 'templates', 'fonts'], function (/*cb*/) {
             });
         }
     } );
-    gulp.watch( ['./nodeapp/**/*.js'], [ 'server:restart', test.api ] );
 
     // watch for changes
+    gulp.watch( ['./nodeapp/**/*.js'], [ 'server:restart', test.api ] );
+
+    gulp.watch( ['gulpfile.js'], [ 'styles', 'templates', 'fonts', 'server:restart'/*, test.api, test.ui*/ ] );
+
     gulp.watch(['webapp/*.html'], ['html', test.ui]);
 
     gulp.watch('webapp/styles/**/*.css', ['styles', test.ui]);
@@ -142,7 +145,7 @@ gulp.task('bundle', ['jshint'], function () {
     return gulp.src('webapp/scripts/main.react.js')
     .pipe($.browserify({
         insertGlobals: false,
-        transform: ['babelify', 'reactify'],
+        transform: ['babelify'/*, 'reactify'*/],
         debug: false
     }))
     .pipe($.stripDebug())
@@ -156,7 +159,7 @@ gulp.task('templates', ['jshint'], function () {
     return gulp.src('webapp/scripts/main.react.js')
     .pipe($.browserify({
         insertGlobals: false,
-        transform: ['babelify', 'reactify'],
+        transform: ['babelify'/*, 'reactify'*/],
         debug: true
     }))
     .pipe(gulp.dest('.tmp/scripts'))
