@@ -100,7 +100,7 @@ export default class Expense extends React.Component {
         let cx = _.classSet;
         /*eslint-disable no-unused-vars*/
         let FormattedNumber = ReactIntl.FormattedNumber;
-        /*eslint-enbale no-unused-vars*/
+        /*eslint-enable no-unused-vars*/
 
         return (
             <tr className={cx({'expense-row': true, 'expense-edit': state.edit})} onDoubleClick={_.startEdit.bind(this)}>

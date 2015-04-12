@@ -1,7 +1,5 @@
 'use strict';
 
-//import React              from 'react';
-//import {FormattedNumber}  from 'react-intl';
 import objectAssign       from 'object-assign';
 import Expense            from './expense.react';
 import AppDispatcher      from '../dispatcher/dispatcher.react';
@@ -9,7 +7,9 @@ import resourceContext    from '../utils/context.react';
 import groupBy            from '../constants/groupBy.react';
 import actions            from '../constants/actions.react';
 
-export default class ExpenseGroup extends React.Component {
+export default
+//noinspection JSUnusedGlobalSymbols
+class ExpenseGroup extends React.Component {
 
     constructor(props, context){
 

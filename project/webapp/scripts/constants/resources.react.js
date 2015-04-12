@@ -26,7 +26,8 @@ let locales = [{
         Total: '{length, plural, one{# expense} other{# expenses}}, Sum:{sum, number, USD}, AVG: {avg, number, USD}, AVG by day:{dayAvg, number, USD}({days}), by week:{weekAvg, number, USD}({weeks}), by month:{monthAvg, number, USD}({months}), by year:{yearAvg, number, USD}({years})',
         expenseDeleted: 'Expense deleted',
         expensesLoaded: 'Expenses data loaded',
-        expenseInserted: 'Expense inserted'
+        expenseInserted: 'Expense inserted',
+        Error: '{error}{errorName}{errorPassword}'
     }
 },
 {
