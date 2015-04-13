@@ -67,7 +67,7 @@ let api = {
         .fail(res => AppDispatcher.dispatch({actionType: actions.expenseUpdateError, data: res.responseJSON}))
         .done(data => AppDispatcher.dispatch({actionType: actions.expenseUpdated, data: data}));
     },
-    'delete' (expense) {
+    ['delete'] (expense) {
       return $.ajax('/api/expenses', {
           dataType: 'json',
           headers: {
@@ -88,7 +88,7 @@ window.getCurrentUser = () => api.user.current;
 AppDispatcher.register(action => {
   switch(action.actionType)
   {
-    case actions.sigIn:
+    case actions.signIn:
     case actions.userRegistered:
       api.user.current = action.data;
     break;

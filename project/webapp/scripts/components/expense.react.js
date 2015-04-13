@@ -11,7 +11,7 @@ import groupBy            from '../constants/groupBy.react';
 export default class Expense extends React.Component {
 
     constructor (props, context) {
-        super.call(this, props, context);
+        super(props, context);
         this.state = {edit: false};
         this.props.expense = this.props.expense || {};
     }
@@ -99,7 +99,7 @@ export default class Expense extends React.Component {
         let cx = _.classSet;
         /*eslint-disable no-unused-vars*/
         let FormattedNumber = ReactIntl.FormattedNumber;
-        /*eslint-enbale no-unused-vars*/
+        /*eslint-enable no-unused-vars*/
 
         return (
             <tr className={cx({'expense-row': true, 'expense-edit': state.edit})} onDoubleClick={_.startEdit.bind(this)}>

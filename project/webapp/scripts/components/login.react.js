@@ -84,7 +84,7 @@ export default class Login extends React.Component {
 
         [this.refs.signInButton, this.refs.registerButton].each(
             (item) =>
-                $(item.getDOMNode()).button(!_.state.operationStart    ? 'reset' : 'loading')
+                $(item.getDOMNode()).button(!this.state.operationStart    ? 'reset' : 'loading')
         );
     }
 
@@ -125,7 +125,7 @@ export default class Login extends React.Component {
         this.setState(this.state);
     }
 
-    renderError(error) {
+    static renderError(error) {
         return error ? (
             <div className="alert alert-danger" role="alert">
                 <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -138,13 +138,13 @@ export default class Login extends React.Component {
     render() {
         let _ = this;
         let state = _.state;
-        let error = _.renderError(state.error);
-        let errorName = state.errors && _.renderError(state.errors.name);
-        let errorPassword = state.errors && _.renderError(state.errors.password);
+        let error = Login.renderError(state.error);
+        let errorName = state.errors && Login.renderError(state.errors.name);
+        let errorPassword = state.errors && Login.renderError(state.errors.password);
         let cx = _.classSet;
         /*eslint-disable no-unused-vars*/
         let L = ReactIntl.FormattedMessage;
-        /*eslint-enbale no-unused-vars*/
+        /*eslint-enable no-unused-vars*/
 
         return (
             <form className="form-signin">
@@ -157,7 +157,7 @@ export default class Login extends React.Component {
                         <label htmlFor="password" className="sr-only">Password</label>
                         <input type="password" name="password" className="form-control" placeholder="Password" required valueLink={_.valueLinkBuilder('password')} /></div></div>
                 <div className="row">
-                    <div className="error-list col-md-5">{error}{errorName}{errorPassword}</div>
+                    <div className="error-list col-md-5"><L message={_.l10n('Error')} error={error} errorName={errorName} errorPassword={errorPassword} /></div>
                     <div className="col-md-7" role="group">
                             <div className="pull-right btn-group">
                                 <button className="btn btn-lg btn-primary signIn-button" onClick={_.signInHandler.bind(_)} type="button" data-loading-text="Wait response..." ref="signInButton">Sign in</button>

@@ -14,11 +14,11 @@ export default class Alerts extends React.Component {
 
         super(props, context);
 
-        this.state = this.getInitState();
+        this.state = Alerts.getInitState();
         this.registerEvents();
     }
 
-    getInitState () {
+    static getInitState () {
         return {alerts: []};
     }
 
@@ -99,10 +99,8 @@ export default class Alerts extends React.Component {
           </div>);
     }
 
-    l10n (messageName) {
-        return resources.messages[messageName];
-    }
-
 }
+
+resourceContext.extend(Alerts);
 
 objectAssign(Alerts.prototype, extensions);

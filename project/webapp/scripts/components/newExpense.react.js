@@ -81,7 +81,7 @@ export default class NewExpense extends React.Component {
             time: null,
             amount: null,
             description: null,
-            ccomment: null
+            comment: null
         });
     }
 

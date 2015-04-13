@@ -49,7 +49,7 @@ export default class Expenses extends React.Component {
     handleFluxEvents(action) {
         switch(action.actionType)
         {
-            case actions.sigIn:
+            case actions.signIn:
             case actions.userRegistered:
                 api.user.current && api.expenses.get();
             break;
@@ -72,45 +72,36 @@ export default class Expenses extends React.Component {
     }
 
     onUpdate(expense) {
-        var _ = this;
-        var state = _.state;
-
-        var index = _.findExpense(expense);
+        let state = this.state;
+        let index = this.findExpense(expense);
 
         if(index > -1 ) {
             state.expenses.splice(index, 1, expense);
 
-            _.update(state.expenses);
+            this.update(state.expenses);
         }
     }
 
     findExpense (expense) {
-        var _ = this;
-        var state = _.state;
+        let state = this.state;
+        let o = state.expenses.filter((item) => item.id === expense.id).pop();
 
-        var o = state.expenses.filter((item) => item.id === expense.id).pop();
-
-        var index = state.expenses.indexOf(o);
-
-        return index;
+        return state.expenses.indexOf(o);
     }
 
-    onDelete (expense) {
-        var _ = this;
-        var state = _.state;
-
-        var index = _.findExpense(expense);
+    onDelete(expense) {
+        let state = this.state;
+        let index = this.findExpense(expense);
 
         if(index > -1 ) {
             state.expenses.splice(index, 1);
 
-            _.update(state.expenses);
+            this.update(state.expenses);
         }
     }
 
     dataLoaded (list) {
         var state = this.state;
-        var _ = this;
         var expenses = state.expenses = state.expenses || [];
         expenses.length && expenses.splice(0, expenses.length);
 
@@ -125,7 +116,7 @@ export default class Expenses extends React.Component {
             });
         });
 
-        _.update(expenses);
+        this.update(expenses);
     }
 
     componentWillReceiveProps(obj){
@@ -136,7 +127,7 @@ export default class Expenses extends React.Component {
 
     update(expenses, groupBy) {
         groupBy = groupBy || this.state.groupBy;
-        expenses = this.sort(expenses || this.state.expenses);
+        expenses = Expenses.sort(expenses || this.state.expenses);
         let grouped = this.groupDictionary(expenses, groupBy);
 
         this.setState(grouped);
@@ -148,7 +139,7 @@ export default class Expenses extends React.Component {
         // ev.stopImmediatePropagation();
     // }
 
-    sort (expenses) {
+    static sort (expenses) {
 
         expenses.sort((a, b) => {
             if(a.date > b.date){
@@ -177,11 +168,12 @@ export default class Expenses extends React.Component {
         this.update(state.expenses);
     }
 
-    filterChanged (filter) {
+    static filterChanged (filter) {
+        //console.log('filter', filter);
         api.expenses.get(filter);
     }
 
-    groupFormat(groupByLabel){
+    static groupFormat(groupByLabel){
         var groupFormat = null;
         switch(groupByLabel){
             case groupBy.Week:
@@ -198,9 +190,8 @@ export default class Expenses extends React.Component {
     }
 
     groupDictionary(expenses, groupBy) {
-        var _ = this;
-        var state = _.state;
-        var groupDictionary, groups = [], groupFormat = _.groupFormat(groupBy || state.groupBy);
+        var state = this.state;
+        var groupDictionary, groups = [], groupFormat = Expenses.groupFormat(groupBy || state.groupBy);
 
         if(groupFormat) {
             groupDictionary = {};
@@ -215,7 +206,7 @@ export default class Expenses extends React.Component {
         return groupDictionary ? {items: groupDictionary, groups: groups, format: groupFormat} : {items: {'all': state.expenses}, groups: ['all'], format: ''};
     }
 
-    logOut(){
+    static logOut(){
         AppDispatcher.dispatch({actionType: actions.logOut});
     }
 
@@ -240,12 +231,12 @@ export default class Expenses extends React.Component {
         let width100P = {width: '100%'};
         /*eslint-disable no-unused-vars*/
         let L = ReactIntl.FormattedMessage;
-        /*eslint-enbale no-unused-vars*/
+        /*eslint-enable no-unused-vars*/
 
         return (
             <div className="expenses-list panel panel-default">
                 <div className="panel-heading">
-                    <div className="btn-toolbar pull-right hidden-print"><a className="btn btn-default logout" href="javascript:void(0);" onClick={_.logOut.bind(_)}>Logout</a></div>
+                    <div className="btn-toolbar pull-right hidden-print"><a className="btn btn-default logout" href="javascript:void(0);" onClick={Expenses.logOut.bind(_)}>Logout</a></div>
                     <h2><L message={_.l10n('Expenses')}/></h2>
                 </div>
                 <div className={cx({'panel-body': true, 'hidden-print': true, 'hide-element': !state.loading})}>
@@ -258,7 +249,7 @@ export default class Expenses extends React.Component {
                     <Alerts />
                     <div className="col-sm-8">
                         <GroupBy />
-                        <Filter onFilterChanged={_.filterChanged.bind(_)} />
+                        <Filter onFilterChanged={Expenses.filterChanged} />
                     </div>
                 </div>
                 <table className={cx({'table': true, 'table-hover': true, 'table-condensed': true, 'hide-element': state.loading})}>

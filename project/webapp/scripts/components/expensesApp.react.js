@@ -35,7 +35,7 @@ export default class ExpensesApp extends React.Component {
     handleFluxEvents(action) {
         switch(action.actionType)
         {
-            case actions.sigIn:
+            case actions.signIn:
             case actions.userRegistered:
                 this.logIn(action.data);
             break;

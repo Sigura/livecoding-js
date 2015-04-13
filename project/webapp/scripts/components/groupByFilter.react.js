@@ -16,7 +16,7 @@ export default class GroupByFilter extends React.Component {
         this.state = {};
     }
 
-    render(){
+    render () {
         /*eslint-disable no-unused-vars*/
         let Link = ReactRouter.Link;
         /*eslint-enable no-unused-vars*/

@@ -5,13 +5,13 @@
  * @author Contributors: https://github.com/cjohansen/Sinon.JS/blob/master/AUTHORS
  *
  * (The BSD License)
- * 
+ *
  * Copyright (c) 2010-2014, Christian Johansen, christian@cjohansen.no
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright notice,
  *       this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above copyright notice,
@@ -20,7 +20,7 @@
  *     * Neither the name of Christian Johansen nor the names of his contributors
  *       may be used to endorse or promote products derived from this software
  *       without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -44,7 +44,7 @@
     root.sinon = factory();
   }
 }(this, function () {
-  var samsam, formatio;
+  var samsam, formatio, lolex;
   (function () {
                 function define(mod, deps, fn) {
                   if (mod == "samsam") {
@@ -81,7 +81,7 @@
 
     /**
      * @name samsam.isArguments
-     * @param Object object
+     * @param object object
      *
      * Returns ``true`` if ``object`` is an ``arguments`` object,
      * ``false`` otherwise.
@@ -104,7 +104,7 @@
 
     /**
      * @name samsam.isElement
-     * @param Object object
+     * @param object object
      *
      * Returns ``true`` if ``object`` is a DOM element node. Unlike
      * Underscore.js/lodash, this function will return ``false`` if ``object``
@@ -124,13 +124,14 @@
 
     /**
      * @name samsam.keys
-     * @param Object object
+     * @param object object
      *
      * Return an array of own property names.
      */
     function keys(object) {
         var ks = [], prop;
         for (prop in object) {
+            //noinspection JSUnfilteredForInLoop
             if (o.hasOwnProperty.call(object, prop)) { ks.push(prop); }
         }
         return ks;
@@ -138,7 +139,7 @@
 
     /**
      * @name samsam.isDate
-     * @param Object value
+     * @param value
      *
      * Returns true if the object is a ``Date``, or *date-like*. Duck typing
      * of date objects work by checking that the object has a ``getTime``
@@ -152,7 +153,7 @@
 
     /**
      * @name samsam.isNegZero
-     * @param Object value
+     * @param value
      *
      * Returns ``true`` if ``value`` is ``-0``.
      */
@@ -162,8 +163,8 @@
 
     /**
      * @name samsam.equal
-     * @param Object obj1
-     * @param Object obj2
+     * @param obj1
+     * @param obj2
      *
      * Returns ``true`` if two objects are strictly equal. Compared to
      * ``===`` there are two exceptions:
@@ -180,8 +181,8 @@
 
     /**
      * @name samsam.deepEqual
-     * @param Object obj1
-     * @param Object obj2
+     * @param obj1
+     * @param obj2
      *
      * Deep equal comparison. Two values are "deep equal" if:
      *
@@ -461,7 +462,7 @@
     module.exports = m(require("samsam"));
 }) || function (m) { this.formatio = m(this.samsam); }
 )(function (samsam) {
-    
+
     var formatio = {
         excludeConstructors: ["Object", /^.$/],
         quoteStrings: true,
@@ -564,7 +565,7 @@
         processed.push(array);
         var pieces = [];
         var i, l;
-        l = (this.limitChildrenCount > 0) ? 
+        l = (this.limitChildrenCount > 0) ?
             Math.min(this.limitChildrenCount, array.length) : array.length;
 
         for (i = 0; i < l; ++i) {
@@ -581,10 +582,10 @@
         processed = processed || [];
         processed.push(object);
         indent = indent || 0;
-        var pieces = [], properties = samsam.keys(object).sort();
+        var pieces = [], properties = Expenses.sort();
         var length = 3;
         var prop, str, obj, i, k, l;
-        l = (this.limitChildrenCount > 0) ? 
+        l = (this.limitChildrenCount > 0) ?
             Math.min(this.limitChildrenCount, properties.length) : properties.length;
 
         for (i = 0; i < l; ++i) {
@@ -1430,7 +1431,7 @@ var sinon = (function () {
         };
 
         sinon.orderByFirstCall = function (spies) {
-            return spies.sort(function (a, b) {
+            return Expenses.sort(function (a, b) {
                 // uuid, won't ever be equal
                 var aCall = a.getCall(0);
                 var bCall = b.getCall(0);
