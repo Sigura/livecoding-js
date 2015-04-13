@@ -1,7 +1,5 @@
 'use strict';
 
-//import React           from 'react';
-//import {FormattedMessage as L} from 'react-intl';
 import objectAssign    from 'object-assign';
 import Alerts          from './alerts.react';
 import GroupBy         from './groupByFilter.react';
@@ -19,14 +17,11 @@ import extensions      from '../utils/extensions.react';
 export default class Expenses extends React.Component {
 
     constructor(props, context){
-
         super(props, context);
-
         this.state = this.getInitState();
     }
 
     getInitState() {
-
         return {
             groupBy: (this.props.params && this.props.params.groupBy) || groupBy.All,
             newExpense: {},
@@ -39,7 +34,6 @@ export default class Expenses extends React.Component {
     }
 
     componentDidMount() {
-
         this.registerEvents();
         !this.state.expenses.length && api.user.current && api.expenses.get();
     }
@@ -49,12 +43,10 @@ export default class Expenses extends React.Component {
     }
 
     registerEvents() {
-
         this.listener = this.handleFluxEvents && AppDispatcher.register((action) => this.handleFluxEvents(action));
     }
 
     handleFluxEvents(action) {
-
         switch(action.actionType)
         {
             case actions.sigIn:
@@ -103,7 +95,7 @@ export default class Expenses extends React.Component {
         return index;
     }
 
-    onDelete(expense) {
+    onDelete (expense) {
         var _ = this;
         var state = _.state;
 
@@ -115,8 +107,8 @@ export default class Expenses extends React.Component {
             _.update(state.expenses);
         }
     }
-    //componentWillUnmount() { },
-    dataLoaded(list){
+
+    dataLoaded (list) {
         var state = this.state;
         var _ = this;
         var expenses = state.expenses = state.expenses || [];
@@ -154,7 +146,7 @@ export default class Expenses extends React.Component {
     // simulateChange(ev){
         // React.addons.TestUtils.simulateNativeEventOnNode('topInput', ev.target, {type:'input', target: ev.target});
         // ev.stopImmediatePropagation();
-    // },
+    // }
 
     sort (expenses) {
 
@@ -186,7 +178,6 @@ export default class Expenses extends React.Component {
     }
 
     filterChanged (filter) {
-        //console.log('filter', filter);
         api.expenses.get(filter);
     }
 

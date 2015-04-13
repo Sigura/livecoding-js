@@ -11,9 +11,7 @@ import groupBy            from '../constants/groupBy.react';
 export default class Expense extends React.Component {
 
     constructor (props, context) {
-
-        super(props, context);
-
+        super.call(this, props, context);
         this.state = {edit: false};
         this.props.expense = this.props.expense || {};
     }
@@ -62,7 +60,8 @@ export default class Expense extends React.Component {
     save () {
         var state = this.state;
         var $save = $(this.refs.save.getDOMNode());
-        state.amount = Number(state.amount);
+
+	state.amount = Number(state.amount);
         $save.prop('disabled', true);
 
         api.expenses.update(state)
@@ -76,9 +75,9 @@ export default class Expense extends React.Component {
     remove () {
         var state = this.state;
         var $save = $(this.refs.remove.getDOMNode());
-        state.amount = Number(state.amount);
-        $save.button('loading');
 
+	state.amount = Number(state.amount);
+        $save.button('loading');
         api.expenses.delete(state)
             .always(() => $save.button('reset'));
     }

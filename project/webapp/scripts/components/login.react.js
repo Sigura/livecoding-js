@@ -1,8 +1,6 @@
 'use strict';
 
 import objectAssign    from 'object-assign';
-//import React           from 'react';
-//import {FormattedMessage as L} from 'react-intl';
 import api             from '../store/api.react';
 import resourceContext from '../utils/context.react';
 import extensions      from '../utils/extensions.react';
@@ -35,10 +33,6 @@ export default class Login extends React.Component {
 
         switch(action.actionType)
         {
-            //case actions.sigIn:
-            //case actions.userRegistered:
-            //    this.updateState(action.data);
-            //break;
             case actions.loginFailed:
             case actions.registerFailed:
                 this.error(action.data);
@@ -59,10 +53,10 @@ export default class Login extends React.Component {
 
     error(res) {
 
-        var _ = this;
-        var error = res && (res.responseJSON || res).error;
-        var nameError = _.errorMessageByField(res, 'name');
-        var passwordError = _.errorMessageByField(res, 'password');
+        let _ = this;
+        let error = res && (res.responseJSON || res).error;
+        let nameError = _.errorMessageByField(res, 'name');
+        let passwordError = _.errorMessageByField(res, 'password');
 
         if(nameError || passwordError){
             _.state.errors = {
@@ -81,17 +75,14 @@ export default class Login extends React.Component {
 
     signInHandler(/*event*/) {
 
-        var _ = this;
+        this.clearState();
 
-        _.clearState();
-
-        api.user.signIn(_.state);
+        api.user.signIn(this.state);
     }
 
     toggleButtons() {
-        var _ = this;
 
-        [_.refs.signInButton, _.refs.registerButton].each(
+        [this.refs.signInButton, this.refs.registerButton].each(
             (item) =>
                 $(item.getDOMNode()).button(!_.state.operationStart    ? 'reset' : 'loading')
         );
