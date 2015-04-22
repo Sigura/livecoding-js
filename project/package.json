@@ -12,7 +12,7 @@
     "api-test": "cd nodeapp && NODE_ENV=test ../node_modules/.bin/mocha",
     "ui-test": "casperjs test test/index.js",
     "test": "npm run api-test && npm run ui-test",
-    "start": "forever -w nodeapp/server.js",
+    "start": "forever -w --watchDirectory . nodeapp/server.js",
     "installAll": "npm install && cd webapp && bower install && cd test && bower install",
     "dev": "gulp serve",
     "build": "gulp",

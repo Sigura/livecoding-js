@@ -82,6 +82,7 @@ casper.test.begin('auth & load expenses', function(test) {
 
             this.echo(".expenses-list not found\n" + this.getHTML()).exit();
         });
+
     casper
         .then(function() {
 

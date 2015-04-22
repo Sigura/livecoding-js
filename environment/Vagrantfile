@@ -69,13 +69,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider "vmware_fusion" do |v|
     config.vm.box = "phusion/ubuntu-14.04-amd64"
-    v.vmx["memsize"] = "512"
-    v.vmx["numvcpus"] = "1"
+    v.vmx["memsize"] = "1024"
+    v.vmx["numvcpus"] = "2"
   end
 
 
   config.vm.provider "virtualbox" do |v|
       config.vm.box = "ubuntu/trusty64"
+      v.memory = 1024
+      v.cpus = 2
       #v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
   end
   
