@@ -14,6 +14,7 @@ import AppDispatcher   from './dispatcher/dispatcher.react'
 import actions         from './constants/actions.react'
 import context         from './utils/context.react'
 
+//@context
 class ExpensesApp extends React.Component {
 
   constructor(props, context){
@@ -115,10 +116,10 @@ class ExpensesApp extends React.Component {
   }
 }
 
-context.extend(ExpensesApp);
+context(ExpensesApp);
 ExpensesApp.displayName = 'ExpensesApp';
 
-window.onload = function(){
+//window.onload = function(){
 
   const routes = (
     <Route name="app" path="/" handler={ExpensesApp}>
@@ -133,16 +134,17 @@ window.onload = function(){
       const params = state.params;
       React.render(<Handler params={params} />, document.getElementById('expense-app'));
   });
-  module.hot.addStatusHandler(function(){
-    debugger;
-  });
-};
 
-// if (module.hot) {
-  // require('react-hot-loader/Injection').RootInstanceProvider.injectProvider({
-    // getRootInstances: function () {
-      // // Help React Hot Loader figure out the root component instances on the page:
-      // return [rootInstance];
-    // }
+  // module && module.hot && module.hot.addStatusHandler(function (eventName) {
+    // console && console.log(eventName, arguments);
   // });
-// }
+
+  // if (module.hot) {
+    // require('react-hot-loader/Injection').RootInstanceProvider.injectProvider({
+      // getRootInstances: function () {
+        // // Help React Hot Loader figure out the root component instances on the page:
+        // return [rootInstance];
+      // }
+    // });
+  // }
+//};

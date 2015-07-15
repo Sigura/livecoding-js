@@ -2,12 +2,13 @@
 
 import React           from 'react'
 import context         from '../utils/context.react'
-import objectAssign    from 'object-assign'
 import lodash          from 'lodash'
 import AppDispatcher   from '../dispatcher/dispatcher.react'
 import extensions      from '../utils/extensions.react'
 import actions         from '../constants/actions.react'
 
+export default
+//@context @extensions
 class Alerts extends React.Component {
     constructor (props, context) {
 
@@ -100,8 +101,6 @@ class Alerts extends React.Component {
 
 }
 
-context.extend(Alerts);
+context(Alerts);
+extensions(Alerts);
 
-objectAssign(Alerts.prototype, extensions);
-
-module.exports = Alerts;

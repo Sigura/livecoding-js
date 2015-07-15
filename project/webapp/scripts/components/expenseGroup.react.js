@@ -6,8 +6,8 @@ import groupBy           from '../constants/groupBy.react'
 /*eslint-disable no-unused-vars*/
 import Expense           from './expense.react'
 /*eslint-enable no-unused-vars*/
-//export default
-//noinspection JSUnusedGlobalSymbols
+
+export default
 class ExpenseGroup extends React.Component {
 
     constructor(props, context){
@@ -45,4 +45,3 @@ class ExpenseGroup extends React.Component {
     }
 }
 
-module.exports = ExpenseGroup;

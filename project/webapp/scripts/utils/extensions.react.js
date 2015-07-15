@@ -1,7 +1,9 @@
 'use strict';
 
-export default {
-    valueLinkBuilder: function(paramName) {
+const objectAssign    = require('object-assign');
+
+const extensions = {
+    valueLinkBuilder (paramName) {
         return {
             value: this.state[paramName],
             requestChange: (val) => this.handleChange({
@@ -13,7 +15,7 @@ export default {
         };
     },
 
-    classSet: function(obj) {
+    classSet (obj) {
         let result = Object.keys(obj)
             .filter(key => obj[key])
             .join(' ');
@@ -26,3 +28,8 @@ export default {
     }
 
 };
+
+
+export default function(obj) {
+  objectAssign(obj.prototype, extensions);
+}

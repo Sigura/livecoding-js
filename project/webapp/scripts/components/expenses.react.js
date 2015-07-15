@@ -19,7 +19,9 @@ import ExpenseGroup    from './expenseGroup.react'
 import NewExpense      from './newExpense.react'
 /*eslint-enable no-unused-vars*/
 
-export default class Expenses extends React.Component {
+export default
+//@context @extensions
+class Expenses extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -278,9 +280,7 @@ export default class Expenses extends React.Component {
 
 }
 
-context.extend(Expenses);
-
 Expenses.displayName = 'Expenses';
 
-objectAssign(Expenses.prototype, extensions);
-
+extensions(Expenses);
+context(Expenses);

@@ -1,13 +1,14 @@
 'use strict';
 
 import React           from 'react'
-import objectAssign    from 'object-assign'
 import api             from '../store/api.react'
 import AppDispatcher   from '../dispatcher/dispatcher.react'
 import extensions      from '../utils/extensions.react'
 import actions         from '../constants/actions.react'
 
-export default class NewExpense extends React.Component {
+export default
+//@extensions
+class NewExpense extends React.Component {
 
     constructor(props, context){
 
@@ -122,5 +123,5 @@ export default class NewExpense extends React.Component {
 
 }
 
-objectAssign(NewExpense.prototype, extensions);
+extensions(NewExpense);
 

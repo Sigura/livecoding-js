@@ -1,10 +1,11 @@
 'use strict';
 
 import React           from 'react'
-import objectAssign    from 'object-assign'
 import extensions      from '../utils/extensions.react'
 
-export default class Filter extends React.Component {
+export default
+//@extensions
+class Filter extends React.Component {
 
     constructor(props, context){
 
@@ -100,4 +101,4 @@ export default class Filter extends React.Component {
     }
 }
 
-objectAssign(Filter.prototype, extensions);
+extensions(Filter);

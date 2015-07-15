@@ -21,15 +21,13 @@ const context = {
     messages: React.PropTypes.object,
     formats: React.PropTypes.object,
     lang: React.PropTypes.string
-  },
-  extend (obj){
-    obj.childContextTypes = context.childContextTypes;
-    obj.contextTypes = context.contextTypes;
-
-    //obj.prototype.getChildContext = context.getChildContext;
-
   }
 };
 
 
-export default context;
+export default function(obj) {
+  obj.childContextTypes = context.childContextTypes;
+  obj.contextTypes = context.contextTypes;
+
+  obj.prototype.getChildContext = context.getChildContext;
+}
