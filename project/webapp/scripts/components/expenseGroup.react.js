@@ -1,13 +1,12 @@
 'use strict';
 
-import objectAssign       from 'object-assign';
-import Expense            from './expense.react';
-import AppDispatcher      from '../dispatcher/dispatcher.react';
-import resourceContext    from '../utils/context.react';
-import groupBy            from '../constants/groupBy.react';
-import actions            from '../constants/actions.react';
-
-export default
+import React             from 'react'
+import {FormattedNumber} from 'react-intl'
+import groupBy           from '../constants/groupBy.react'
+/*eslint-disable no-unused-vars*/
+import Expense           from './expense.react'
+/*eslint-enable no-unused-vars*/
+//export default
 //noinspection JSUnusedGlobalSymbols
 class ExpenseGroup extends React.Component {
 
@@ -19,22 +18,20 @@ class ExpenseGroup extends React.Component {
     }
 
     render () {
-        let _ = this;
-        let expenses = _.props.expenses;
-        let len = expenses.length;
-        let sum = expenses.reduce((previousValue, currentValue, index, array) => previousValue + (Number(array[index].amount) || 0), 0);
-        let maxDate = len && expenses[0].date;
-        let minDate = len && expenses[len - 1].date;
-        let duration = (len && moment(maxDate).twix(minDate)) || (len && 1) || 0;
-        let days = (duration && duration.count('days')) || (len && 1) || 0;
-        let dayAvg = (days && len && (sum/len)) || 0;
-        let expenseList = expenses.map(function(expense) {
+        const _ = this;
+        const expenses = _.props.expenses;
+        const len = expenses.length;
+        const sum = expenses.reduce((previousValue, currentValue, index, array) => previousValue + (Number(array[index].amount) || 0), 0);
+        const maxDate = len && expenses[0].date;
+        const minDate = len && expenses[len - 1].date;
+        const duration = (len && moment(maxDate).twix(minDate)) || (len && 1) || 0;
+        const days = (duration && duration.count('days')) || (len && 1) || 0;
+        const dayAvg = (days && len && (sum/len)) || 0;
+        const expenseList = expenses.map(function(expense) {
             return <Expense key={'expense-' + expense.id} expense={expense} />;
         });
-        /*eslint-disable no-unused-vars*/
-        let FormattedNumber = ReactIntl.FormattedNumber;
-        /*eslint-enbale no-unused-vars*/
-        let summary = (
+
+        const summary = (
             <tr key={'group-total-' + _.props.groupBy + '-' + _.props.name + '-' + _.props.index} className="info group-summary">
                 <td colSpan="4">{moment(maxDate).format(_.props.format)}</td>
                 <td colSpan="2">Sum: <FormattedNumber value={sum} format="USD" />, Avg: <FormattedNumber value={dayAvg} format="USD" /></td>
@@ -47,3 +44,5 @@ class ExpenseGroup extends React.Component {
         return <tbody>{expenseList}</tbody>;
     }
 }
+
+module.exports = ExpenseGroup;

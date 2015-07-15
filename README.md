@@ -52,7 +52,7 @@ cd environment
 ```
 then ssh to localhost:2222 (vagrant@vagrant) and run
 ```bash
-gulp serve
+gulp dev
 ```
 or
 ```bash
@@ -73,7 +73,7 @@ by default:
 ```bash
 http://localhost:3000/
 ```
-ui test accessed in gulp serve:
+ui test accessed in gulp dev:
 ```bash
 http://localhost:3000/test/
 ```
@@ -123,7 +123,7 @@ npm run installAll
 1. cd environment && vagrant up
 1. then vagrant ssh
 1. cd project
-1. for dev: gulp serve
+1. for dev: gulp dev
 1. for test: npm start
 1. for production: forever nodeapp/server.js or npm start
 

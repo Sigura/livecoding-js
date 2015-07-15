@@ -1,11 +1,12 @@
 'use strict';
 
-import objectAssign    from 'object-assign';
-import api             from '../store/api.react';
-import resourceContext from '../utils/context.react';
-import extensions      from '../utils/extensions.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
-import actions         from '../constants/actions.react';
+import objectAssign    from 'object-assign'
+import api             from '../store/api.react'
+import extensions      from '../utils/extensions.react'
+import AppDispatcher   from '../dispatcher/dispatcher.react'
+import actions         from '../constants/actions.react'
+import React           from 'react'
+import ReactIntl       from 'react-intl'
 
 export default class Login extends React.Component {
 
@@ -170,6 +171,14 @@ export default class Login extends React.Component {
 
 }
 
-resourceContext.extend(Login);
+Login.contextTypes = {
+  router: React.PropTypes.func,
+  locales: React.PropTypes.string,
+  messages: React.PropTypes.object,
+  formats: React.PropTypes.object,
+  lang: React.PropTypes.string
+};
+
+Login.displayName = 'Login';
 
 objectAssign(Login.prototype, extensions);

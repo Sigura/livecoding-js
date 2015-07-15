@@ -1,12 +1,12 @@
 'use strict';
 
-import objectAssign       from 'object-assign';
-import api                from '../store/api.react';
-import AppDispatcher      from '../dispatcher/dispatcher.react';
-import resourceContext    from '../utils/context.react';
-import extensions         from '../utils/extensions.react';
-import actions            from '../constants/actions.react';
-import groupBy            from '../constants/groupBy.react';
+import React              from 'react'
+import objectAssign       from 'object-assign'
+import ReactIntl          from 'react-intl'
+import api                from '../store/api.react'
+import AppDispatcher      from '../dispatcher/dispatcher.react'
+import extensions         from '../utils/extensions.react'
+import actions            from '../constants/actions.react'
 
 export default class Expense extends React.Component {
 
@@ -65,18 +65,18 @@ export default class Expense extends React.Component {
         $save.prop('disabled', true);
 
         api.expenses.update(state)
+            .always(() => $save.prop('disabled', false))
             .done(data => {
                 this.props.expense = data;
                 this.stopEdit();
-            })
-            .always(() => $save.prop('disabled', false));
+            });
     }
 
     remove () {
         var state = this.state;
         var $save = $(this.refs.remove.getDOMNode());
 
-	state.amount = Number(state.amount);
+        state.amount = Number(state.amount);
         $save.button('loading');
         api.expenses.delete(state)
             .always(() => $save.button('reset'));
@@ -130,3 +130,5 @@ export default class Expense extends React.Component {
 }
 
 objectAssign(Expense.prototype, extensions);
+
+module.exports = Expense;

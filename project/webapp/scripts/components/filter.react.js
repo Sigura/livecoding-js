@@ -1,10 +1,8 @@
 'use strict';
 
-//import React           from 'react';
-import objectAssign    from 'object-assign';
-import extensions      from '../utils/extensions.react';
-import actions         from '../constants/actions.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
+import React           from 'react'
+import objectAssign    from 'object-assign'
+import extensions      from '../utils/extensions.react'
 
 export default class Filter extends React.Component {
 

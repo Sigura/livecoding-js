@@ -1,5 +1,6 @@
 'use strict';
 
-//import Flux from 'flux'
+import Flux from 'flux'
+//const Flux = require('flux');
 
-export default new Flux.Dispatcher();
+module.exports = new Flux.Dispatcher();

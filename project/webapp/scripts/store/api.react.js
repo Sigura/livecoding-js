@@ -1,11 +1,13 @@
 'use strict';
 
-import AppDispatcher from '../dispatcher/dispatcher.react';
-import actions       from '../constants/actions.react';
+import AppDispatcher from '../dispatcher/dispatcher.react'
+import actions       from '../constants/actions.react'
 
-let api = {
+var api;
+
+export default api = {
   user: {
-    signIn (user){
+    signIn (user) {
       return $.ajax('/api/users', {
           dataType: 'json',
           contentType: 'application/json',
@@ -15,7 +17,7 @@ let api = {
         .fail((res) => AppDispatcher.dispatch({actionType: actions.loginFailed, data: res.responseJSON}))
         .done((data) => AppDispatcher.dispatch({actionType: actions.signIn, data: data}));
     },
-    register (user){
+    register (user) {
       return $.ajax('/api/users', {
           dataType: 'json',
           contentType: 'application/json',
@@ -27,7 +29,7 @@ let api = {
     }
   },
   expenses: {
-    get (filter) {
+    get: (filter) => {
       filter = filter || {};
       return $.ajax('/api/expenses', {
           dataType: 'json',
@@ -41,7 +43,7 @@ let api = {
         .fail(res => AppDispatcher.dispatch({actionType: actions.expensesLoadError, data: res.responseJSON}))
         .done(data => AppDispatcher.dispatch({actionType: actions.expensesLoaded, data: data}));
     },
-    insert (expense){
+    insert: (expense) => {
       return $.ajax('/api/expenses', {
           dataType: 'json',
           contentType: 'application/json',
@@ -54,7 +56,7 @@ let api = {
         .fail(res => AppDispatcher.dispatch({actionType: actions.expenseInsertError, data: res.responseJSON}))
         .done(data => AppDispatcher.dispatch({actionType: actions.expenseInserted, data: data}));
     },
-    update (expense) {
+    update: (expense) => {
       return $.ajax('/api/expenses', {
         dataType: 'json',
         contentType: 'application/json',
@@ -67,7 +69,7 @@ let api = {
         .fail(res => AppDispatcher.dispatch({actionType: actions.expenseUpdateError, data: res.responseJSON}))
         .done(data => AppDispatcher.dispatch({actionType: actions.expenseUpdated, data: data}));
     },
-    ['delete'] (expense) {
+    'delete': (expense) => {
       return $.ajax('/api/expenses', {
           dataType: 'json',
           headers: {
@@ -99,5 +101,3 @@ AppDispatcher.register(action => {
     break;
   }
 });
-
-export default api;

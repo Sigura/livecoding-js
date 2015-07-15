@@ -1,13 +1,11 @@
 'use strict';
 
-//import React           from 'react';
-import objectAssign    from 'object-assign';
-import extensions      from '../utils/extensions.react';
-import groupBy         from '../constants/groupBy.react';
-import actions         from '../constants/actions.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
+const React           = require('react');
+const ReactRouter     = require('react-router');
+const objectAssign    = require('object-assign');
+const extensions      = require('../utils/extensions.react');
 
-export default class GroupByFilter extends React.Component {
+class GroupByFilter extends React.Component {
 
     constructor(props, context){
 
@@ -39,3 +37,5 @@ export default class GroupByFilter extends React.Component {
 }
 
 objectAssign(GroupByFilter.prototype, extensions);
+
+module.exports = GroupByFilter;

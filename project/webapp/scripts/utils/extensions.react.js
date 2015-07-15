@@ -19,5 +19,10 @@ export default {
             .join(' ');
 
         return result;
+    },
+
+    l10n (messageName) {
+      return this.context.messages[messageName];
     }
+
 };
