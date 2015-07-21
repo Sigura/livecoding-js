@@ -1,13 +1,14 @@
 'use strict';
 
-//import React           from 'react';
-import objectAssign    from 'object-assign';
-import extensions      from '../utils/extensions.react';
-import groupBy         from '../constants/groupBy.react';
-import actions         from '../constants/actions.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
+const React           = require('react');
+const extensions      = require('../utils/extensions.react');
+/*eslint-disable no-unused-vars*/
+const {Link}          = require('react-router');
+/*eslint-enable no-unused-vars*/
 
-export default class GroupByFilter extends React.Component {
+export default
+//@extensions
+class GroupByFilter extends React.Component {
 
     constructor(props, context){
 
@@ -17,9 +18,6 @@ export default class GroupByFilter extends React.Component {
     }
 
     render () {
-        /*eslint-disable no-unused-vars*/
-        let Link = ReactRouter.Link;
-        /*eslint-enable no-unused-vars*/
 
         return (<div>
             <div className="panel panel-default hidden-print">
@@ -38,4 +36,4 @@ export default class GroupByFilter extends React.Component {
 
 }
 
-objectAssign(GroupByFilter.prototype, extensions);
+extensions(GroupByFilter);

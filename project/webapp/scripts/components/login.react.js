@@ -1,13 +1,16 @@
 'use strict';
 
-import objectAssign    from 'object-assign';
-import api             from '../store/api.react';
-import resourceContext from '../utils/context.react';
-import extensions      from '../utils/extensions.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
-import actions         from '../constants/actions.react';
+import api             from '../store/api.react'
+import extensions      from '../utils/extensions.react'
+import AppDispatcher   from '../dispatcher/dispatcher.react'
+import actions         from '../constants/actions.react'
+import React           from 'react'
+import ReactIntl       from 'react-intl'
+import context         from '../utils/context.react'
 
-export default class Login extends React.Component {
+export default
+//@extensions @context
+class Login extends React.Component {
 
     constructor(props, context){
 
@@ -150,19 +153,19 @@ export default class Login extends React.Component {
             <form className="form-signin">
                 <div className="row"><h2 className="form-signin-heading col-md-12"><L message={_.l10n('LoginFormTitle')}/></h2></div>
                 <div className="row">
-                        <div className={cx({'col-md-12': true, 'form-group': true, 'has-success': state.errors && !state.errors.name, 'has-error': state.errors && state.errors.name})}><label htmlFor="email" className="sr-only">Email address</label>
-                        <input type="text" name="email" className="form-control" placeholder="Name or email address" required autofocus valueLink={_.valueLinkBuilder('name')} /></div>
+                    <div className={cx({'col-md-12': true, 'form-group': true, 'has-success': state.errors && !state.errors.name, 'has-error': state.errors && state.errors.name})}><label htmlFor="email" className="sr-only">Email address</label>
+                    <input type="text" name="email" className="form-control" placeholder="Name or email address" required autofocus valueLink={_.valueLinkBuilder('name')} /></div>
                 </div>
                 <div className="row"><div className={cx({'col-md-12': true, 'form-group': true, 'has-success': state.errors && !state.errors.password, 'has-error': state.errors && state.errors.password})}>
-                        <label htmlFor="password" className="sr-only">Password</label>
-                        <input type="password" name="password" className="form-control" placeholder="Password" required valueLink={_.valueLinkBuilder('password')} /></div></div>
+                    <label htmlFor="password" className="sr-only">Password</label>
+                    <input type="password" name="password" className="form-control" placeholder="Password" required valueLink={_.valueLinkBuilder('password')} /></div></div>
                 <div className="row">
                     <div className="error-list col-md-5"><L message={_.l10n('Error')} error={error} errorName={errorName} errorPassword={errorPassword} /></div>
                     <div className="col-md-7" role="group">
-                            <div className="pull-right btn-group">
-                                <button className="btn btn-lg btn-primary signIn-button" onClick={_.signInHandler.bind(_)} type="button" data-loading-text="Wait response..." ref="signInButton">Sign in</button>
-                                <button className="btn btn-lg pull-right register-button" type="button" onClick={_.registerHandler.bind(_)} data-loading-text="Wait response..." ref="registerButton">Register</button>
-                            </div></div>
+                        <div className="pull-right btn-group">
+                            <button className="btn btn-lg btn-primary signIn-button" onClick={_.signInHandler.bind(_)} type="button" data-loading-text="Wait response..." ref="signInButton">Sign in</button>
+                            <button className="btn btn-lg pull-right register-button" type="button" onClick={_.registerHandler.bind(_)} data-loading-text="Wait response..." ref="registerButton">Register</button>
+                        </div></div>
                 </div>
             </form>
         );
@@ -170,6 +173,7 @@ export default class Login extends React.Component {
 
 }
 
-resourceContext.extend(Login);
+Login.displayName = 'Login';
 
-objectAssign(Login.prototype, extensions);
+extensions(Login);
+context(Login);

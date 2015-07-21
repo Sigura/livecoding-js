@@ -1,15 +1,14 @@
 'use strict';
 
-//import React           from 'react';
-import objectAssign    from 'object-assign';
-import api             from '../store/api.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
-import resourceContext from '../utils/context.react';
-import extensions      from '../utils/extensions.react';
-import groupBy         from '../constants/groupBy.react';
-import actions         from '../constants/actions.react';
+import React           from 'react'
+import api             from '../store/api.react'
+import AppDispatcher   from '../dispatcher/dispatcher.react'
+import extensions      from '../utils/extensions.react'
+import actions         from '../constants/actions.react'
 
-export default class NewExpense extends React.Component {
+export default
+//@extensions
+class NewExpense extends React.Component {
 
     constructor(props, context){
 
@@ -95,8 +94,8 @@ export default class NewExpense extends React.Component {
         $save.button('loading');
 
         api.expenses.insert(state)
-            .done(() => this.clearNewForm())
-            .always(() => $save.button('reset'));
+            .always(() => $save.button('reset'))
+            .done(() => this.clearNewForm());
     }
 
     render(){
@@ -124,6 +123,5 @@ export default class NewExpense extends React.Component {
 
 }
 
-resourceContext.extend(NewExpense);
+extensions(NewExpense);
 
-objectAssign(NewExpense.prototype, extensions);

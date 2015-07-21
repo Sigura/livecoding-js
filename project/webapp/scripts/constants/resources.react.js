@@ -1,12 +1,9 @@
 'use strict';
 
-//import React     from 'react';
-//import ReactIntl from 'react-intl';
-
 const defaultLang = 'en';
 let lang = defaultLang;//navigator.language || navigator.browserLanguage;
 
-let locales = [{
+const locales = [{
     lang: 'en',
     locales: 'en-US',
     formats: {
@@ -51,11 +48,11 @@ let locales = [{
     }
 }];
 
-let filter = item => item.lang === lang;
-let isSupported = locales.filter(filter).length;
+const filter = item => item.lang === lang;
+const isSupported = locales.filter(filter).length;
 
 lang = isSupported ? lang : defaultLang;
 
-let data = locales.filter(filter).shift();
+const data = locales.filter(filter).shift();
 
-export default data
+export default data;

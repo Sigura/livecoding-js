@@ -1,23 +1,31 @@
 'use strict';
 
-import objectAssign    from 'object-assign';
-import Alerts          from './alerts.react';
-import GroupBy         from './groupByFilter.react';
-import Filter          from './filter.react';
-import ExpenseGroup    from './expenseGroup.react';
-import NewExpense      from './newExpense.react';
-import resources       from '../constants/resources.react';
-import groupBy         from '../constants/groupBy.react';
-import actions         from '../constants/actions.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
-import api             from '../store/api.react';
-import resourceContext from '../utils/context.react';
-import extensions      from '../utils/extensions.react';
+import React           from 'react';
+import objectAssign    from 'object-assign'
+import
+{FormattedMessage}     from 'react-intl'
+import groupBy         from '../constants/groupBy.react'
+import actions         from '../constants/actions.react'
+import AppDispatcher   from '../dispatcher/dispatcher.react'
+import api             from '../store/api.react'
+import extensions      from '../utils/extensions.react'
+import context         from '../utils/context.react'
 
-export default class Expenses extends React.Component {
+/*eslint-disable no-unused-vars*/
+import Alerts          from './alerts.react'
+import GroupBy         from './groupByFilter.react'
+import Filter          from './filter.react'
+import ExpenseGroup    from './expenseGroup.react'
+import NewExpense      from './newExpense.react'
+/*eslint-enable no-unused-vars*/
 
-    constructor(props, context){
+export default
+//@context @extensions
+class Expenses extends React.Component {
+
+    constructor(props, context) {
         super(props, context);
+
         this.state = this.getInitState();
     }
 
@@ -125,13 +133,13 @@ export default class Expenses extends React.Component {
         this.update(this.state.expenses, group);
     }
 
-    update(expenses, groupBy) {
-        groupBy = groupBy || this.state.groupBy;
+    update(expenses, group) {
+        group = group || this.state.groupBy;
         expenses = Expenses.sort(expenses || this.state.expenses);
-        let grouped = this.groupDictionary(expenses, groupBy);
+        let grouped = this.groupDictionary(expenses, group);
 
         this.setState(grouped);
-        this.setState({loading: false, groupBy: groupBy});
+        this.setState({loading: false, groupBy: group});
     }
 
     // simulateChange(ev){
@@ -189,9 +197,9 @@ export default class Expenses extends React.Component {
         return groupFormat;
     }
 
-    groupDictionary(expenses, groupBy) {
+    groupDictionary(expenses, group) {
         var state = this.state;
-        var groupDictionary, groups = [], groupFormat = Expenses.groupFormat(groupBy || state.groupBy);
+        var groupDictionary, groups = [], groupFormat = Expenses.groupFormat(group || state.groupBy);
 
         if(groupFormat) {
             groupDictionary = {};
@@ -229,15 +237,12 @@ export default class Expenses extends React.Component {
         let years = (duration && duration.count('years')) || (len && 1) || 0;
         let yearAvg = (years && sum/years) || monthAvg || weekAvg || dayAvg;
         let width100P = {width: '100%'};
-        /*eslint-disable no-unused-vars*/
-        let L = ReactIntl.FormattedMessage;
-        /*eslint-enable no-unused-vars*/
 
         return (
             <div className="expenses-list panel panel-default">
                 <div className="panel-heading">
                     <div className="btn-toolbar pull-right hidden-print"><a className="btn btn-default logout" href="javascript:void(0);" onClick={Expenses.logOut.bind(_)}>Logout</a></div>
-                    <h2><L message={_.l10n('Expenses')}/></h2>
+                    <h2><FormattedMessage message={_.l10n('Expenses')}/></h2>
                 </div>
                 <div className={cx({'panel-body': true, 'hidden-print': true, 'hide-element': !state.loading})}>
                     <div className="progress">
@@ -255,13 +260,13 @@ export default class Expenses extends React.Component {
                 <table className={cx({'table': true, 'table-hover': true, 'table-condensed': true, 'hide-element': state.loading})}>
                     <thead>
                         <tr>
-                            <th></th><th><L message={_.l10n('Date')}/></th><th>Time</th><th>Description</th><th>Amount</th><th>Comment</th>
+                            <th></th><th><FormattedMessage message={_.l10n('Date')}/></th><th>Time</th><th>Description</th><th>Amount</th><th>Comment</th>
                         </tr>
                     </thead>
                     <tfoot>
                     <tr className="info total">
                         <td>Total:</td>
-                        <td colSpan="5"><L message={_.l10n('Total')} avg={avg} length={len} sum={sum} dayAvg={dayAvg} days={days} weekAvg={weekAvg} weeks={weeks} monthAvg={monthAvg} months={months} yearAvg={yearAvg} years={years} /></td>
+                        <td colSpan="5"><FormattedMessage message={_.l10n('Total')} avg={avg} length={len} sum={sum} dayAvg={dayAvg} days={days} weekAvg={weekAvg} weeks={weeks} monthAvg={monthAvg} months={months} yearAvg={yearAvg} years={years} /></td>
                     </tr>
                     </tfoot>
                     <NewExpense />
@@ -272,11 +277,10 @@ export default class Expenses extends React.Component {
             </div>
         );
     }
+
 }
 
-Expenses.contextTypes = {
-    router: React.PropTypes.func
-};
-resourceContext.extend(Expenses);
+Expenses.displayName = 'Expenses';
 
-objectAssign(Expenses.prototype, extensions);
+extensions(Expenses);
+context(Expenses);

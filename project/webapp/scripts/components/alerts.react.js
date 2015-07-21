@@ -1,15 +1,15 @@
 'use strict';
 
-import objectAssign    from 'object-assign';
-import Login           from './login.react';
-import Expenses        from './expenses.react';
-import AppDispatcher   from '../dispatcher/dispatcher.react';
-import resourceContext from '../utils/context.react';
-import extensions      from '../utils/extensions.react';
-import actions         from '../constants/actions.react';
-import resources       from '../constants/resources.react';
+import React           from 'react'
+import context         from '../utils/context.react'
+import lodash          from 'lodash'
+import AppDispatcher   from '../dispatcher/dispatcher.react'
+import extensions      from '../utils/extensions.react'
+import actions         from '../constants/actions.react'
 
-export default class Alerts extends React.Component {
+export default
+//@context @extensions
+class Alerts extends React.Component {
     constructor (props, context) {
 
         super(props, context);
@@ -101,6 +101,6 @@ export default class Alerts extends React.Component {
 
 }
 
-resourceContext.extend(Alerts);
+context(Alerts);
+extensions(Alerts);
 
-objectAssign(Alerts.prototype, extensions);
