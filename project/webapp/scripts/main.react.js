@@ -11,113 +11,102 @@ import resources       from './constants/resources.react'
 import Login           from './components/login.react'
 import Expenses        from './components/expenses.react'
 import AppDispatcher   from './dispatcher/dispatcher.react'
-import actions         from './constants/actions.react'
 import context         from './utils/context.react'
+import Reflux          from 'reflux'
+import Actions         from './actions/actions.react'
+import UserStore       from './stores/user.react'
 
 //@context
 class ExpensesApp extends React.Component {
 
   constructor(props, context){
-      context = $.extend(context, resources);
+    context = $.extend(context, resources);
 
-      super(props, context);
+    super(props, context);
 
-      this.state = {user: false};
-  }
+    const user = UserStore.getState();
 
-  getState() {
-      return this.state || {};
+    this.state = {
+      user: user,
+      list: []
+    };
   }
 
   componentDidMount () {
-      this.loadStoredData();
-      this.registerEvents();
+    this.registerEvents();
   }
 
   componentWillUnmount() {
-      this.listener && AppDispatcher.unregister(this.listener);
+    this.unsubscribes.forEach(unsubscribe => unsubscribe());
+  }
+
+  getExpenses() {
+    Actions.expensesLoad();
   }
 
   registerEvents() {
 
-      this.listener = this.handleFluxEvents && AppDispatcher.register((action) => this.handleFluxEvents(action));
+    this.unsubscribes = [
+      Actions.signIn.completed.listen(this.logIn.bind(this)),
+      Actions.register.completed.listen(this.logIn.bind(this)),
+      Actions.logOut.listen(this.logOut.bind(this)),
+      Actions.expensesLoad.completed.listen(this.update.bind(this)),
+      Actions.expenseUpdate.completed.listen(this.update.bind(this)),
+      Actions.expenseInsert.completed.listen(this.update.bind(this)),
+      Actions.expenseDelete.completed.listen(this.update.bind(this)),
+      Actions.expensesLoad.failed.listen(this.determinateActionOnError.bind(this)),
+      Actions.expenseUpdate.failed.listen(this.determinateActionOnError.bind(this)),
+      Actions.expenseInsert.failed.listen(this.determinateActionOnError.bind(this)),
+      Actions.expenseDelete.failed.listen(this.determinateActionOnError.bind(this)),
+      Actions.expensesLoad.failed.listen(() => this.update([]))
+    ];
   }
 
-  handleFluxEvents(action) {
-      switch(action.actionType)
-      {
-          case actions.signIn:
-          case actions.userRegistered:
-              this.logIn(action.data);
-          break;
-          case actions.logOut:
-              this.logOut(action.data);
-          break;
-          case actions.expenseDeleteError:
-          case actions.expenseUpdateError:
-          case actions.expensesLoadError:
-          case actions.expenseInsertError:
-              this.determinateActionOnError(action.data);
-          break;
-      }
+  update(expenses) {
+    this.setState({list: expenses});
   }
 
   determinateActionOnError(data) {
-      data && data.error === 'invalid token' && this.logOut(data);
-      data && data.error === 'token expired' && this.logOut(data);
-  }
-
-  loadStoredData () {
-
-      let user;
-      try{
-          user = localStorage.user && JSON.parse(localStorage.user);
-      }catch(e){ window.console && console.log && console.log(e); }
-
-      if(user && user.token) {
-          AppDispatcher.dispatch({actionType: actions.signIn, data: user});
-
-          this.setState({user: user});
-      }
+    data && data.error === 'token not provided' && Actions.logOut(data);
+    data && data.error === 'invalid token' && Actions.logOut(data);
+    data && data.error === 'token expired' && Actions.logOut(data);
   }
 
   logOut () {
-      delete localStorage.user;
-      this.state.user = false;
-      this.setState({user: false});
+    this.setState({user: false, list: []});
 
-      //location.reload(true);
-      //this.context.router.transitionTo('/login');
+    //location.reload(true);
+    //this.context.router.transitionTo('/login');
   }
 
   logIn (user) {
-      localStorage.user = JSON.stringify(user);
-      this.state.user = user;
-      this.setState({user: user});
-      //this.context.router.transitionTo('/');
+    this.setState({user: user});
+
+    this.getExpenses();
+    //this.context.router.transitionTo('/');
   }
 
   render () {
 
-      if(!this.state.user) {
-          return (<Login {...this.props}/>);
-          //this.context.router.transitionTo('login');
-      }
+    if(!this.state.user) {
+      return (<Login {...this.props}/>);
+      //this.context.router.transitionTo('login');
+    }
 
-      return (<RouteHandler {...this.props}/>);
+    return (<RouteHandler {...this.props} {...this.state}/>);
   }
 
   _onChange () {
-      this.setState(this.state);
+    this.setState(this.state);
   }
 
   getChildContext () {
     return $.extend({}, this.context, resources);
   }
 }
+ExpensesApp.displayName = 'ExpensesApp';
 
 context(ExpensesApp);
-ExpensesApp.displayName = 'ExpensesApp';
 
 //window.onload = function(){
 

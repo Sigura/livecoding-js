@@ -24,6 +24,7 @@ const locales = [{
         expenseDeleted: 'Expense deleted',
         expensesLoaded: 'Expenses data loaded',
         expenseInserted: 'Expense inserted',
+        expenseUpdated: 'Expense updated',
         Error: '{error}{errorName}{errorPassword}'
     }
 },
