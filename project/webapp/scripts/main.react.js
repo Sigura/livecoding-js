@@ -74,23 +74,18 @@ class ExpensesApp extends React.Component {
 
   logOut () {
     this.setState({user: false, list: []});
-
-    //location.reload(true);
-    //this.context.router.transitionTo('/login');
   }
 
   logIn (user) {
     this.setState({user: user});
 
     this.getExpenses();
-    //this.context.router.transitionTo('/');
   }
 
   render () {
 
     if(!this.state.user) {
       return (<Login {...this.props}/>);
-      //this.context.router.transitionTo('login');
     }
 
     return (<RouteHandler {...this.props} {...this.state}/>);
@@ -119,7 +114,7 @@ context(ExpensesApp);
     </Route>
   );
 
-  ReactRouter.run(routes, function (Handler, state) {
+  ReactRouter.run(routes, ReactRouter.HistoryLocation, function (Handler, state) {
       const params = state.params;
       React.render(<Handler params={params} />, document.getElementById('expense-app'));
   });
