@@ -3,161 +3,153 @@
 
 var db = require('../db/connection');
 var error = require('../lib/error');
+var Pipes = require('../lib/pipes');
 var validate = require('../lib/validate');
-var Controller = require('../lib/controller');
-var authentication = require('../lib/authentication');
 
-var path = '/api/expenses';
-
-var expenseController = new Controller(path);
 var helpers = {
-    validate: function (req) {
-        req.checkBody('date', 'date format is YYYY-MM-DD').isLength(10).isDate();
-        req.checkBody('time', 'time format is HH:mm or empty').matches(/^(((\d|)\d:\d\d)|)$/);
-        req.checkBody('description', 'description length should be 1-255 chars').isLength(1, 255);
-        req.checkBody('amount', 'amount should be number').isFloat();
-        req.checkBody('comment', 'comment should be length should less then 1024 chars').isLength(0, 1024);
-    },
-    expense: function (req) {
-        var res = {
-            date: req.body.date,
-            time: req.body.time,
-            description: req.body.description,
-            amount: req.body.amount,
-            comment: req.body.comment,
-            /*eslint-disable camelcase*/
-            user_id: req.user.id
-            /*eslint-enable camelcase*/
-        };
+  validate: function (req/*, res, next*/) {
+    req.checkBody('date', 'date format is YYYY-MM-DD').isLength(10).isDate();
+    req.checkBody('time', 'time format is HH:mm or empty').matches(/^(((\d|)\d:\d\d)|)$/);
+    req.checkBody('description', 'description length should be 1-255 chars').isLength(1, 255);
+    req.checkBody('amount', 'amount should be number').isFloat();
+    req.checkBody('comment', 'comment should be length should less then 1024 chars').isLength(0, 1024);
+  },
+  expense: function (req) {
+    var res = {
+      date: req.body.date,
+      time: req.body.time,
+      description: req.body.description,
+      amount: req.body.amount,
+      comment: req.body.comment,
+      /*eslint-disable camelcase*/
+      user_id: req.user.id
+      /*eslint-enable camelcase*/
+    };
 
-        if(req.body.id) {
-            res.id = req.body.id;
-        }
-
-        return res;
+    if(req.body.id) {
+      res.id = req.body.id;
     }
+    if(req.params.id) {
+      res.id = req.params.id;
+    }
+
+    return res;
+  }
 };
 
-//expenseController.router.use(authentication());
+module.exports = {
+  get: new Pipes()
+    .add(validate(function (req) {
 
-expenseController.router.get(path, authentication(), validate(function (req) {
+        req.query.dateFrom   && req.checkQuery('dateFrom', 'date format is YYYY-MM-DD').isLength(10).isDate();
+        req.query.dateTo     && req.checkQuery('dateTo', 'date format is YYYY-MM-DD').isLength(10).isDate();
+        req.query.amountFrom && req.checkQuery('amountFrom', 'amount should be number').isLength(0, 7).isFloat();
+        req.query.amountTo   && req.checkQuery('amountTo', 'amount should be number').isLength(0, 7).isFloat();
 
-    //console.log('request', req.query);
+    }))
+    .done(function (req, res/*, next*/) {
 
-    req.query.dateFrom   && req.checkQuery('dateFrom', 'date format is YYYY-MM-DD').isLength(10).isDate();
-    req.query.dateTo     && req.checkQuery('dateTo', 'date format is YYYY-MM-DD').isLength(10).isDate();
-    req.query.amountFrom && req.checkQuery('amountFrom', 'amount should be number').isLength(0, 7).isFloat();
-    req.query.amountTo   && req.checkQuery('amountTo', 'amount should be number').isLength(0, 7).isFloat();
-
-}), function (req, res/*, next*/) {
-
-    var query = db('expenses')
+      var query = db('expenses')
         /*eslint-disable camelcase*/
         .where({user_id: req.user.id});
         /*eslint-enable camelcase*/
 
-    if(req.query.dateFrom) {
+      if(req.query.dateFrom) {
         query = query.where('date', '>=', req.query.dateFrom);
-    }
-    if(req.query.dateTo) {
+      }
+      if(req.query.dateTo) {
         query = query.where('date', '<=', req.query.dateTo);
-    }
-    if(req.query.amountFrom) {
+      }
+      if(req.query.amountFrom) {
         query = query.where('amount', '>=', req.query.amountFrom);
-    }
-    if(req.query.amountTo) {
+      }
+      if(req.query.amountTo) {
         query = query.where('amount', '<=', req.query.amountTo);
-    }
+      }
 
-    //console.log('query', query);
-
-    query
+      query
         .orderBy('date')
         .orderBy('time')
-        .then(function(row){
+        .then(function(row) {
             res.json(row);
         })
-        .catch(function(ex){
-            error(res, ex, 500);
+        .catch(function(ex) {
+          error(res, ex, 500);
         });
 
-});
+    }),
+  put: new Pipes()
+    .add(validate(helpers.validate))
+    .done(function (req, res/*, next*/) {
+      var expense = helpers.expense(req);
 
-// delete expense
-expenseController.router.delete(path, authentication(), function (req, res/*, next*/) {
-    var expense = helpers.expense(req);
+      /*eslint-disable camelcase*/
+      expense.time = expense.time || null;
+      expense.user_id = req.user.id;
 
-    db('expenses')
-        /*eslint-disable camelcase*/
-        .where({id: expense.id, user_id: req.user.id})
-        /*eslint-enable camelcase*/
-        .del()
-        .then(function(result) {
-            if(!result){
-                throw 'failed to delete expense ' + expense.id;
-            }
+      db('expenses')
+        .insert(expense, 'id')
+        .then(function(ids) {
+          if (!ids || !ids.length) {
+            throw 'failed to create a expense';
+          }
 
-            res.json(expense);
+          expense.id = ids[0];
+
+          res.json(expense);
         })
         .catch(function(ex) {
-            error(res, ex, 404);
+          error(res, ex, 500);
         });
+      /*eslint-enable camelcase*/
 
-});
+    }),
+  post: new Pipes()
+    .add(validate(helpers.validate))
+    .done(function (req, res/*, next*/) {
 
-// update expense
-expenseController.router.post(path, authentication(), validate(helpers.validate), function (req, res/*, next*/) {
+      var expense = helpers.expense(req);
 
-    var expense = helpers.expense(req);
+      /*eslint-disable camelcase*/
+      expense.user_id = req.user.id;
+      expense.time = expense.time || null;
 
-    /*eslint-disable camelcase*/
-    expense.user_id = req.user.id;
-    expense.time = expense.time || null;
-
-    db('expenses')
+      db('expenses')
         .where({id: expense.id, user_id: req.user.id})
         .update(expense)
         .then(function(result) {
-            if(!result){
-                throw 'failed to update expense ' + expense.id;
-            }
+          if(!result){
+            throw 'failed to update expense ' + expense.id;
+          }
 
-            res.json(expense);
+          res.json(expense);
         })
         .catch(function(ex) {
-            error(res, ex, 404);
+          error(res, ex, 404);
         });
-    /*eslint-enable camelcase*/
+      /*eslint-enable camelcase*/
 
-});
-
-// create new expense
-expenseController.router.put(path, authentication(), validate(helpers.validate), function (req, res/*, next*/) {
-
+    }),
+  delete: function (req, res/*, next*/) {
     var expense = helpers.expense(req);
 
-    /*eslint-disable camelcase*/
-    expense.time = expense.time || null;
-    expense.user_id = req.user.id;
-
     db('expenses')
-        .insert(expense, 'id')
-        .then(function(ids) {
-            if (!ids || !ids.length) {
-                throw 'failed to create a expense';
-            }
+      /*eslint-disable camelcase*/
+      .where({id: expense.id, user_id: req.user.id})
+      /*eslint-enable camelcase*/
+      .del()
+      .then(function(result) {
+        if(!result){
+          throw 'failed to delete expense ' + expense.id;
+        }
 
-            expense.id = ids[0];
+        res.json(expense);
+      })
+      .catch(function(ex) {
+        error(res, ex, 404);
+      });
 
-            res.json(expense);
-        })
-        .catch(function(ex) {
-            error(res, ex, 500);
-        });
-    /*eslint-enable camelcase*/
-
-});
-
-module.exports = expenseController;
+  }
+};
 
 })(module, require);

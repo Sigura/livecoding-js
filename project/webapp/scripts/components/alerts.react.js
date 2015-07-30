@@ -42,8 +42,7 @@ class Alerts extends React.Component {
       Actions.expensesLoad.failed.listen(error),
       Actions.expenseUpdate.failed.listen(error),
       Actions.expenseInsert.failed.listen(error),
-      Actions.expenseDelete.failed.listen(error),
-      Actions.expensesLoad.failed.listen(error)
+      Actions.expenseDelete.failed.listen(error)
     ];
   }
 
@@ -61,7 +60,8 @@ class Alerts extends React.Component {
   }
 
   addErrors (data) {
-    data && data.error && this.addAlert(data.error.message || data.error, true);
+
+    data && data.error && !data.error.errors && this.addAlert(data.error.message || data.error, true);
 
     data && data.error && lodash.uniq(data.error.errors || [], 'msg')
       .forEach((item) => {
@@ -70,7 +70,7 @@ class Alerts extends React.Component {
   }
 
   addAlert (text, isError) {
-    let alert = {
+    const alert = {
         text: this.l10n(text) || text,
         error: !!isError
       };
@@ -81,9 +81,9 @@ class Alerts extends React.Component {
 
   render () {
 
-    let _ = this;
-    let cx = _.classSet;
-    let state = this.state;
+    const _ = this;
+    const cx = _.classSet;
+    const state = this.state;
 
     return (<div className={cx({'col-sm-4': true, 'float-right': true, 'hidden-print': true, 'list-group': true, 'col-sm-6': true, 'hide-element': !state.alerts.length})}>
       {state.alerts.map(function(item, i){

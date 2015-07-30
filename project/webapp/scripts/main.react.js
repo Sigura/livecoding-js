@@ -67,9 +67,9 @@ class ExpensesApp extends React.Component {
   }
 
   determinateActionOnError(data) {
-    data && data.error === 'token not provided' && Actions.logOut(data);
-    data && data.error === 'invalid token' && Actions.logOut(data);
-    data && data.error === 'token expired' && Actions.logOut(data);
+    data && data.message === 'token not provided' && Actions.logOut(data);
+    data && data.message === 'invalid token' && Actions.logOut(data);
+    data && data.message === 'token expired' && Actions.logOut(data);
   }
 
   logOut () {

@@ -1,5 +1,7 @@
 'use strict';
 
+import lodash from 'lodash';
+
 export default {
   user: {
     signIn (user) {
@@ -7,7 +9,10 @@ export default {
         dataType: 'json',
         contentType: 'application/json',
         method: 'POST',
-        data: JSON.stringify(user)
+        data: JSON.stringify({
+          name: user.name,
+          password: user.password
+        })
       });
     },
     register (user) {
@@ -15,13 +20,21 @@ export default {
           dataType: 'json',
           contentType: 'application/json',
           method: 'PUT',
-          data: JSON.stringify(user)
+          data: JSON.stringify({
+          name: user.name,
+          password: user.password
+        })
         });
     }
   },
   expenses: {
     get: (filter, user) => {
       filter = filter || {};
+      lodash.forOwn(filter, function(value, key) {
+        if(!filter[key]) {
+          delete filter[key];
+        }
+      });
       return $.ajax('/api/expenses', {
         dataType: 'json',
         contentType: 'application/json',
@@ -33,6 +46,10 @@ export default {
       });
     },
     insert: (expense, user) => {
+      if(!expense.comment) {
+        delete expense.comment;
+      }
+
       return $.ajax('/api/expenses', {
         dataType: 'json',
         contentType: 'application/json',
@@ -44,6 +61,10 @@ export default {
       });
     },
     update: (expense, user) => {
+      if(!expense.comment) {
+        delete expense.comment;
+      }
+
       return $.ajax('/api/expenses', {
         dataType: 'json',
         contentType: 'application/json',
@@ -55,6 +76,10 @@ export default {
       });
     },
     del: (expense, user) => {
+      if(!expense.comment) {
+        delete expense.comment;
+      }
+
       return $.ajax('/api/expenses', {
         dataType: 'json',
         headers: {

@@ -233,7 +233,7 @@ gulp.task('dev', ['html', 'jshint',/*'templates', */ 'extras', 'fonts'/*, 'style
   return runSequence('webpack-dev-server', function() {
 
     //gulp.start('jshint');
-    gulp.watch( ['./nodeapp/**/*.js'], [ 'server:restart', test.api ] );
+    gulp.watch( ['./nodeapp/**/*.js', './nodeapp/api.json'], [ 'server:restart'/*, test.api*/ ] );
 
     // gulp.watch( ['gulpfile.js'], [ 'styles', 'templates', 'fonts', 'server:restart'/*, test.api, test.ui*/ ] );
 

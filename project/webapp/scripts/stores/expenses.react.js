@@ -53,7 +53,17 @@ const Store = Reflux.createStore({
 
     filter = filter || {};
     return Api.expenses.get(filter, user)
-      .fail(res => Actions.expensesLoad.failed(res.responseJSON))
+      .fail(res => {
+        if(res.responseJSON) {
+          return Actions.expensesLoad.failed(res.responseJSON);
+        }
+        try{
+          var error = JSON.parse(res.responseText);
+          Actions.expensesLoad.failed(error);
+        }catch(e){
+          Actions.expensesLoad.failed({error: res.responseText});
+        }
+      })
       .done(data => Actions.expensesLoad.completed(this.dataLoaded(data)));
   },
 

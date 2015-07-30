@@ -83,12 +83,12 @@
     };
 
   describe('/api/expenses', function () {
-    describe('expense create', function () {
+    describe('create', function () {
         var result;
         cleanDb();
         registerTestUsers();
 
-        it('create returns 200', function() {
+        it('returns 200', function() {
             return request()
                 .put('/api/expenses')
                 .set('Authorization', token)
@@ -104,7 +104,7 @@
                     result = res.body;
                 });
         });
-        it('create with wrong values, check empty date', function() {
+        it('with wrong values, check empty date', function() {
             return request()
                 .put('/api/expenses')
                 .set('Authorization', token)
@@ -117,7 +117,7 @@
                 })
                 .expect(400)
                 .then(function(res) {
-                    //console.log(res.body.error.errors);
+                    //console.log(res.body);
                     expect(res.body)
                         .to.have.property('error')
                         .to.have.property('message');
@@ -126,7 +126,7 @@
                         .to.contain.an.item.with.property('msg', 'date format is YYYY-MM-DD');
                 });
         });
-        it('create with wrong values, check null date', function() {
+        it('with wrong values, check null date', function() {
             return request()
                 .put('/api/expenses')
                 .set('Authorization', token)
@@ -134,7 +134,7 @@
                     description: 'test expense',
                     comment: 'comment',
                     amount: 12,
-                    date: null,
+                    //date: null,
                     time: '10:10'
                 })
                 .expect(400)
@@ -148,7 +148,7 @@
                         .to.contain.an.item.with.property('msg', 'date format is YYYY-MM-DD');
                 });
         });
-        it('create with wrong values, check date 2015-16-16', function() {
+        it('with wrong values, check date 2015-16-16', function() {
             return request()
                 .put('/api/expenses')
                 .set('Authorization', token)
@@ -170,7 +170,7 @@
                         .to.contain.an.item.with.property('msg', 'date format is YYYY-MM-DD');
                 });
         });
-        it('create with wrong values, check time', function() {
+        it('with wrong values, check time', function() {
             return request()
                 .put('/api/expenses')
                 .set('Authorization', token)
@@ -328,7 +328,7 @@
                 });
         });
 
-        it('delete unexistance', function() {
+        it('unexistance', function() {
 
             var update = {
                 id: 100
@@ -340,7 +340,7 @@
                 .expect(404);
         });
 
-        it('delete returns 200', function() {
+        it('returns 200', function() {
 
             var update = {
                 id: result.id

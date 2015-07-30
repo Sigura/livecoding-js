@@ -1,69 +1,77 @@
 +(function(module, require){
 
-    var moment = require('moment');
-    var db = require('../db/connection');
-    require('twix');
+  var moment = require('moment');
+  var db = require('../db/connection');
+  require('twix');
 
-    var error = function(res, text){
-        res.status(403);
+  var error = function(res, text){
+    res.status(403);
 
-        res.json({error: text});
-    };
+    res.json({message: text, status: 403});
+  };
 
-    module.exports = function() {
-        return function(req, res, next) {
+  var checkToken = function(token, req) {
 
-            var token = req.get('Authorization');
+    return db('users')
+      .where({token: token})
+      .first()
+      .then(function(row) {
+        req.user = row;
 
-            if (!token) {
+        if (!row) {
+          throw 'invalid token';
+        } else {
 
-                error(res, 'token not provided');
+          var daysFromLastLogin = moment()
+            /*eslint-disable camelcase*/
+            .twix(row.last_accessed_at)
+            /*eslint-enable camelcase*/
+            .count('days');
 
-                return;
-            }
+          //console.log(daysFromLastLogin, moment()
+          //  .twix(row.last_accessed_at)
+          //  .count('minutes'));
 
-            db('users')
-                .where({token: token})
-                .first()
-                .then(function(row) {
-                    req.user = row;
+          if(daysFromLastLogin > 7) {
+            throw 'token expired';
+          }
 
-                    if (!row) {
-                        error(res, 'invalid token');
+          db('users')
+            .where({token: token})
+            /*eslint-disable camelcase*/
+            .update({last_accessed_at: new Date()});
+            /*eslint-enable camelcase*/
 
-                        return false;
-                    } else {
+          return req.user;
+        }
+      });
 
-                        var daysFromLastLogin = moment()
-                            /*eslint-disable camelcase*/
-                            .twix(row.last_accessed_at)
-                            /*eslint-enable camelcase*/
-                            .count('days');
+  };
+  var preHandler = function(req, res, next) {
 
-                        //console.log(daysFromLastLogin, moment()
-                        //    .twix(row.last_accessed_at)
-                        //    .count('minutes'));
+    var token = req.get('Authorization');
 
-                        if(daysFromLastLogin > 7) {
-                            error(res, 'token expired');
+    if (!token) {
 
-                            return false;
-                        }
+      error(res, 'token not provided');
 
-                        return db('users')
-                            .where({token: token})
-                            /*eslint-disable camelcase*/
-                            .update({last_accessed_at: new Date()});
-                            /*eslint-enable camelcase*/
-                    }
-                })
-                .then(function(/*result*/) {
-                    if( req.user ) {
-                        next();
-                    }
-                })
-                .catch(next);
-        };
-    };
+      return false;
+    }
+
+    return checkToken(token, req)
+      .then(function() {
+        if( req.user ) {
+          next();
+        }
+      })
+      .catch(function(e){ error(res, e); });
+      //.catch(next);
+  };
+  var preHandlerGetter = function() {
+    return preHandler;
+  };
+  preHandlerGetter.checkToken = checkToken;
+
+  module.exports = preHandlerGetter;
 
 })(module, require);

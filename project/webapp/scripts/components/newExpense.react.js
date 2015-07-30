@@ -89,6 +89,7 @@ class NewExpense extends React.Component {
     state.id = undefined;
     state.amount = Number(state.amount);
     $save.button('loading');
+    delete state.edit;
 
     Actions.expenseInsert(state);
   }

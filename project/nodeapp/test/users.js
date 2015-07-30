@@ -18,7 +18,7 @@
                     done();
                 });
         });
-        it('register returns 200', function() {
+        it('returns 200', function() {
             expect(result.status).to.eql(200);
         });
         it('allows to log in as agdudnik@gmail.com', function() {
@@ -52,10 +52,10 @@
                     done();
                 });
         });
-        it('register returns 200', function() {
+        it('returns 200', function() {
             expect(result.status).to.eql(200);
         });
-        it('register agdudnik@gmail.com again', function() {
+        it('agdudnik@gmail.com again', function() {
             return request()
                 .put('/api/users')
                 .send({
@@ -79,7 +79,7 @@
     });
     describe('register with invalid values', function () {
         cleanDb();
-        it('register returns 200', function() {
+        it('returns 200', function() {
             return request()
                 .put('/api/users')
                 .send({
@@ -124,10 +124,10 @@
                     done();
                 });
         });
-        it('register returns 200', function() {
+        it('returns 200', function() {
             expect(result.status).to.eql(200);
         });
-        it('login with wrong login', function() {
+        it('main', function() {
             return request()
                 .post('/api/users')
                 .send({
@@ -166,10 +166,10 @@
                     done();
                 });
         });
-        it('register returns 200', function() {
+        it('returns 200', function() {
             expect(result.status).to.eql(200);
         });
-        it('login with wrong password', function() {
+        it('main', function() {
             return request()
                 .post('/api/users')
                 .send({

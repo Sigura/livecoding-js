@@ -33,6 +33,7 @@
     "chai": "^2.1.1",
     "chai-things": "^0.2.0",
     "css-loader": "^0.15.4",
+    "debug": "^2.2.0",
     "del": "~0.1.3",
     "extract-text-webpack-plugin": "^0.8.2",
     "gulp": "^3.9.0",
@@ -88,6 +89,7 @@
   "dependencies": {
     "body-parser": "^1.12.0",
     "compression": "^1.4.1",
+    "cors": "^2.7.1",
     "crypto": "0.0.3",
     "express": "^4.12.0",
     "express-validator": "^2.8.0",
@@ -106,6 +108,9 @@
     "reflux": "^0.2.11",
     "serve-favicon": "^2.2.0",
     "serve-static": "^1.9.1",
-    "twix": "^0.6.2"
+    "swagger-express-mw": "0.0.4",
+    "swagger-tools": "^0.9.0",
+    "twix": "^0.6.2",
+    "yamljs": "^0.2.3"
   }
 }

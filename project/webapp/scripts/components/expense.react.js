@@ -32,22 +32,25 @@ class Expense extends React.Component {
 
   registerEvents() {
     const _ = this;
+    const removeDisabled = (expense) => {
+      if(expense.id !== _.props.expense.id) {
+        return;
+      }
+      const $save = _.refs.save && $(_.refs.save.getDOMNode());
+      $save && $save.prop('disabled', false);
+    };
+
     this.unsubscribes = [
       Actions.expenseUpdate.completed.listen((data, expense) => {
-        expense.id === this.props.expense.id && _.stopEdit();
+        (expense || data).id === _.props.expense.id && _.stopEdit();
+        removeDisabled(expense || data);
       }),
-      Actions.expenseUpdate.listen((expense) => {
-        if(expense.id === this.props.expense.id) {
+      Actions.expenseUpdate.failed.listen((data, expense) => removeDisabled(expense || data)),
+      Actions.expenseDelete.failed.listen((data, expense) => {
+        if((expense || data).id !== _.props.expense.id) {
           return;
         }
-        const $save = _.refs.save && $(_.refs.save.getDOMNode());
-        $save && $save.prop('disabled', false);
-      }),
-      Actions.expenseDelete.listen((data, expense) => {
-        if(expense.id === this.props.expense.id) {
-          return;
-        }
-        const $save = _.refs.save && $(_.refs.save.getDOMNode());
+        const $save = _.refs.remove && $(_.refs.remove.getDOMNode());
         $save && $save.button('reset');
       })
     ];
@@ -91,6 +94,7 @@ class Expense extends React.Component {
 
     state.amount = Number(state.amount);
     $save.prop('disabled', true);
+    delete state.edit;
 
     Actions.expenseUpdate(state);
   }
@@ -101,6 +105,8 @@ class Expense extends React.Component {
 
     state.amount = Number(state.amount);
     $save.button('loading');
+    delete state.edit;
+
     Actions.expenseDelete(state);
   }
 
@@ -125,14 +131,10 @@ class Expense extends React.Component {
         <td>
         <div className="btn-group hidden-print" role="group">
           <button type="button" className="btn btn-default btn-xs" onClick={_.remove.bind(_)} data-loading-text="…" ref="remove"><span className="glyphicon glyphicon-remove"></span></button>
-          {!state.edit
-            ? <button type="button" className="btn btn-default btn-xs" onClick={_.startEdit.bind(_)}><span className="glyphicon glyphicon-pencil"></span></button>
-            : <button type="button" className="btn btn-default btn-xs" onClick={_.cancelEdit.bind(_)}><span className="glyphicon glyphicon-floppy-remove"></span></button>
-          }
-          {!state.edit
-            ? <button type="button" className="btn btn-default btn-xs" onClick={_.copyToNewExpense.bind(_)}><span className="glyphicon glyphicon-copy"></span></button>
-            : <button type="button" className="btn btn-default btn-xs" onClick={_.save.bind(_)} data-loading-text="…" ref="save"><span className="glyphicon glyphicon-floppy-disk"></span></button>
-          }
+            <button type="button" className={cx({'btn': true, 'btn-default': true, 'btn-xs': true, 'hide-element': state.edit})} onClick={_.startEdit.bind(_)}><span className="glyphicon glyphicon-pencil"></span></button>
+            <button type="button" className={cx({'btn': true, 'btn-default': true, 'btn-xs': true, 'hide-element': !state.edit})} onClick={_.cancelEdit.bind(_)}><span className="glyphicon glyphicon-floppy-remove"></span></button>
+            <button type="button" className={cx({'btn': true, 'btn-default': true, 'btn-xs': true, 'hide-element': state.edit})} onClick={_.copyToNewExpense.bind(_)}><span className="glyphicon glyphicon-copy"></span></button>
+            <button type="button" className={cx({'btn': true, 'btn-default': true, 'btn-xs': true, 'hide-element': !state.edit})} onClick={_.save.bind(_)} data-loading-text="…" ref="save"><span className="glyphicon glyphicon-floppy-disk"></span></button>
         </div>
         </td>
         <td className="col-xs-2 date-td">{state.edit && <input type="text" className="form-control hidden-print" placeholder="Date" ref="Date" valueLink={_.valueLinkBuilder('date')} />}<span className={cx({'visible-print-inline': state.edit, 'date-value': true})}>{state.date}</span></td>

@@ -2,6 +2,12 @@
 
 Write a simple expenses tracker web application
 
+## features
+* react/reflux
+* webpack/gulp
+* swagger-tools
+* eslint
+
 ## configs
 
 ### server port
