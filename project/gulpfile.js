@@ -5,6 +5,20 @@ var gulp          = require('gulp');
 var sass          = require('gulp-sass');
 var connect       = require('gulp-connect');
 var $             = require('gulp-load-plugins')();
+var bowerFiles    = require('main-bower-files');
+//var browserify    = require('browserify');
+var babelify      = require('babelify').configure({
+  compact: false,
+  optional: [
+    'es7.asyncFunctions',
+    'es7.classProperties',
+    'es7.doExpressions',
+    'es7.exportExtensions',
+    'es7.functionBind',
+    'minification.removeConsole',
+    'minification.removeDebugger'//,
+    //'validation.react'
+  ]});
 var uglify        = $.uglify();
 var browserSync   = require('browser-sync');
 var gulpDevServer = require('gulp-develop-server');
@@ -34,7 +48,7 @@ var test = {
 };
 
 gulp.task('styles', function () {
-    return gulp.src('webapp/styles/main.css')
+    return gulp.src('./webapp/styles/main.css')
         .pipe($.sourcemaps.init())
         .pipe(sass.sync().on('error', sass.logError))
         //.pipe($.autoprefixer('last 1 version'))
@@ -66,7 +80,7 @@ gulp.task('html', ['styles'], function () {
 
     return gulp.src(['webapp/*.html'])
         .pipe(assets)
-        .pipe($.if('*.js', uglify))
+        //.pipe($.if(['*.js'], uglify))
         .pipe($.if('*.scss', $.sass()))
         .pipe($.if('*.css', $.csso()))
         .pipe($.useref.restore())
@@ -87,7 +101,7 @@ gulp.task('html', ['styles'], function () {
 // });
 
 gulp.task('fonts', function () {
-    return gulp.src(require('main-bower-files')({
+    return gulp.src(bowerFiles({
         filter: '**/*.{eot,svg,ttf,woff,woff2}',
         paths: 'webapp'
     }).concat('webapp/fonts/**/*'))
@@ -155,7 +169,7 @@ gulp.task('bundle', ['jshint'], function () {
     return gulp.src('webapp/scripts/main.react.js')
     .pipe($.browserify({
         insertGlobals: false,
-        transform: ['babelify'/*, 'reactify'*/],
+        transform: [babelify],
         debug: false
     }))
     .pipe($.stripDebug())
@@ -166,10 +180,10 @@ gulp.task('bundle', ['jshint'], function () {
 
 gulp.task('templates', ['jshint'], function () {
 
-    return gulp.src('webapp/scripts/main.react.js')
+    gulp.src('webapp/scripts/main.react.js')
     .pipe($.browserify({
         insertGlobals: false,
-        transform: ['babelify'/*, 'reactify'*/],
+        transform: [babelify/*, 'reactify'*/],
         debug: true
     }))
     .pipe(gulp.dest('.tmp/scripts'))
@@ -177,8 +191,8 @@ gulp.task('templates', ['jshint'], function () {
 
 });
 
-gulp.task('build', ['bundle', 'html',/*'images'*/ 'fonts', 'extras'], function () {
-    return gulp.src('dist/**/*');//.pipe($.size({title: 'build', gzip: true}));
+gulp.task('build', ['bundle', 'html', 'fonts', 'extras'/*'images'*/], function () {
+    return gulp;//.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
 gulp.task('webpack:build-dev', function(callback) {

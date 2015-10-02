@@ -27,30 +27,31 @@ node -v | grep 0.10.35 || nave usemain 0.10.35
 which node || apt-get -y install nodejs
 which node || sudo apt-get -y install nodejs-legacy
 which npm || apt-get -y install npm
-#npm install -g npm
-# echo " "
-# echo "***********************"
-# echo "*   install node-gyp  *"
-# echo "* build-essential g++ *"
-# echo "***********************"
-# echo " "
-# apt-get -y install node-gyp build-essential g++
+#npm i -g npm
+echo " "
+echo "***********************"
+echo "*   install node-gyp  *"
+echo "* build-essential g++ *"
+echo "***********************"
+echo " "
+which node-gyp || apt-get -y install node-gyp build-essential g++
 echo " "
 echo "***********************"
 echo "*    install global   *"
 echo "*   dev dependancies  *"
 echo "***********************"
 echo " "
-which gulp || npm install -g gulp 
-which bower || npm install -g bower
-which knex || npm install -g knex
-which forever || npm install -g forever
-which babel || npm install -g babel
-which eslint || npm install -g eslint babel-eslint
+which gulp || npm i -g gulp 
+which bower || npm i -g bower
+which knex || npm i -g knex
+which forever || npm i -g forever
+which babel || npm i -g babel
+which eslint || npm i -g eslint babel-eslint
 apt-get -y install libfontconfig
-which phantomjs || npm install -g phantomjs
-which casperjs || npm install -g casperjs
-which react-tools || npm install -g react-tools
+which phantomjs || npm i -g phantomjs
+which casperjs || npm i -g casperjs
+which react-tools || npm i -g react-tools
+which node-debug || mpm i -g node-inspector
 
 #postgres
 if [ ! -f /usr/lib/postgresql/9.3/bin/postgres ]; then

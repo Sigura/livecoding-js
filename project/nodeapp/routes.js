@@ -17,6 +17,12 @@ module.exports = {
   },
   registerRoutes: function(main){
 
+    main.express.use('/expenses/*', function(req, res/*, next*/) {
+      var index = path.join(__dirname, '..', !main.isDebug ? 'dist' : 'webapp', 'index.html');
+
+      res.sendFile(index);
+    });
+
     this.routeTable.forEach(function(item){
       var page = require(item.path);
 
@@ -25,12 +31,6 @@ module.exports = {
 
   },
   registerErrors: function(main){
-
-    main.express.use('/expenses/*', function(req, res/*, next*/) {
-      var index = path.join(__dirname, '..', !main.isDebug ? 'dist' : 'webapp', 'index.html');
-
-      res.sendFile(index);
-    });
 
     main.express.use(function(req, res, next) {
       var err = new Error('Not Found');

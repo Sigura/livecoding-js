@@ -18,6 +18,7 @@ Application.prototype = {
     this.sets();
     this.usages();
     this.initRoutes();
+    this.initSwagger();
     //this.start();
   },
   vars: function() {
@@ -104,7 +105,7 @@ Application.prototype = {
       redirect: true
     }));
   },
-  start: function() {
+  initSwagger: function() {
     var _ = this;
     var swaggerToolsConfig = {
       controllers: this.path.join(baseDir, 'api'),
@@ -138,15 +139,18 @@ Application.prototype = {
       }));
 
       _.routes.register(_);
+    });
+  },
+  start: function() {
+    var _ = this;
+    
+    this.server = this.express.listen(_.port, function () {
 
-      _.server = _.express.listen(_.port, function () {
+      var address = _.server.address();
+      var host = address.address;
+      var port = address.port;
 
-        var address = _.server.address();
-        var host = address.address;
-        var port = address.port;
-
-        console.log('app listening at http://%s:%s', host, port);
-      });
+      console.log('app listening at http://%s:%s', host, port);
     });
 
     process

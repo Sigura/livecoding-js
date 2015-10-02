@@ -9,7 +9,7 @@
             return request()
                 .put('/api/users')
                 .send({
-                    name: 'agdudnik@gmail.com',
+                    name: 'adudnik@gmail.com',
                     password: 'test'
                 }).then(function(res) {
                     result = res;
@@ -18,14 +18,14 @@
                     done();
                 });
         });
-        it('returns 200', function() {
-            expect(result.status).to.eql(200);
+        it('should return 200', function() {
+            expect(result.status).to.eql(200, result);
         });
-        it('allows to log in as agdudnik@gmail.com', function() {
+        it('allows to log in as adudnik@gmail.com', function() {
             return request()
             .post('/api/users')
             .send({
-                name: 'agdudnik@gmail.com',
+                name: 'adudnik@gmail.com',
                 password: 'test'
             })
             .expect(200)
@@ -42,7 +42,7 @@
             return request()
                 .put('/api/users')
                 .send({
-                    name: 'agdudnik@gmail.com',
+                    name: 'adudnik@gmail.com',
                     password: 'test'
                 })
                 .then(function(res) {
@@ -55,11 +55,11 @@
         it('returns 200', function() {
             expect(result.status).to.eql(200);
         });
-        it('agdudnik@gmail.com again', function() {
+        it('adudnik@gmail.com again', function() {
             return request()
                 .put('/api/users')
                 .send({
-                    name: 'agdudnik@gmail.com',
+                    name: 'adudnik@gmail.com',
                     password: 'test'
                 })
                 .expect(500)
@@ -67,7 +67,7 @@
                     expect(res.body).to.have.property('error');
                 });
         });
-        it('delete agdudnik@gmail.com', function() {
+        it('delete adudnik@gmail.com', function() {
             return request()
                 .delete('/api/users')
                 .set('Authorization', result.body.token)
@@ -83,7 +83,7 @@
             return request()
                 .put('/api/users')
                 .send({
-                    name: 'agdudnik@gmail.com',
+                    name: 'adudnik@gmail.com',
                     password: ''
                 })
                 .expect(400)
@@ -98,7 +98,7 @@
             return request()
                 .post('/api/users')
                 .send({
-                    name: 'agdudnik@gmail.com',
+                    name: 'adudnik@gmail.com',
                     password: ''
                 })
                 .expect(400)
@@ -114,7 +114,7 @@
             return request()
                 .put('/api/users')
                 .send({
-                    name: 'agdudnik@gmail.com',
+                    name: 'adudnik@gmail.com',
                     password: 'test'
                 })
                 .then(function(res) {
@@ -139,7 +139,7 @@
                     expect(res.body).to.have.property('error');
                 });
         });
-        it('delete agdudnik@gmail.com', function() {
+        it('delete adudnik@gmail.com', function() {
             return request()
                 .delete('/api/users')
                 .set('Authorization', result.body.token)
@@ -156,7 +156,7 @@
             return request()
                 .put('/api/users')
                 .send({
-                    name: 'agdudnik@gmail.com',
+                    name: 'adudnik@gmail.com',
                     password: 'test'
                 })
                 .then(function(res) {
@@ -173,7 +173,7 @@
             return request()
                 .post('/api/users')
                 .send({
-                    name: 'agdudnik@gmail.com',
+                    name: 'adudnik@gmail.com',
                     password: 'test1'
                 })
                 .expect(403)
@@ -181,7 +181,7 @@
                     expect(res.body).to.have.property('error');
                 });
         });
-        it('delete agdudnik@gmail.com', function() {
+        it('delete adudnik@gmail.com', function() {
             return request()
                 .delete('/api/users')
                 .set('Authorization', result.body.token)
